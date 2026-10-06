@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>На карте — отель «Звёздное небо»</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    #map {
+      width: 100%;
+      height: 500px;
+      border: 0;
+      border-radius: 8px;
+      margin: 24px 0 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+
+    .map-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 768px) {
+      #map {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a class="logo" href="../index.html" aria-label="Звёздное небо — на главную">
+      <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+      <span class="logo-text">Звёздное небо</span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav>
+      <a href="../index.html">Главная</a>
+      <a href="gallery.html">Галерея</a>
+      <a href="about.html">О нас</a>
+      <a href="faq.html">FAQ</a>
+      <a href="services.html">Услуги</a>
+      <a href="availability.html">Доступность</a>
+      <a href="map.html">Карта</a>
+      <a href="reviews.html">Отзывы</a>
+      <a href="location.html">Адрес</a>
+    </nav>
+
+    <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
+    <a class="header-cta" href="../index.html#kontakty">Забронировать</a>
+  </header>
+
+  <section class="hero">
+    <h1>Где мы находимся</h1>
+    <p>Отель в центре Санкт-Петербурга</p>
+  </section>
+
+  <section class="scroll-fade">
+    <h2>Карта Яндекс</h2>
+    <!-- Карта Яндекса: карточка нашего отеля (с отзывами, фото и маршрутом). Ключ API не нужен -->
+    <iframe id="map"
+      src="https://yandex.ru/map-widget/v1/org/zvezdnoye_nebo/1345277823/"
+      allowfullscreen
+      loading="lazy"
+      title="Отель «Звёздное небо» на Яндекс Картах"></iframe>
+
+    <div class="map-buttons">
+      <a class="btn" href="https://yandex.ru/maps/org/zvezdnoye_nebo/1345277823/" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>
+      <a class="btn" href="https://yandex.ru/maps/org/zvezdnoye_nebo/1345277823/reviews/" target="_blank" rel="noopener">Все отзывы</a>
+    </div>
+
+    <h3>Адрес</h3>
+    <p style="font-size: 18px; color: var(--primary-gold); font-weight: 600;">
+      ул. Восстания, 22<br>
+      Санкт-Петербург, 191023
+    </p>
+
+    <h3>Как доехать</h3>
+
+    <div class="direction-card">
+      <h4>🚕 Яндекс Такси</h4>
+      <p>
+        Заказывайте Яндекс Такси, указав адрес: ул. Восстания, 22.
+        Водитель без проблем найдет наш отель.
+        Поездка от аэропорта Пулково займет 30-40 минут.
+      </p>
+    </div>
+
+    <div class="direction-card">
+      <h4>🚇 На метро</h4>
+      <p>
+        От станции метро «Площадь Восстания» идите примерно 10-12 минут пешком.
+        Это ближайшее метро к отелю. Также есть станции «Маяковская» и «Чернышевская» (15-20 минут).
+      </p>
+    </div>
+
+    <div class="direction-card">
+      <h4>🚌 На автобусе</h4>
+      <p>
+        Остановка «Улица Восстания» находится прямо у нас.
+        Также можно выйти на других близлежащих остановках.
+      </p>
+    </div>
+
+    <p style="text-align: center; margin-top: 40px;">
+      <a class="btn" href="../index.html#kontakty">Забронировать номер</a>
+    </p>
+  </section>
+
+
+  <!-- ========== ПОДВАЛ «НОЧНОЕ НЕБО» ========== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a class="logo" href="../index.html">
+          <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+          <span class="logo-text">Звёздное небо</span>
+        </a>
+        <p>Уютный мини-отель в центре Санкт-Петербурга.<br>ул. Восстания, 22 · 770 м от метро «Площадь Восстания»</p>
+      </div>
+      <div>
+        <h4>Гостям</h4>
+        <div class="footer-links">
+          <a href="gallery.html">Галерея номеров</a>
+          <a href="availability.html">Свободные даты</a>
+          <a href="faq.html">Частые вопросы</a>
+          <a href="reviews.html">Отзывы</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+        </div>
+      </div>
+      <div>
+        <h4>Связаться</h4>
+        <div class="footer-links">
+          <a href="tel:+79992213311">+7 (999) 221-33-11</a>
+          <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+          <a href="map.html">Как добраться</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Отель «Звёздное небо»</span>
+      <span>Спокойной ночи под звёздным небом ✦</span>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('nav a').forEach(link => {
+      if (link.getAttribute('href') === 'map.html') {
+        link.classList.add('active');
+      }
+    });
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-fade').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+
+  <script src="../effects.js"></script>
+  <script src="../menu.js"></script>
+
+</body>
+
+</html>

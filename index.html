@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Звёздное небо — отель в Санкт-Петербурге</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ========== ШАПКА САЙТА ========== -->
+  <header>
+    <a class="logo" href="index.html" aria-label="Звёздное небо — на главную">
+      <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+      <span class="logo-text">Звёздное небо</span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="pages/gallery.html">Галерея</a>
+      <a href="pages/about.html">О нас</a>
+      <a href="pages/faq.html">FAQ</a>
+      <a href="pages/services.html">Услуги</a>
+      <a href="pages/availability.html">Доступность</a>
+      <a href="pages/map.html">Карта</a>
+      <a href="pages/reviews.html">Отзывы</a>
+      <a href="pages/location.html">Адрес</a>
+    </nav>
+
+    <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
+    <a class="header-cta" href="index.html#kontakty">Забронировать</a>
+  </header>
+
+
+  <!-- ========== ГЕРОЙ (ПЕРВЫЙ ЭКРАН) ========== -->
+  <section class="hero">
+    <h1>Отель «Звёздное небо»</h1>
+    <p>Комфортабельный отель в центре Санкт-Петербурга</p>
+
+    <!-- Быстрая проверка дат (ведёт на страницу доступности) -->
+    <form class="quick-book" action="pages/availability.html" method="get">
+      <label class="qb-field">
+        <span>Заезд</span>
+        <input type="date" name="checkin" id="qbIn" required>
+      </label>
+      <label class="qb-field">
+        <span>Выезд</span>
+        <input type="date" name="checkout" id="qbOut" required>
+      </label>
+      <button type="submit" class="btn qb-btn">Проверить свободные номера</button>
+    </form>
+
+    <!-- Большое фото в светящейся рамке -->
+    <div class="glow-frame">
+      <img src="images-edit/komfort-3.jpg" alt="Номер стандарт комфорт" width="900">
+    </div>
+
+    <p style="margin-top: 32px; text-align: center;">
+      <a class="btn" href="#kontakty">Забронировать номер</a>
+    </p>
+  </section>
+
+
+  <!-- ========== ЦИФРЫ ========== -->
+  <section class="stats-section">
+    <div class="stats">
+      <div class="stat"><span class="stat-number" data-count="9">9</span><span class="stat-label">уютных номеров</span></div>
+      <div class="stat"><span class="stat-number">24/7</span><span class="stat-label">бесконтактное заселение</span></div>
+      <div class="stat"><span class="stat-number" data-count="770" data-suffix=" м">770 м</span><span class="stat-label">до метро «Площадь Восстания»</span></div>
+      <div class="stat"><span class="stat-number" data-count="100" data-suffix="+">100+</span><span class="stat-label">отзывов на Яндекс Картах</span></div>
+    </div>
+  </section>
+
+
+  <!-- ========== НОМЕРА ========== -->
+  <section id="nomera" class="scroll-fade">
+    <h2>Наши номера</h2>
+    <p>Всего 9 уютных номеров для вашего комфорта.</p>
+
+    <div class="rooms">
+
+      <!-- Эконом маленький -->
+      <article class="card scroll-fade">
+        <img src="images-edit/ekonom-mal-1.jpg" alt="Эконом маленький">
+        <div class="card-body">
+          <h3>Эконом маленький</h3>
+          <p>Уютный компактный номер для одного гостя.</p>
+
+          <div class="amenities">
+            <span title="Общая душевая">🚿</span>
+            <span title="Интернет Wi-Fi">📶</span>
+          </div>
+
+          <p class="price">1 500 ₽ <span>за ночь</span></p>
+          <p class="count">Доступно 2 номера</p>
+          <a class="btn" href="#kontakty">Забронировать</a>
+        </div>
+      </article>
+
+      <!-- Эконом большой -->
+      <article class="card scroll-fade">
+        <img src="images-edit/ekonom-bol-1.jpg" alt="Эконом большой">
+        <div class="card-body">
+          <h3>Эконом большой</h3>
+          <p>Больше места для отдыха и комфорта.</p>
+
+          <div class="amenities">
+            <span title="Общая душевая">🚿</span>
+            <span title="Интернет Wi-Fi">📶</span>
+          </div>
+
+          <p class="price">1 900 ₽ <span>за ночь</span></p>
+          <p class="count">Доступно 2 номера</p>
+          <a class="btn" href="#kontakty">Забронировать</a>
+        </div>
+      </article>
+
+      <!-- Стандарт комфорт -->
+      <article class="card scroll-fade">
+        <img src="images-edit/komfort-3.jpg" alt="Стандарт комфорт">
+        <div class="card-body">
+          <h3>Стандарт комфорт</h3>
+          <p>Светлый номер с удобной кроватью и личным душем.</p>
+
+          <div class="amenities">
+            <span title="Личный душ">🚿</span>
+            <span title="Телевизор">📺</span>
+            <span title="Интернет Wi-Fi">📶</span>
+            <span title="Шкаф">🗄️</span>
+          </div>
+
+          <p class="price">2 700 ₽ <span>за ночь</span></p>
+          <p class="count">Доступно 3 номера</p>
+          <a class="btn" href="#kontakty">Забронировать</a>
+        </div>
+      </article>
+
+      <!-- Стандарт премиум -->
+      <article class="card scroll-fade">
+        <img src="images-edit/premium-1.jpg" alt="Стандарт премиум">
+        <div class="card-body">
+          <h3>Стандарт премиум</h3>
+          <p>Просторный номер с кофейным столиком и люксом удобств.</p>
+
+          <div class="amenities">
+            <span title="Личный душ">🚿</span>
+            <span title="Телевизор">📺</span>
+            <span title="Интернет Wi-Fi">📶</span>
+            <span title="Шкаф">🗄️</span>
+          </div>
+
+          <p class="price">3 000 ₽ <span>за ночь</span></p>
+          <p class="count">Доступно 2 номера</p>
+          <a class="btn" href="#kontakty">Забронировать</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ========== УДОБСТВА ========== -->
+  <section id="udobstva" class="scroll-fade">
+    <h2>Удобства</h2>
+    <p>Всё необходимое для комфортного пребывания:</p>
+    <div class="features">
+      <p class="feature"><strong>Заселение 24/7.</strong> Бесконтактно — приезжайте в любое удобное время.</p>
+      <p class="feature"><strong>Общая кухня.</strong> Всё оборудование, чтобы готовить самим, как дома.</p>
+      <p class="feature"><strong>Бесплатный Wi-Fi.</strong> Работает на всей территории отеля.</p>
+      <p class="feature"><strong>Центр города.</strong> 770 м до метро «Площадь Восстания».</p>
+    </div>
+    <figure class="photo-frame">
+      <img src="images-edit/kuhnya-1.jpg" alt="Общая кухня">
+      <figcaption>Общая кухня — для гостей всех номеров</figcaption>
+    </figure>
+  </section>
+
+
+  <!-- ========== ФОРМА БРОНИРОВАНИЯ И КОНТАКТЫ ========== -->
+  <section id="kontakty" class="scroll-fade">
+    <h2>Забронировать номер</h2>
+    <p>Заполните форму и выберите удобный способ связи. Мы ответим в течение 10 минут!</p>
+
+    <form id="bookingForm" class="booking-form">
+
+      <!-- Подсказка для вернувшегося гостя (показывается, только если данные сохранены) -->
+      <div id="welcomeBack" class="welcome-back" hidden>
+        <p id="welcomeText">С возвращением!</p>
+        <div class="welcome-actions">
+          <button type="button" id="fillSaved" class="btn">Подставить мои данные</button>
+          <button type="button" id="forgetSaved" class="link-btn">Забыть мои данные</button>
+        </div>
+      </div>
+
+      <!-- Выбор типа номера -->
+      <div class="form-group">
+        <label for="room">Выберите номер:</label>
+        <select id="room" required>
+          <option value="">-- Выберите номер --</option>
+          <option value="Эконом маленький">Эконом маленький (1 500 ₽/ночь)</option>
+          <option value="Эконом большой">Эконом большой (1 900 ₽/ночь)</option>
+          <option value="Стандарт комфорт">Стандарт комфорт (2 700 ₽/ночь)</option>
+          <option value="Стандарт премиум">Стандарт премиум (3 000 ₽/ночь)</option>
+        </select>
+      </div>
+
+      <!-- Имя гостя -->
+      <div class="form-group">
+        <label for="name">Ваше имя:</label>
+        <input type="text" id="name" list="savedNames" autocomplete="name" placeholder="Иван Петров" required>
+        <datalist id="savedNames"></datalist>
+      </div>
+
+      <!-- Телефон -->
+      <div class="form-group">
+        <label for="phone">Телефон:</label>
+        <input type="tel" id="phone" list="savedPhones" inputmode="tel" autocomplete="tel" maxlength="18" placeholder="+7 (999) 123-45-67" required>
+        <datalist id="savedPhones"></datalist>
+      </div>
+
+      <!-- Дата заезда -->
+      <div class="form-group">
+        <label for="checkin">Заезд:</label>
+        <input type="date" id="checkin" required>
+      </div>
+
+      <!-- Дата выезда -->
+      <div class="form-group">
+        <label for="checkout">Выезд:</label>
+        <input type="date" id="checkout" required>
+      </div>
+
+      <!-- Расчёт стоимости (заполняется автоматически) -->
+      <div id="priceCalc" class="price-calc" hidden></div>
+
+      <!-- ========== УРОК 7: Красивые кнопки выбора мессенджера ========== -->
+      <label class="channel-label">Как вам удобнее общаться?</label>
+      <div class="messenger-options">
+
+        <!-- WhatsApp -->
+        <label class="messenger-card">
+          <input type="radio" name="channel" value="whatsapp" checked>
+          <div class="messenger-card-content">
+            <span class="messenger-icon">💬</span>
+            <div class="messenger-name">WhatsApp</div>
+            <div class="messenger-desc">Быстро и надежно</div>
+            <div class="messenger-checkmark">✓</div>
+          </div>
+        </label>
+
+        <!-- Telegram -->
+        <label class="messenger-card">
+          <input type="radio" name="channel" value="telegram">
+          <div class="messenger-card-content">
+            <span class="messenger-icon">✈️</span>
+            <div class="messenger-name">Telegram</div>
+            <div class="messenger-desc">Приватно и безопасно</div>
+            <div class="messenger-checkmark">✓</div>
+          </div>
+        </label>
+
+        <!-- MAX -->
+        <label class="messenger-card">
+          <input type="radio" name="channel" value="max">
+          <div class="messenger-card-content">
+            <span class="messenger-icon">📱</span>
+            <div class="messenger-name">MAX</div>
+            <div class="messenger-desc">Удобное приложение</div>
+            <div class="messenger-checkmark">✓</div>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Кнопка отправки -->
+      <!-- Ловушка для спам-роботов: человек это поле не видит -->
+      <input type="text" id="website" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <label class="consent">
+        <input type="checkbox" id="consent" required>
+        <span>Я согласен(на) на обработку персональных данных в соответствии с
+        <a href="pages/privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a></span>
+      </label>
+
+      <button type="submit" id="submitBtn" class="btn btn-large">Отправить запрос</button>
+      <div id="formNotice" class="form-notice" hidden></div>
+    </form>
+
+    <hr class="section-divider">
+
+    <h3>Свяжитесь с нами</h3>
+    <p><strong>Адрес:</strong> ул. Восстания, 22, Санкт-Петербург</p>
+    <p><strong>Телефон:</strong> <a href="tel:+79992213311">+7 999 221-33-11</a></p>
+
+    <p>
+      <strong>Напишите нам:</strong><br>
+      <a href="https://wa.me/79992213311">WhatsApp</a> •
+      <a href="https://t.me/+79992213311">Telegram</a> •
+      MAX: +7 999 221-33-11
+    </p>
+  </section>
+
+  <!-- ========== МОДАЛЬНОЕ ОКНО ДЛЯ ПОДРОБНОГО ОПИСАНИЯ НОМЕРА ========== -->
+  <div id="roomModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2 id="modalRoomName">Название номера</h2>
+      <img id="modalRoomImage" src="" alt="Номер" style="width: 100%; border-radius: 8px; margin: 20px 0;">
+      <p id="modalRoomDescription">Описание номера</p>
+
+      <h3 style="margin-top: 24px; font-size: 20px;">Удобства:</h3>
+      <ul id="modalRoomAmenities" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+      </ul>
+
+      <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #eee;">
+        <p style="font-size: 14px; color: #999; margin: 0;">
+          Для бронирования перейдите к форме ниже или напишите нам
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== JAVASCRIPT ========== -->
+
+  <!-- ========== ПОДВАЛ «НОЧНОЕ НЕБО» ========== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a class="logo" href="index.html">
+          <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+          <span class="logo-text">Звёздное небо</span>
+        </a>
+        <p>Уютный мини-отель в центре Санкт-Петербурга.<br>ул. Восстания, 22 · 770 м от метро «Площадь Восстания»</p>
+      </div>
+      <div>
+        <h4>Гостям</h4>
+        <div class="footer-links">
+          <a href="pages/gallery.html">Галерея номеров</a>
+          <a href="pages/availability.html">Свободные даты</a>
+          <a href="pages/faq.html">Частые вопросы</a>
+          <a href="pages/reviews.html">Отзывы</a>
+          <a href="pages/privacy.html">Политика конфиденциальности</a>
+        </div>
+      </div>
+      <div>
+        <h4>Связаться</h4>
+        <div class="footer-links">
+          <a href="tel:+79992213311">+7 (999) 221-33-11</a>
+          <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+          <a href="pages/map.html">Как добраться</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Отель «Звёздное небо»</span>
+      <span>Спокойной ночи под звёздным небом ✦</span>
+    </div>
+  </footer>
+
+  <script>
+    // ========== АКТИВНОЕ МЕНЮ ==========
+    document.querySelectorAll('nav a').forEach(link => {
+      if (link.getAttribute('href') === 'index.html' || link.getAttribute('href') === './index.html') {
+        link.classList.add('active');
+      }
+    });
+
+    // ========== ФОРМА И ТЕЛЕФОН ==========
+    const form = document.getElementById('bookingForm');
+    const phoneInput = document.getElementById('phone');
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+    const notice = document.getElementById('formNotice');
+
+    // Собираем номер в вид +7 (999) 999-99-99 из одних цифр
+    function formatPhone(digits) {
+      if (!digits) return '';
+      let r = '+7';
+      if (digits.length > 1) r += ' (' + digits.slice(1, 4);
+      if (digits.length >= 4) r += ')';
+      if (digits.length > 4) r += ' ' + digits.slice(4, 7);
+      if (digits.length > 7) r += '-' + digits.slice(7, 9);
+      if (digits.length > 9) r += '-' + digits.slice(9, 11);
+      return r;
+    }
+
+    phoneInput.addEventListener('input', function(e) {
+      // Когда человек стирает — не мешаем ему (иначе скобку и дефис не удалить)
+      if (e.inputType && e.inputType.startsWith('delete')) return;
+
+      let digits = this.value.replace(/\D/g, '');   // буквы и символы выкидываем
+      if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+      else if (digits && !digits.startsWith('7')) digits = '7' + digits;
+      this.value = formatPhone(digits.slice(0, 11));
+    });
+
+    // После ухода с поля приводим номер в порядок
+    phoneInput.addEventListener('blur', function() {
+      let digits = this.value.replace(/\D/g, '');
+      if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+      this.value = digits.length > 1 ? formatPhone(digits.slice(0, 11)) : '';
+    });
+
+    // ========== ДАТЫ: нельзя выбрать прошлое и выезд раньше заезда ==========
+    const today = new Date().toISOString().split('T')[0];
+    checkinInput.min = today;
+    checkoutInput.min = today;
+    checkinInput.addEventListener('change', function() {
+      checkoutInput.min = this.value || today;
+      if (checkoutInput.value && checkoutInput.value <= this.value) checkoutInput.value = '';
+    });
+
+    function formatDate(iso) {           // 2026-10-05 → 05.10.2026
+      const [y, m, d] = iso.split('-');
+      return `${d}.${m}.${y}`;
+    }
+
+    // ========== ЗАПОМИНАЕМ ДАННЫЕ ГОСТЯ ==========
+    // Данные хранятся только в браузере самого гостя (localStorage),
+    // никуда не отправляются. Даты не запоминаем — они каждый раз новые.
+    const SAVE_KEY = 'zvezdnoe-nebo-guest';
+    const welcomeBack = document.getElementById('welcomeBack');
+
+    function loadGuest() {
+      try { return JSON.parse(localStorage.getItem(SAVE_KEY)) || null; }
+      catch (e) { return null; }
+    }
+
+    function saveGuest() {
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        phone: phoneInput.value,
+        room: document.getElementById('room').value,
+        channel: document.querySelector('input[name="channel"]:checked').value
+      };
+      if (!data.name && data.phone.replace(/\D/g, '').length < 11) return; // нечего запоминать
+      const old = loadGuest() || {};
+      if (!data.name) data.name = old.name || '';
+      if (data.phone.replace(/\D/g, '').length < 11) data.phone = old.phone || '';
+      try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    // Подсказки в выпадающем списке под полями «Имя» и «Телефон»
+    function fillHints(guest) {
+      document.getElementById('savedNames').innerHTML = guest && guest.name ? `<option value="${guest.name.replace(/"/g, '&quot;')}">` : '';
+      document.getElementById('savedPhones').innerHTML = guest && guest.phone ? `<option value="${guest.phone}">` : '';
+    }
+
+    function showWelcome() {
+      const guest = loadGuest();
+      fillHints(guest);
+      if (!guest || (!guest.name && !guest.phone)) { welcomeBack.hidden = true; return; }
+      const firstName = (guest.name || '').split(' ')[0];
+      document.getElementById('welcomeText').textContent =
+        firstName ? `С возвращением, ${firstName}! Заполнить форму вашими прошлыми данными?`
+                  : 'С возвращением! Заполнить форму вашими прошлыми данными?';
+      welcomeBack.hidden = false;
+    }
+
+    document.getElementById('fillSaved').addEventListener('click', function() {
+      const guest = loadGuest();
+      if (!guest) return;
+      if (guest.name) document.getElementById('name').value = guest.name;
+      if (guest.phone) phoneInput.value = guest.phone;
+      if (guest.room) document.getElementById('room').value = guest.room;
+      const radio = document.querySelector(`input[name="channel"][value="${guest.channel}"]`);
+      if (radio) radio.checked = true;
+      welcomeBack.hidden = true;
+      updatePrice();
+      checkinInput.focus();   // осталось выбрать даты
+    });
+
+    document.getElementById('forgetSaved').addEventListener('click', function() {
+      try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+      fillHints(null);
+      welcomeBack.hidden = true;
+    });
+
+    // Сохраняем, как только человек заполнил поле — даже если он не отправит форму
+    ['name', 'phone', 'room'].forEach(id =>
+      document.getElementById(id).addEventListener('change', saveGuest));
+    document.querySelectorAll('input[name="channel"]').forEach(r =>
+      r.addEventListener('change', saveGuest));
+
+    // ========== РАСЧЁТ СТОИМОСТИ ==========
+    const roomSelect = document.getElementById('room');
+    const priceCalc = document.getElementById('priceCalc');
+    const PRICES = {
+      'Эконом маленький': 1500,
+      'Эконом большой': 1900,
+      'Стандарт комфорт': 2700,
+      'Стандарт премиум': 3000
+    };
+
+    // 1 ночь, 2 ночи, 5 ночей
+    function nightsWord(n) {
+      const last = n % 10, lastTwo = n % 100;
+      if (last === 1 && lastTwo !== 11) return 'ночь';
+      if (last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14)) return 'ночи';
+      return 'ночей';
+    }
+
+    function rub(n) {                    // 8100 → «8 100 ₽»
+      return n.toLocaleString('ru-RU') + ' ₽';
+    }
+
+    // Возвращает { nights, price, total } или null, если что-то не выбрано
+    function calcPrice() {
+      const price = PRICES[roomSelect.value];
+      if (!price || !checkinInput.value || !checkoutInput.value) return null;
+      const nights = Math.round((new Date(checkoutInput.value) - new Date(checkinInput.value)) / 86400000);
+      if (nights < 1) return null;
+      return { nights, price, total: nights * price };
+    }
+
+    function updatePrice() {
+      const c = calcPrice();
+      if (!c) { priceCalc.hidden = true; return; }
+      priceCalc.innerHTML =
+        `<span>${c.nights} ${nightsWord(c.nights)} × ${rub(c.price)}</span>` +
+        `<strong>${rub(c.total)}</strong>`;
+      priceCalc.hidden = false;
+    }
+
+    [roomSelect, checkinInput, checkoutInput].forEach(el => el.addEventListener('change', updatePrice));
+
+    function showNotice(html) {
+      notice.innerHTML = html;
+      notice.hidden = false;
+    }
+
+    // ========== ОТПРАВКА ФОРМЫ ==========
+
+    // Ссылка на бота бронирований (веб-приложение Google Apps Script).
+    // Пока пусто — форма, как раньше, открывает мессенджер гостя.
+    const BOOKING_API = 'https://script.google.com/macros/s/AKfycbzBi5HSn0fyYyuV5TcsX0Tb0N_o9ds5bznJEP24CJXGULOtiTf4pRMnIPomJp4qUrqF/exec';
+
+    const CHANNEL_NAMES = { whatsapp: 'WhatsApp', telegram: 'Telegram', max: 'MAX' };
+    const submitBtn = document.getElementById('submitBtn');
+
+    function afterSubmit() {
+      saveGuest();
+      form.reset();
+      fillHints(loadGuest());
+      checkoutInput.min = today;
+      priceCalc.hidden = true;
+    }
+
+    function sendToBot(data, message) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем…';
+
+      fetch(BOOKING_API, { method: 'POST', body: JSON.stringify(data) })
+        .then(r => r.json())
+        .then(res => {
+          if (!res.ok) throw new Error(res.error || 'error');
+          showNotice(`✅ <strong>Заявка${res.id ? ' №' + res.id : ''} отправлена!</strong> ` +
+            `Мы проверим наличие и свяжемся с вами через ${CHANNEL_NAMES[data.channel]} в течение 15 минут.`);
+          afterSubmit();
+        })
+        .catch(() => {
+          showNotice('⚠️ Не получилось отправить заявку автоматически. ' +
+            `<a href="https://wa.me/79992213311?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">Написать в WhatsApp</a> ` +
+            'или позвоните <a href="tel:+79992213311">+7 (999) 221-33-11</a>.');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Отправить запрос';
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const room = document.getElementById('room').value;
+      const name = document.getElementById('name').value.trim();
+      const phone = phoneInput.value;
+      const checkin = checkinInput.value;
+      const checkout = checkoutInput.value;
+      const channel = document.querySelector('input[name="channel"]:checked').value;
+
+      if (phone.replace(/\D/g, '').length !== 11) {
+        showNotice('⚠️ Проверьте номер телефона — нужно 11 цифр.');
+        phoneInput.focus();
+        return;
+      }
+      if (checkout <= checkin) {
+        showNotice('⚠️ Дата выезда должна быть позже даты заезда.');
+        return;
+      }
+
+      const message =
+`Здравствуйте! Хочу забронировать номер.
+
+Номер: ${room}
+Имя: ${name}
+Телефон: ${phone}
+Заезд: ${formatDate(checkin)}
+Выезд: ${formatDate(checkout)}` +
+        (calcPrice() ? `\nСтоимость: ${rub(calcPrice().total)} (${calcPrice().nights} ${nightsWord(calcPrice().nights)})` : '');
+
+      // Бот подключён — отправляем заявку прямо ему
+      if (BOOKING_API) {
+        sendToBot({ room, name, phone, checkin, checkout, channel,
+                    website: document.getElementById('website').value }, message);
+        return;
+      }
+
+      const hotelPhone = '79992213311';
+
+      // Копируем текст заявки — пригодится для Telegram и MAX
+      if (navigator.clipboard) navigator.clipboard.writeText(message).catch(() => {});
+
+      if (channel === 'whatsapp') {
+        // WhatsApp умеет сам подставлять текст в сообщение
+        window.open(`https://wa.me/${hotelPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        showNotice('✅ Открываем WhatsApp — текст заявки уже в сообщении, осталось нажать «Отправить».');
+      } else if (channel === 'telegram') {
+        // Telegram НЕ умеет подставлять текст в чат по номеру — поэтому копируем
+        window.open(`https://t.me/+${hotelPhone}`, '_blank');
+        showNotice('✅ Открываем Telegram. Текст заявки скопирован — вставьте его в чат (долгое нажатие → «Вставить») и отправьте.');
+      } else if (channel === 'max') {
+        showNotice('✅ Текст заявки скопирован. Откройте MAX, найдите нас по номеру <strong>+7 (999) 221-33-11</strong>, вставьте текст и отправьте.');
+      }
+
+      afterSubmit();
+    });
+
+    showWelcome();
+
+    // ========== ПОДСТАНОВКА ИЗ ССЫЛКИ (со страницы «Доступность») ==========
+    (function() {
+      const q = new URLSearchParams(location.search);
+      const r = q.get('room'), ci = q.get('checkin'), co = q.get('checkout');
+      const iso = /^\d{4}-\d{2}-\d{2}$/;
+      if (r && PRICES[r]) roomSelect.value = r;
+      if (ci && iso.test(ci) && ci >= today) {
+        checkinInput.value = ci;
+        checkoutInput.min = ci;
+      }
+      if (co && iso.test(co) && co > checkinInput.value) checkoutInput.value = co;
+      updatePrice();
+    })();
+
+    // ========== АНИМАЦИЯ ПРИ СКРОЛЛЕ ==========
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-fade').forEach(el => {
+      observer.observe(el);
+    });
+
+    // ========== МОДАЛЬНОЕ ОКНО ДЛЯ НОМЕРОВ ==========
+    const modal = document.getElementById('roomModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const cards = document.querySelectorAll('.card');
+
+    // Данные о номерах с подробной информацией
+    const roomsData = {
+      'Эконом маленький': {
+        image: 'images-edit/ekonom-mal-1.jpg',
+        description: 'Уютный компактный номер, рассчитанный на одного гостя. Идеален для коротких поездок в центр города. В номере есть всё необходимое для комфорта.',
+        amenities: ['🚿 Общая душевая', '📶 Wi-Fi', '🛏️ Кровать', '🧥 Вешалка для одежды', '💡 Свет', '🧴 Полотенца']
+      },
+      'Эконом большой': {
+        image: 'images-edit/ekonom-bol-1.jpg',
+        description: 'Больше места для отдыха и комфорта. Просторный номер, идеален для семей или тех, кто любит больше свободного пространства.',
+        amenities: ['🚿 Общая душевая', '📶 Wi-Fi', '🛏️ Большая кровать', '🧥 Вешалка для одежды']
+      },
+      'Стандарт комфорт': {
+        image: 'images-edit/komfort-3.jpg',
+        description: 'Светлый номер с удобной кроватью и личным душем. Современный интерьер, все необходимое для комфортного пребывания в городе.',
+        amenities: ['🚿 Личный душ', '📺 Телевизор Smart TV', '📶 Wi-Fi', '🗄️ Шкаф', '🛏️ Кровать премиум']
+      },
+      'Стандарт премиум': {
+        image: 'images-edit/premium-1.jpg',
+        description: 'Просторный номер с кофейным столиком и люксом удобств. Идеальный выбор для гостей, ценящих комфорт и качество обслуживания.',
+        amenities: ['🚿 Личный душ', '📺 Smart TV', '☕ Кофейный столик', '🛏️ Кровать премиум класса']
+      }
+    };
+
+    // ========== ЗАДЕРЖКА И ЗАЩИТА ОТ СЛУЧАЙНОГО ОТКРЫТИЯ ==========
+    const HOVER_DELAY = 1100;   // сколько держать мышку (в миллисекундах)
+    let hoverTimer = null;      // таймер ожидания
+    let blockedCard = null;     // карточка, которая не должна открыться после закрытия окна
+    let mouseX = 0, mouseY = 0; // последние координаты мышки
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function cancelHover(card) {
+      clearTimeout(hoverTimer);
+      hoverTimer = null;
+      if (card) card.classList.remove('hovering');
+    }
+
+    function closeModal() {
+      modal.classList.remove('show');
+      // Если после закрытия мышка оказалась над карточкой — блокируем её,
+      // пока человек не уведёт мышку с этой карточки
+      const under = document.elementFromPoint(mouseX, mouseY);
+      blockedCard = under ? under.closest('.card') : null;
+    }
+
+    function startHover(card) {
+      if (modal.classList.contains('show')) return; // окно уже открыто
+      if (blockedCard === card) return;             // эту карточку «задели» при закрытии
+      cancelHover(card);
+      card.classList.add('hovering');               // запускаем золотую полоску-индикатор
+      hoverTimer = setTimeout(function() {
+        card.classList.remove('hovering');
+        openRoomModal(card);
+      }, HOVER_DELAY);
+    }
+
+    cards.forEach(card => {
+      const bookBtn = card.querySelector('.btn');
+
+      card.addEventListener('mouseenter', () => startHover(card));
+
+      // Мышку убрали раньше времени — ничего не открываем
+      card.addEventListener('mouseleave', function() {
+        cancelHover(card);
+        if (blockedCard === card) blockedCard = null; // снимаем блокировку
+      });
+
+      // Мышка зашла на кнопку «Забронировать» — останавливаем таймер,
+      // вернулась обратно на карточку — запускаем заново
+      bookBtn.addEventListener('mouseenter', () => cancelHover(card));
+      bookBtn.addEventListener('mouseleave', () => startHover(card));
+
+      // «Забронировать» сразу выбирает этот номер в форме
+      bookBtn.addEventListener('click', function() {
+        document.getElementById('room').value = card.querySelector('h3').textContent;
+        updatePrice();
+      });
+
+      // Клик по самой карточке — открываем сразу, без ожидания
+      card.addEventListener('click', function(e) {
+        cancelHover(card);
+        if (e.target.closest('.btn')) return;
+        blockedCard = null;
+        openRoomModal(card);
+      });
+    });
+
+    function openRoomModal(card) {
+        const roomName = card.querySelector('h3').textContent;
+        const roomData = roomsData[roomName];
+
+        if (roomData) {
+          // Заполняем данные модального окна
+          document.getElementById('modalRoomName').textContent = roomName;
+          document.getElementById('modalRoomImage').src = roomData.image;
+          document.getElementById('modalRoomDescription').textContent = roomData.description;
+
+          // Очищаем старые удобства и добавляем новые
+          const amenitiesList = document.getElementById('modalRoomAmenities');
+          amenitiesList.innerHTML = '';
+          roomData.amenities.forEach(amenity => {
+            const li = document.createElement('li');
+            li.style.cssText = 'list-style: none; padding: 8px; background-color: #f8f8f8; border-radius: 4px; font-size: 14px;';
+            li.textContent = amenity;
+            amenitiesList.appendChild(li);
+          });
+
+          // Показываем модальное окно
+          modal.classList.add('show');
+        }
+    }
+
+    // Закрытие модального окна при клике на кнопку X
+    closeBtn.addEventListener('click', closeModal);
+
+    // Закрытие модального окна при клике снаружи окна
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        e.stopPropagation(); // клик не «проваливается» на карточку под окном
+        closeModal();
+      }
+    });
+
+    // Закрытие модального окна при нажатии на Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('show')) {
+        closeModal();
+      }
+    });
+  </script>
+
+  
+
+  <script>
+    // Быстрая проверка дат на первом экране
+    (function () {
+      const qIn = document.getElementById('qbIn'), qOut = document.getElementById('qbOut');
+      if (!qIn) return;
+      const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      const t = new Date(), t1 = new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1);
+      qIn.min = iso(t); qOut.min = iso(t1);
+      qIn.addEventListener('change', () => {
+        if (!qIn.value) return;
+        const [y, m, d] = qIn.value.split('-').map(Number);
+        qOut.min = iso(new Date(y, m - 1, d + 1));
+        if (qOut.value && qOut.value <= qIn.value) qOut.value = '';
+        if (!qOut.value) qOut.showPicker && qOut.focus();
+      });
+    })();
+  </script>
+  <script src="effects.js"></script>
+  <script src="menu.js"></script>
+
+</body>
+
+</html>

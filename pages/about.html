@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О нас — отель «Звёздное небо»</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+  <header>
+    <a class="logo" href="../index.html" aria-label="Звёздное небо — на главную">
+      <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+      <span class="logo-text">Звёздное небо</span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav>
+      <a href="../index.html">Главная</a>
+      <a href="gallery.html">Галерея</a>
+      <a href="about.html">О нас</a>
+      <a href="faq.html">FAQ</a>
+      <a href="services.html">Услуги</a>
+      <a href="availability.html">Доступность</a>
+      <a href="map.html">Карта</a>
+      <a href="reviews.html">Отзывы</a>
+      <a href="location.html">Адрес</a>
+    </nav>
+
+    <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
+    <a class="header-cta" href="../index.html#kontakty">Забронировать</a>
+  </header>
+
+  <section class="hero">
+    <h1>О нас</h1>
+    <p>История и миссия отеля «Звёздное небо»</p>
+  </section>
+
+  <section class="scroll-fade">
+    <h2>Отель «Звёздное небо»</h2>
+    <p>
+      Комфортабельный отель, расположенный в историческом центре Санкт-Петербурга,
+      в 10 минутах пешком от Московского вокзала. Идеальное место для деловых путешественников
+      и туристов, ищущих уютное жилье по доступным ценам.
+    </p>
+
+    <h3>Наша миссия</h3>
+    <p>
+      Мы верим, что качественный отдых не должен быть дорогим. Наша цель — предоставить
+      каждому гостю комфортное размещение, чистоту, удобства и радушный сервис
+      по справедливым ценам.
+    </p>
+
+    <h3>Почему выбирают нас?</h3>
+    <ul>
+      <li>Удобное расположение в центре города</li>
+      <li>Чистые номера разных уровней комфорта</li>
+      <li>Бесплатный Wi-Fi на всей территории</li>
+      <li>24/7 бесконтактное заселение</li>
+      <li>Общая кухня со всем необходимым</li>
+      <li>Доступные цены</li>
+      <li>Гостеприимный персонал</li>
+    </ul>
+
+    <h3>Наш номерной фонд</h3>
+    <p>
+      Всего 9 номеров разной степени комфорта: от экономичных опций до премиум-номеров
+      с личным душем и современными удобствами.
+    </p>
+
+    <p style="text-align: center; margin-top: 40px;">
+      <a class="btn" href="../index.html#kontakty">Забронировать номер</a>
+    </p>
+  </section>
+
+
+  <!-- ========== ПОДВАЛ «НОЧНОЕ НЕБО» ========== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a class="logo" href="../index.html">
+          <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+          <span class="logo-text">Звёздное небо</span>
+        </a>
+        <p>Уютный мини-отель в центре Санкт-Петербурга.<br>ул. Восстания, 22 · 770 м от метро «Площадь Восстания»</p>
+      </div>
+      <div>
+        <h4>Гостям</h4>
+        <div class="footer-links">
+          <a href="gallery.html">Галерея номеров</a>
+          <a href="availability.html">Свободные даты</a>
+          <a href="faq.html">Частые вопросы</a>
+          <a href="reviews.html">Отзывы</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+        </div>
+      </div>
+      <div>
+        <h4>Связаться</h4>
+        <div class="footer-links">
+          <a href="tel:+79992213311">+7 (999) 221-33-11</a>
+          <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+          <a href="map.html">Как добраться</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Отель «Звёздное небо»</span>
+      <span>Спокойной ночи под звёздным небом ✦</span>
+    </div>
+  </footer>
+
+  <script>
+    // ========== АКТИВНОЕ МЕНЮ ==========
+    document.querySelectorAll('nav a').forEach(link => {
+      if (link.getAttribute('href') === 'about.html') {
+        link.classList.add('active');
+      }
+    });
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-fade').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+
+  <script src="../effects.js"></script>
+  <script src="../menu.js"></script>
+
+</body>
+
+</html>
