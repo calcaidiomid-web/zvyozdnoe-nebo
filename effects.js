@@ -103,9 +103,13 @@
     let mouseX = 0, mouseY = 0, running = true, last = 0, nextShot = 1500;
 
     function resize() {
+      const nw = hero.clientWidth, nh = hero.clientHeight;
+      // На телефоне при прокрутке прячется/появляется адресная строка — это тоже «resize».
+      // Если ширина та же, а высота почти не изменилась, звёзды не пересоздаём (иначе небо «прыгает»).
+      if (stars.length && nw === w && Math.abs(nh - h) < 160) return;
       dpr = 0.6;   // рисуем в уменьшенном размере, браузер растягивает — звёзды мягкие, а работы втрое меньше
-      w = hero.clientWidth;
-      h = hero.clientHeight;
+      w = nw;
+      h = nh;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -141,7 +145,7 @@
       if (!running) return;
       requestAnimationFrame(frame);
       if (t - last < 33) return;            // 30 кадров в секунду глазу достаточно
-      if (root.classList.contains('is-scrolling')) return;   // пока крутят страницу — небо замирает
+      if (root.classList.contains('is-scrolling') || root.classList.contains('theme-switching')) return;   // пока крутят страницу — небо замирает
       const dt = Math.min(t - last, 66);
       last = t;
       ctx.clearRect(0, 0, w, h);
@@ -207,7 +211,12 @@
     }).observe(hero);
     document.addEventListener('visibilitychange', () => document.hidden ? (running = false) : start());
 
-    window.addEventListener('resize', resize);
+    let resizeQueued = false;
+    window.addEventListener('resize', () => {
+      if (resizeQueued) return;
+      resizeQueued = true;
+      requestAnimationFrame(() => { resizeQueued = false; resize(); });
+    });
     resize();
     mouseX = w / 2; mouseY = h / 2;
     running = false;

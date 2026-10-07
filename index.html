@@ -5,7 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Звёздное небо — отель в Санкт-Петербурге</title>
+  <meta name="description" content="Мини-отель «Звёздное небо» в центре Санкт-Петербурга: ул. Восстания, 22, 770 м от метро «Площадь Восстания». 9 номеров от 1 500 ₽ за ночь, бесконтактное заселение 24/7.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d4af37' d='M12 0C12.6 7.4 16.6 11.4 24 12 16.6 12.6 12.6 16.6 12 24 11.4 16.6 7.4 12.6 0 12 7.4 11.4 11.4 7.4 12 0Z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 
 <body>
@@ -58,7 +65,7 @@
 
     <!-- Большое фото в светящейся рамке -->
     <div class="glow-frame">
-      <img src="images-edit/komfort-3.jpg" alt="Номер стандарт комфорт" width="900">
+      <img src="images-edit/komfort-3.webp" alt="Номер стандарт комфорт" width="1280" height="960" fetchpriority="high" decoding="async">
     </div>
 
     <p style="margin-top: 32px; text-align: center;">
@@ -87,7 +94,7 @@
 
       <!-- Эконом маленький -->
       <article class="card scroll-fade">
-        <img src="images-edit/ekonom-mal-1.jpg" alt="Эконом маленький">
+        <img src="images-edit/ekonom-mal-1.webp" alt="Эконом маленький" width="721" height="1280" loading="lazy" decoding="async">
         <div class="card-body">
           <h3>Эконом маленький</h3>
           <p>Уютный компактный номер для одного гостя.</p>
@@ -105,7 +112,7 @@
 
       <!-- Эконом большой -->
       <article class="card scroll-fade">
-        <img src="images-edit/ekonom-bol-1.jpg" alt="Эконом большой">
+        <img src="images-edit/ekonom-bol-1.webp" alt="Эконом большой" width="1280" height="721" loading="lazy" decoding="async">
         <div class="card-body">
           <h3>Эконом большой</h3>
           <p>Больше места для отдыха и комфорта.</p>
@@ -123,7 +130,7 @@
 
       <!-- Стандарт комфорт -->
       <article class="card scroll-fade">
-        <img src="images-edit/komfort-3.jpg" alt="Стандарт комфорт">
+        <img src="images-edit/komfort-3.webp" alt="Стандарт комфорт" width="1280" height="960" loading="lazy" decoding="async">
         <div class="card-body">
           <h3>Стандарт комфорт</h3>
           <p>Светлый номер с удобной кроватью и личным душем.</p>
@@ -143,10 +150,10 @@
 
       <!-- Стандарт премиум -->
       <article class="card scroll-fade">
-        <img src="images-edit/premium-1.jpg" alt="Стандарт премиум">
+        <img src="images-edit/premium-1.webp" alt="Стандарт премиум" width="960" height="1280" loading="lazy" decoding="async">
         <div class="card-body">
           <h3>Стандарт премиум</h3>
-          <p>Просторный номер с кофейным столиком и люксом удобств.</p>
+          <p>Просторный номер с кофейным столиком и удобствами.</p>
 
           <div class="amenities">
             <span title="Личный душ">🚿</span>
@@ -176,7 +183,7 @@
       <p class="feature"><strong>Центр города.</strong> 770 м до метро «Площадь Восстания».</p>
     </div>
     <figure class="photo-frame">
-      <img src="images-edit/kuhnya-1.jpg" alt="Общая кухня">
+      <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
       <figcaption>Общая кухня — для гостей всех номеров</figcaption>
     </figure>
   </section>
@@ -675,23 +682,23 @@
     // Данные о номерах с подробной информацией
     const roomsData = {
       'Эконом маленький': {
-        image: 'images-edit/ekonom-mal-1.jpg',
+        image: 'images-edit/ekonom-mal-1.webp',
         description: 'Уютный компактный номер, рассчитанный на одного гостя. Идеален для коротких поездок в центр города. В номере есть всё необходимое для комфорта.',
         amenities: ['🚿 Общая душевая', '📶 Wi-Fi', '🛏️ Кровать', '🧥 Вешалка для одежды', '💡 Свет', '🧴 Полотенца']
       },
       'Эконом большой': {
-        image: 'images-edit/ekonom-bol-1.jpg',
+        image: 'images-edit/ekonom-bol-1.webp',
         description: 'Больше места для отдыха и комфорта. Просторный номер, идеален для семей или тех, кто любит больше свободного пространства.',
         amenities: ['🚿 Общая душевая', '📶 Wi-Fi', '🛏️ Большая кровать', '🧥 Вешалка для одежды']
       },
       'Стандарт комфорт': {
-        image: 'images-edit/komfort-3.jpg',
+        image: 'images-edit/komfort-3.webp',
         description: 'Светлый номер с удобной кроватью и личным душем. Современный интерьер, все необходимое для комфортного пребывания в городе.',
         amenities: ['🚿 Личный душ', '📺 Телевизор Smart TV', '📶 Wi-Fi', '🗄️ Шкаф', '🛏️ Кровать премиум']
       },
       'Стандарт премиум': {
-        image: 'images-edit/premium-1.jpg',
-        description: 'Просторный номер с кофейным столиком и люксом удобств. Идеальный выбор для гостей, ценящих комфорт и качество обслуживания.',
+        image: 'images-edit/premium-1.webp',
+        description: 'Просторный номер с кофейным столиком и удобствами. Идеальный выбор для гостей, ценящих комфорт и качество обслуживания.',
         amenities: ['🚿 Личный душ', '📺 Smart TV', '☕ Кофейный столик', '🛏️ Кровать премиум класса']
       }
     };
