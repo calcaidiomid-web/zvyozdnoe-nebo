@@ -329,10 +329,12 @@
 
   <!-- ========== ФОРМА БРОНИРОВАНИЯ И КОНТАКТЫ ========== -->
   <section id="kontakty" class="scroll-fade">
-    <h2>Забронировать номер</h2>
-    <p>Заполните форму и выберите удобный способ связи. Мы ответим в течение 10 минут!</p>
+    <div class="bf-head">
+      <h2>Забронировать номер</h2>
+      <p>Четыре простых шага — и администратор ответит вам в течение 10 минут.</p>
+    </div>
 
-    <form id="bookingForm" class="booking-form">
+    <form id="bookingForm" class="booking-form" novalidate>
 
       <!-- Подсказка для вернувшегося гостя (показывается, только если данные сохранены) -->
       <div id="welcomeBack" class="welcome-back" hidden>
@@ -343,87 +345,132 @@
         </div>
       </div>
 
-      <!-- Выбор типа номера -->
-      <div class="form-group">
-        <label for="room">Выберите номер:</label>
-        <select id="room" required>
-          <option value="">-- Выберите номер --</option>
-          <option value="Эконом маленький">Эконом маленький (1 500 ₽/ночь)</option>
-          <option value="Эконом большой">Эконом большой (1 900 ₽/ночь)</option>
-          <option value="Стандарт комфорт">Стандарт комфорт (2 700 ₽/ночь)</option>
-          <option value="Стандарт премиум">Стандарт премиум (3 000 ₽/ночь)</option>
+      <!-- ШАГ 1. Номер — карточки вместо выпадающего списка -->
+      <fieldset class="bf-step" id="stepRoom">
+        <legend><span class="bf-num">1</span>Выберите номер</legend>
+        <!-- Скрытый список: из него берут номер календарь, расчёт цены и отправка -->
+        <select id="room" class="bf-hidden-select" tabindex="-1" aria-hidden="true">
+          <option value=""></option>
+          <option value="Эконом маленький">Эконом маленький</option>
+          <option value="Эконом большой">Эконом большой</option>
+          <option value="Стандарт комфорт">Стандарт комфорт</option>
+          <option value="Стандарт премиум">Стандарт премиум</option>
         </select>
-      </div>
+        <div class="room-pick" role="radiogroup" aria-label="Тип номера">
+          <label class="rp-card">
+            <input type="radio" name="roomPick" value="Эконом маленький">
+            <img src="images-edit/ekonom-mal-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <span class="rp-body">
+              <span class="rp-name">Эконом маленький</span>
+              <span class="rp-desc">1 гость · душ на этаже</span>
+              <span class="rp-price">1 500 ₽ <small>/ ночь</small></span>
+              <span class="rp-status" hidden></span>
+            </span>
+            <span class="rp-check" aria-hidden="true"></span>
+          </label>
+          <label class="rp-card">
+            <input type="radio" name="roomPick" value="Эконом большой">
+            <img src="images-edit/ekonom-bol-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <span class="rp-body">
+              <span class="rp-name">Эконом большой</span>
+              <span class="rp-desc">Большая кровать · душ на этаже</span>
+              <span class="rp-price">1 900 ₽ <small>/ ночь</small></span>
+              <span class="rp-status" hidden></span>
+            </span>
+            <span class="rp-check" aria-hidden="true"></span>
+          </label>
+          <label class="rp-card">
+            <input type="radio" name="roomPick" value="Стандарт комфорт">
+            <img src="images-edit/komfort-3.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <span class="rp-body">
+              <span class="rp-name">Стандарт комфорт</span>
+              <span class="rp-desc">Личный душ · Smart TV</span>
+              <span class="rp-price">2 700 ₽ <small>/ ночь</small></span>
+              <span class="rp-status" hidden></span>
+            </span>
+            <span class="rp-check" aria-hidden="true"></span>
+          </label>
+          <label class="rp-card">
+            <input type="radio" name="roomPick" value="Стандарт премиум">
+            <img src="images-edit/premium-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <span class="rp-body">
+              <span class="rp-name">Стандарт премиум</span>
+              <span class="rp-desc">Просторнее · личный душ · Smart TV</span>
+              <span class="rp-price">3 000 ₽ <small>/ ночь</small></span>
+              <span class="rp-status" hidden></span>
+            </span>
+            <span class="rp-check" aria-hidden="true"></span>
+          </label>
+        </div>
+      </fieldset>
 
-      <!-- Имя гостя -->
-      <div class="form-group">
-        <label for="name">Ваше имя:</label>
-        <input type="text" id="name" list="savedNames" autocomplete="name" placeholder="Иван Петров" required>
-        <datalist id="savedNames"></datalist>
-      </div>
+      <!-- ШАГ 2. Даты -->
+      <fieldset class="bf-step">
+        <legend><span class="bf-num">2</span>Даты проживания</legend>
+        <div class="bf-row">
+          <div class="form-group">
+            <label for="checkin">Заезд</label>
+            <input type="date" id="checkin" required data-range-start data-room-select="room">
+          </div>
+          <div class="form-group">
+            <label for="checkout">Выезд</label>
+            <input type="date" id="checkout" required data-range-end>
+          </div>
+        </div>
+        <p class="bf-tip">Заезд с 14:00, выезд до 12:00</p>
+      </fieldset>
 
-      <!-- Телефон -->
-      <div class="form-group">
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" list="savedPhones" inputmode="tel" autocomplete="tel" maxlength="18" placeholder="+7 (999) 123-45-67" required>
-        <datalist id="savedPhones"></datalist>
-      </div>
+      <!-- ШАГ 3. Контакты -->
+      <fieldset class="bf-step">
+        <legend><span class="bf-num">3</span>Ваши данные</legend>
+        <div class="bf-row">
+          <div class="form-group">
+            <label for="name">Имя</label>
+            <input type="text" id="name" list="savedNames" autocomplete="name" placeholder="Иван Петров" required>
+            <datalist id="savedNames"></datalist>
+          </div>
+          <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" list="savedPhones" inputmode="tel" autocomplete="tel" maxlength="18" placeholder="+7 (999) 123-45-67" required>
+            <datalist id="savedPhones"></datalist>
+          </div>
+        </div>
+      </fieldset>
 
-      <!-- Дата заезда -->
-      <div class="form-group">
-        <label for="checkin">Заезд:</label>
-        <input type="date" id="checkin" required data-range-start data-room-select="room">
-      </div>
+      <!-- ШАГ 4. Мессенджер -->
+      <fieldset class="bf-step">
+        <legend><span class="bf-num">4</span>Куда написать подтверждение?</legend>
+        <div class="messenger-options">
+          <label class="messenger-card">
+            <input type="radio" name="channel" value="whatsapp" checked>
+            <div class="messenger-card-content">
+              <span class="messenger-icon">💬</span>
+              <div class="messenger-name">WhatsApp</div>
+              <div class="messenger-checkmark">✓</div>
+            </div>
+          </label>
+          <label class="messenger-card">
+            <input type="radio" name="channel" value="telegram">
+            <div class="messenger-card-content">
+              <span class="messenger-icon">✈️</span>
+              <div class="messenger-name">Telegram</div>
+              <div class="messenger-checkmark">✓</div>
+            </div>
+          </label>
+          <label class="messenger-card">
+            <input type="radio" name="channel" value="max">
+            <div class="messenger-card-content">
+              <span class="messenger-icon">📱</span>
+              <div class="messenger-name">MAX</div>
+              <div class="messenger-checkmark">✓</div>
+            </div>
+          </label>
+        </div>
+      </fieldset>
 
-      <!-- Дата выезда -->
-      <div class="form-group">
-        <label for="checkout">Выезд:</label>
-        <input type="date" id="checkout" required data-range-end>
-      </div>
-
-      <!-- Расчёт стоимости (заполняется автоматически) -->
+      <!-- Итог: номер, даты и стоимость (заполняется автоматически) -->
       <div id="priceCalc" class="price-calc" hidden></div>
 
-      <!-- ========== УРОК 7: Красивые кнопки выбора мессенджера ========== -->
-      <label class="channel-label">Как вам удобнее общаться?</label>
-      <div class="messenger-options">
-
-        <!-- WhatsApp -->
-        <label class="messenger-card">
-          <input type="radio" name="channel" value="whatsapp" checked>
-          <div class="messenger-card-content">
-            <span class="messenger-icon">💬</span>
-            <div class="messenger-name">WhatsApp</div>
-            <div class="messenger-desc">Быстро и надежно</div>
-            <div class="messenger-checkmark">✓</div>
-          </div>
-        </label>
-
-        <!-- Telegram -->
-        <label class="messenger-card">
-          <input type="radio" name="channel" value="telegram">
-          <div class="messenger-card-content">
-            <span class="messenger-icon">✈️</span>
-            <div class="messenger-name">Telegram</div>
-            <div class="messenger-desc">Приватно и безопасно</div>
-            <div class="messenger-checkmark">✓</div>
-          </div>
-        </label>
-
-        <!-- MAX -->
-        <label class="messenger-card">
-          <input type="radio" name="channel" value="max">
-          <div class="messenger-card-content">
-            <span class="messenger-icon">📱</span>
-            <div class="messenger-name">MAX</div>
-            <div class="messenger-desc">Удобное приложение</div>
-            <div class="messenger-checkmark">✓</div>
-          </div>
-        </label>
-
-      </div>
-
-      <!-- Кнопка отправки -->
       <!-- Ловушка для спам-роботов: человек это поле не видит -->
       <input type="text" id="website" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -434,6 +481,7 @@
       </label>
 
       <button type="submit" id="submitBtn" class="btn btn-large">Отправить запрос</button>
+      <p class="bf-safe">Это заявка, а не оплата — мы сначала подтвердим номер</p>
       <div id="formNotice" class="form-notice" hidden></div>
     </form>
 
@@ -667,15 +715,78 @@
     }
 
     function updatePrice() {
+      updateRoomStatus();
       const c = calcPrice();
       if (!c) { priceCalc.hidden = true; return; }
+      const dates = window.ZNDates ? ZNDates.rangeText(checkinInput.value, checkoutInput.value)
+                                   : `${formatDate(checkinInput.value)} – ${formatDate(checkoutInput.value)}`;
       priceCalc.innerHTML =
-        `<span>${c.nights} ${nightsWord(c.nights)} × ${rub(c.price)}</span>` +
-        `<strong>${rub(c.total)}</strong>`;
+        `<div class="pc-info"><b>${roomSelect.value}</b>` +
+        `<span>${dates} · ${c.nights} ${nightsWord(c.nights)} × ${rub(c.price)}</span></div>` +
+        `<div class="pc-total"><small>Итого</small><strong>${rub(c.total)}</strong></div>`;
       priceCalc.hidden = false;
     }
 
     [roomSelect, checkinInput, checkoutInput].forEach(el => el.addEventListener('change', updatePrice));
+
+    // ========== ВЫБОР НОМЕРА КАРТОЧКАМИ ==========
+    // Карточки — это видимая часть, а скрытый список #room хранит выбор
+    // (из него номер берут календарь, расчёт цены и отправка заявки).
+    const roomPicks = [...document.querySelectorAll('input[name="roomPick"]')];
+    const stepRoom = document.getElementById('stepRoom');
+
+    function syncRoomCards() {
+      roomPicks.forEach(r => { r.checked = r.value === roomSelect.value; });
+      stepRoom.classList.toggle('is-done', !!roomSelect.value);
+      if (roomSelect.value && stepRoom.classList.contains('is-missing')) {
+        stepRoom.classList.remove('is-missing');
+        notice.hidden = true;          // подсказка «Выберите номер» больше не нужна
+      }
+    }
+
+    // Любая запись в roomSelect.value (из карточек номеров, окна, ссылки) сразу отмечает карточку
+    (function () {
+      const d = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+      Object.defineProperty(roomSelect, 'value', {
+        configurable: true,
+        get() { return d.get.call(this); },
+        set(v) { d.set.call(this, v); syncRoomCards(); }
+      });
+    })();
+
+    roomPicks.forEach(r => r.addEventListener('change', () => {
+      roomSelect.value = r.value;
+      roomSelect.dispatchEvent(new Event('change'));
+      if (window.znGoal) znGoal('room_choose', { room: r.value, from: 'form' });
+    }));
+    // Номер проверяем раньше всего — до календаря (он тоже следит за отправкой формы)
+    window.addEventListener('submit', e => {
+      if (e.target !== form || roomSelect.value) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      stepRoom.classList.add('is-missing');
+      showNotice('⚠️ Выберите номер — нажмите на одну из карточек.');
+      stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, true);
+    form.addEventListener('reset', () => setTimeout(() => { syncRoomCards(); updateRoomStatus(); }, 0));
+
+    // Когда даты выбраны — показываем на карточках, свободен ли номер
+    let occLoaded = false;
+    function updateRoomStatus() {
+      const a = checkinInput.value, b = checkoutInput.value;
+      roomPicks.forEach(r => {
+        const card = r.closest('.rp-card');
+        const st = card.querySelector('.rp-status');
+        const free = a && b && b > a && occLoaded && window.ZNDates ? ZNDates.free(r.value, a, b) : null;
+        card.classList.toggle('is-busy', free === 0);
+        st.hidden = free === null;
+        st.className = 'rp-status ' + (free === 0 ? 'rp-no' : 'rp-ok');
+        st.textContent = free === 0 ? 'Занято на эти даты' : free ? `Свободно на ваши даты` : '';
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.ZNDates) ZNDates.load().then(ok => { occLoaded = ok; updateRoomStatus(); });
+    });
 
     function showNotice(html) {
       notice.classList.remove('form-notice-ok');
@@ -737,18 +848,36 @@
       } catch (e) {
         console.warn('Бот ответил не JSON (попытка ' + attempt + '):', r.status, text.slice(0, 200));
         if (attempt < 3) {
-          await new Promise(res => setTimeout(res, 900 * attempt));
+          await new Promise(res => setTimeout(res, 400 * attempt));
           return postBooking(data, attempt + 1);
         }
         throw new Error('bad-response');
       }
     }
 
+    // «Будим» бота заранее, пока гость заполняет форму: первый запрос к Google
+    // после перерыва самый медленный, а так к моменту отправки бот уже готов.
+    let warmed = false;
+    function warmUpBot() {
+      if (warmed || !BOOKING_API) return;
+      warmed = true;
+      fetch(BOOKING_API, { mode: 'no-cors', cache: 'no-store' }).catch(() => {});
+    }
+    form.addEventListener('focusin', warmUpBot);
+    form.addEventListener('change', warmUpBot);
+    document.addEventListener('click', e => { if (e.target.closest('a[href="#kontakty"], .qbr-book, #modalBook')) warmUpBot(); });
+
     function sendToBot(data, message) {
       submitBtn.disabled = true;
+      submitBtn.classList.add('is-sending');
       submitBtn.textContent = 'Отправляем…';
-      // Google иногда думает 10–15 секунд — показываем, что всё идёт
-      const slow = setTimeout(() => { submitBtn.textContent = 'Ещё несколько секунд…'; }, 5000);
+      // Сразу показываем, что заявка в пути, — гость не смотрит на «зависшую» кнопку
+      showNotice(`
+        <p class="ok-head"><span class="send-spin" aria-hidden="true"></span> <strong>Отправляем заявку…</strong></p>
+        <p class="ok-sum">${data.room} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}</p>
+        <p class="ok-note">Обычно это занимает несколько секунд. Не закрывайте страницу.</p>`);
+      notice.classList.add('form-notice-wait');
+      const slow = setTimeout(() => { submitBtn.textContent = 'Ещё пара секунд…'; }, 6000);
 
       postBooking(data, 1)
         .then(res => {
@@ -767,6 +896,8 @@
         })
         .finally(() => {
           clearTimeout(slow);
+          notice.classList.remove('form-notice-wait');
+          submitBtn.classList.remove('is-sending');
           submitBtn.disabled = false;
           submitBtn.textContent = 'Отправить запрос';
         });
@@ -788,6 +919,23 @@
       const checkout = checkoutInput.value;
       const channel = document.querySelector('input[name="channel"]:checked').value;
 
+      // Проверяем по порядку шагов и показываем, что именно не заполнено
+      if (!room) {
+        stepRoom.classList.add('is-missing');
+        showNotice('⚠️ Выберите номер — нажмите на одну из карточек.');
+        stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (!checkin || !checkout) {
+        showNotice('⚠️ Выберите даты заезда и выезда.');
+        (document.getElementById('checkinBtn') || checkinInput).focus();
+        return;
+      }
+      if (name.length < 2) {
+        showNotice('⚠️ Укажите ваше имя.');
+        document.getElementById('name').focus();
+        return;
+      }
       if (phone.replace(/\D/g, '').length !== 11) {
         showNotice('⚠️ Проверьте номер телефона — нужно 11 цифр.');
         phoneInput.focus();
@@ -797,6 +945,12 @@
         showNotice('⚠️ Дата выезда должна быть позже даты заезда.');
         return;
       }
+      if (!document.getElementById('consent').checked) {
+        showNotice('⚠️ Отметьте согласие на обработку персональных данных.');
+        document.getElementById('consent').focus();
+        return;
+      }
+      notice.hidden = true;
 
       const message =
 `Здравствуйте! Хочу забронировать номер.

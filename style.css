@@ -2359,3 +2359,203 @@ html[data-theme="dark"] .dist-list li { border-bottom-color: rgba(255, 255, 255,
 html[data-theme="dark"] .walk-time { color: var(--light-gold); }
 html[data-theme="dark"] .btn.btn-ghost { color: var(--light-gold); }
 html[data-theme="dark"] .page-cta { background: rgba(212, 175, 55, .08); }
+
+/* ============================================================
+   ФОРМА БРОНИРОВАНИЯ — новый вид (шаги + выбор номера карточками)
+   ============================================================ */
+#kontakty .bf-head { text-align: center; max-width: 640px; margin: 0 auto; }
+#kontakty .bf-head h2 { margin-bottom: 8px; }
+#kontakty .bf-head p { margin: 0; }
+
+.booking-form {
+  max-width: 760px;
+  margin: 32px auto 40px;
+  padding: 36px 40px 32px;
+  background-color: var(--white);
+  border: 1px solid #eee6cf;
+  border-radius: 18px;
+  box-shadow: 0 18px 50px -24px rgba(60, 45, 10, 0.28);
+}
+
+.bf-step {
+  border: 0;
+  margin: 0;
+  padding: 0 0 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid #f0ebdd;
+  min-width: 0;
+}
+.bf-step legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  margin-bottom: 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 21px;
+  color: var(--dark-gray);
+}
+.bf-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--primary-gold);
+  color: var(--dark-gold);
+  font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700;
+  transition: background-color .25s, color .25s;
+}
+.bf-step.is-done .bf-num { background-color: var(--primary-gold); color: var(--on-gold); }
+
+.bf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.bf-row .form-group { margin-bottom: 0; }
+.bf-tip { margin: 10px 0 0; font-size: 13px; color: #8a8478; }
+
+.booking-form .form-group label { font-size: 13px; font-weight: 600; letter-spacing: .02em; color: #6b665c; margin-bottom: 6px; }
+.booking-form .form-group input,
+.booking-form .form-group .dp-field {
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 1.5px solid #e2dccb;
+  border-radius: 10px;
+  background-color: #fdfcf8;
+  font-size: 16px;
+}
+.booking-form .form-group input:focus,
+.booking-form .form-group .dp-field:focus-visible {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.16);
+  background-color: var(--white);
+}
+
+/* скрытый список номеров — только хранит выбор */
+.bf-hidden-select { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* ---------- Карточки выбора номера ---------- */
+.room-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.rp-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid #e6e0cf;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.rp-card input { position: absolute; opacity: 0; pointer-events: none; }
+.rp-card img { display: block; width: 100%; height: 118px; object-fit: cover; transition: filter .2s; }
+.rp-body { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px 14px; }
+.rp-name { font-weight: 700; color: var(--dark-gray); font-size: 16px; line-height: 1.3; }
+.rp-desc { font-size: 13px; color: #8a8478; line-height: 1.35; }
+.rp-price { margin-top: 6px; font-weight: 700; color: var(--dark-gold); font-size: 17px; }
+.rp-price small { font-weight: 400; color: #8a8478; font-size: 13px; }
+.rp-status { margin-top: 4px; font-size: 12.5px; font-weight: 600; }
+.rp-ok { color: #2e7d4f; }
+.rp-no { color: #b23b30; }
+.rp-check {
+  position: absolute; top: 10px; right: 10px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255, 255, 255, .92);
+  border: 2px solid rgba(0, 0, 0, .12);
+  transition: background-color .2s, border-color .2s, transform .2s;
+}
+.rp-check::after {
+  content: ''; position: absolute; left: 8px; top: 4px;
+  width: 6px; height: 11px;
+  border: solid var(--on-gold); border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) scale(0); transition: transform .2s;
+}
+@media (hover: hover) {
+  .rp-card:hover { border-color: rgba(212, 175, 55, .6); box-shadow: 0 8px 22px -12px rgba(60, 45, 10, .35); transform: translateY(-2px); }
+}
+.rp-card:has(input:checked) { border-color: var(--primary-gold); box-shadow: 0 0 0 3px rgba(212, 175, 55, .22), 0 10px 26px -14px rgba(60, 45, 10, .4); }
+.rp-card:has(input:checked) .rp-check { background-color: var(--primary-gold); border-color: var(--primary-gold); transform: scale(1.05); }
+.rp-card:has(input:checked) .rp-check::after { transform: rotate(45deg) scale(1); }
+.rp-card:has(input:focus-visible) { outline: 3px solid var(--primary-gold); outline-offset: 2px; }
+.rp-card.is-busy img { filter: grayscale(.85) opacity(.7); }
+.bf-step.is-missing .rp-card { border-color: #e0a29b; animation: dp-shake .35s; }
+
+/* ---------- Мессенджеры — компактные кнопки в ряд ---------- */
+.booking-form .messenger-options { grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
+.booking-form .messenger-card-content {
+  flex-direction: row; gap: 10px;
+  min-height: 54px; padding: 10px 14px;
+  border: 1.5px solid #e2dccb; border-radius: 12px;
+}
+.booking-form .messenger-icon { font-size: 22px; margin: 0; }
+.booking-form .messenger-name { margin: 0; font-size: 15px; }
+.booking-form .messenger-checkmark { position: static; width: 18px; height: 18px; font-size: 11px; margin-left: auto; }
+.booking-form .messenger-card input[type="radio"]:checked + .messenger-card-content { transform: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, .18); }
+.booking-form .messenger-card input[type="radio"]:checked + .messenger-card-content .messenger-icon { transform: none; }
+.booking-form .messenger-card input[type="radio"]:focus-visible + .messenger-card-content { outline: 3px solid var(--primary-gold); outline-offset: 2px; }
+.booking-form .messenger-card input[type="radio"] { display: block; position: absolute; opacity: 0; pointer-events: none; }
+
+/* ---------- Итог ---------- */
+.booking-form .price-calc {
+  align-items: center;
+  margin: 0 0 18px;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fbf5e2, #f6ecc9);
+}
+.pc-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pc-info b { color: var(--dark-gray); font-size: 16px; }
+.pc-info span { font-size: 14px; color: #6b665c; }
+.pc-total { display: flex; flex-direction: column; align-items: flex-end; margin-left: auto; }
+.pc-total small { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #8a7a4a; }
+.booking-form .price-calc strong { font-size: 26px; line-height: 1.1; color: var(--dark-gold); }
+
+.booking-form .btn-large { border-radius: 12px; }
+.bf-safe { margin: 10px 0 0; text-align: center; font-size: 13px; color: #8a8478; }
+
+/* ---------- Телефон ---------- */
+@media (max-width: 640px) {
+  .booking-form { padding: 22px 16px 20px; border-radius: 14px; margin-top: 20px; }
+  .bf-step { padding-bottom: 20px; margin-bottom: 20px; }
+  .bf-step legend { font-size: 18px; margin-bottom: 12px; }
+  .bf-row { grid-template-columns: 1fr; gap: 12px; }
+  .room-pick { grid-template-columns: 1fr; gap: 10px; }
+  .rp-card { flex-direction: row; align-items: stretch; }
+  .rp-card img { width: 92px; height: auto; min-height: 92px; flex-shrink: 0; }
+  .rp-body { padding: 10px 44px 10px 12px; justify-content: center; }
+  .rp-name { font-size: 15px; }
+  .rp-price { margin-top: 3px; font-size: 16px; }
+  .rp-check { top: 50%; right: 12px; margin-top: -13px; }
+  .booking-form .messenger-options { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .booking-form .messenger-card-content { flex-direction: column; gap: 2px; padding: 8px 4px; min-height: 64px; }
+  .booking-form .messenger-name { font-size: 13px; }
+  .booking-form .messenger-checkmark { display: none !important; }
+}
+
+/* ---------- Тёмная тема ---------- */
+html[data-theme="dark"] .booking-form { background-color: #151824; border-color: rgba(255, 255, 255, .08); box-shadow: 0 18px 50px -24px rgba(0, 0, 0, .7); }
+html[data-theme="dark"] .bf-step { border-color: rgba(255, 255, 255, .08); }
+html[data-theme="dark"] .booking-form .form-group input,
+html[data-theme="dark"] .booking-form .form-group .dp-field { background-color: #0e1018; border-color: rgba(255, 255, 255, .16); }
+html[data-theme="dark"] .booking-form .form-group label,
+html[data-theme="dark"] .bf-tip, html[data-theme="dark"] .bf-safe,
+html[data-theme="dark"] .rp-desc, html[data-theme="dark"] .rp-price small { color: #a39f95; }
+html[data-theme="dark"] .rp-card { background-color: #1b1f2d; border-color: rgba(255, 255, 255, .12); }
+html[data-theme="dark"] .rp-check { background: rgba(20, 22, 32, .85); border-color: rgba(255, 255, 255, .3); }
+html[data-theme="dark"] .rp-ok { color: #6fcf97; }
+html[data-theme="dark"] .rp-no { color: #ef8a80; }
+html[data-theme="dark"] .booking-form .messenger-card-content { border-color: rgba(255, 255, 255, .16); }
+html[data-theme="dark"] .booking-form .price-calc { background: linear-gradient(135deg, #2a2615, #231f12); }
+html[data-theme="dark"] .pc-info span { color: #b5ae9c; }
+html[data-theme="dark"] .pc-total small { color: #c9b67a; }
+.booking-form .form-group .dp-field.dp-invalid { border-color: #d9534f; }
+/* на телефоне страница не должна сдвигаться вбок даже на пару пикселей */
+html, body { overflow-x: clip; }
+
+/* Заявка в пути */
+.form-notice.form-notice-wait { border-left-color: var(--primary-gold); }
+.send-spin {
+  display: inline-block; width: 16px; height: 16px; vertical-align: -2px;
+  border: 2.5px solid rgba(212, 175, 55, .3); border-top-color: var(--primary-gold);
+  border-radius: 50%; animation: send-spin .8s linear infinite;
+}
+@keyframes send-spin { to { transform: rotate(360deg); } }
+.btn.is-sending { opacity: .85; cursor: progress; }
+@media (prefers-reduced-motion: reduce) { .send-spin { animation-duration: 2.4s; } }
