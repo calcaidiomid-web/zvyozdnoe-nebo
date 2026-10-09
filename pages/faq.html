@@ -40,34 +40,10 @@
     },
     {
       "@type": "Question",
-      "name": "Можно ли проживать с домашними животными?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "К сожалению, животные не допускаются. Исключения возможны — напишите нам об особых обстоятельствах."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Как регулируется температура в номере?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "В холодное время года (осень, зима, весна) номера отапливаются радиаторами.\nВ летний сезон в каждом номере есть вентилятор для комфорта."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Можно ли готовить в номере?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "В номерах готовить нельзя. Однако у нас есть общая кухня со всем необходимым оборудованием\nдля гостей всех номеров."
-      }
-    },
-    {
-      "@type": "Question",
       "name": "Как забронировать номер?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Вы можете забронировать номер прямо на нашем сайте через форму,\nили написать нам в WhatsApp, Telegram или MAX."
+        "text": "Выберите номер и даты в форме на главной странице — администратор ответит в течение 10 минут. Или напишите нам в WhatsApp, Telegram или MAX."
       }
     },
     {
@@ -83,7 +59,63 @@
       "name": "Есть ли отмена бронирования?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Обсудите условия отмены со своим менеджером при бронировании."
+        "text": "Обсудите условия отмены с администратором при бронировании."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли в номере свой душ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "В номерах «Стандарт комфорт» и «Стандарт премиум» — личный душ. В номерах «Эконом» — общая душевая. Сравнить все номера."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли телевизор и Wi-Fi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Бесплатный Wi-Fi есть во всех номерах. Smart TV — в номерах «Стандарт комфорт» и «Стандарт премиум»."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как регулируется температура в номере?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "В холодное время года (осень, зима, весна) номера отапливаются радиаторами. В летний сезон в каждом номере есть вентилятор для комфорта."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли готовить в номере?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "В номерах готовить нельзя. Однако у нас есть общая кухня со всем необходимым оборудованием для гостей всех номеров."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли проживать с домашними животными?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "К сожалению, животные не допускаются. Исключения возможны — напишите нам об особых обстоятельствах."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Какое метро ближе всего?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "«Площадь Восстания» — 770 м, около 10 минут пешком. «Чернышевская» — 810 м. Подробнее, как добраться."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как дойти от Московского вокзала?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Около 1,1 км — примерно 14 минут пешком. Маршрут по шагам."
       }
     }
   ]
@@ -96,7 +128,7 @@
   <header>
     <a class="logo" href="../index.html" aria-label="Звёздное небо — на главную">
       <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
-      <span class="logo-text">Звёздное небо</span>
+      <span class="logo-words"><span class="logo-text">Звёздное небо</span><span class="logo-sub">мини-отель · Петербург</span></span>
     </a>
 
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
@@ -104,15 +136,21 @@
     </button>
 
     <nav>
-      <a href="../index.html">Главная</a>
+      <a href="nomera.html">Номера и цены</a>
       <a href="gallery.html">Галерея</a>
-      <a href="about.html">О нас</a>
-      <a href="faq.html">FAQ</a>
-      <a href="services.html">Услуги</a>
-      <a href="availability.html">Доступность</a>
-      <a href="map.html">Карта</a>
+      <a href="availability.html">Свободные даты</a>
       <a href="reviews.html">Отзывы</a>
-      <a href="location.html">Адрес</a>
+      <a href="location.html">Как добраться</a>
+      <details class="nav-more">
+        <summary>Ещё</summary>
+        <div class="nav-more-list">
+          <a href="about.html">О нас</a>
+          <a href="services.html">Услуги</a>
+          <a href="faq.html">Вопросы и ответы</a>
+          <a href="map.html">Карта</a>
+          <a href="ryadom.html">Что рядом</a>
+        </div>
+      </details>
     </nav>
 
     <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
@@ -124,61 +162,85 @@
     <p>Ответы на популярные вопросы гостей</p>
   </section>
 
-  <section class="scroll-fade">
-    <h2>FAQ</h2>
+  <section class="scroll-fade faq-wrap">
+    <h2>Ответы на вопросы</h2>
 
-    <div class="faq-item">
-      <h3>Во сколько заезд и выезд?</h3>
-      <p>
-        <strong>Заезд:</strong> с 14:00 (при наличии номера возможен ранний заезд)<br>
-        <strong>Выезд:</strong> до 12:00<br>
-        При необходимости свяжитесь с нами — обсудим возможность более гибкого времени.
-      </p>
+    <div class="faq-tools">
+      <label class="faq-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="faqSearch" placeholder="Например: душ, метро, оплата" aria-label="Поиск по вопросам" autocomplete="off">
+      </label>
+      <div class="chips" role="group" aria-label="Темы вопросов">
+        <button type="button" class="chip" data-cat="" aria-pressed="true">Все</button>
+        <button type="button" class="chip" data-cat="Заселение" aria-pressed="false">Заселение</button>
+        <button type="button" class="chip" data-cat="Бронирование" aria-pressed="false">Бронирование</button>
+        <button type="button" class="chip" data-cat="Номера" aria-pressed="false">Номера</button>
+        <button type="button" class="chip" data-cat="Правила" aria-pressed="false">Правила</button>
+        <button type="button" class="chip" data-cat="Как добраться" aria-pressed="false">Как добраться</button>
+      </div>
     </div>
 
-    <div class="faq-item">
-      <h3>Можно ли проживать с домашними животными?</h3>
-      <p>
-        К сожалению, животные не допускаются. Исключения возможны — напишите нам об особых обстоятельствах.
-      </p>
+    <div id="faqList">
+      <details class="faq-item" data-cat="Заселение">
+        <summary><h3>Во сколько заезд и выезд?</h3></summary>
+        <div class="faq-a"><p><strong>Заезд:</strong> с 14:00 (при наличии номера возможен ранний заезд)<br>
+<strong>Выезд:</strong> до 12:00<br>
+При необходимости свяжитесь с нами — обсудим возможность более гибкого времени.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Бронирование">
+        <summary><h3>Как забронировать номер?</h3></summary>
+        <div class="faq-a"><p>Выберите номер и даты в <a href="../index.html#kontakty">форме на главной странице</a> — администратор ответит в течение 10 минут. Или напишите нам в WhatsApp, Telegram или MAX.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Бронирование">
+        <summary><h3>Какие способы оплаты вы принимаете?</h3></summary>
+        <div class="faq-a"><p>Мы принимаем наличные и все основные виды карт. Уточнить детали можно при бронировании.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Бронирование">
+        <summary><h3>Есть ли отмена бронирования?</h3></summary>
+        <div class="faq-a"><p>Обсудите условия отмены с администратором при бронировании.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Номера">
+        <summary><h3>Есть ли в номере свой душ?</h3></summary>
+        <div class="faq-a"><p>В номерах «Стандарт комфорт» и «Стандарт премиум» — личный душ. В номерах «Эконом» — общая душевая. <a href="nomera.html">Сравнить все номера</a>.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Номера">
+        <summary><h3>Есть ли телевизор и Wi-Fi?</h3></summary>
+        <div class="faq-a"><p>Бесплатный Wi-Fi есть во всех номерах. Smart TV — в номерах «Стандарт комфорт» и «Стандарт премиум».</p></div>
+      </details>
+      <details class="faq-item" data-cat="Номера">
+        <summary><h3>Как регулируется температура в номере?</h3></summary>
+        <div class="faq-a"><p>В холодное время года (осень, зима, весна) номера отапливаются радиаторами. В летний сезон в каждом номере есть вентилятор для комфорта.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Номера">
+        <summary><h3>Можно ли готовить в номере?</h3></summary>
+        <div class="faq-a"><p>В номерах готовить нельзя. Однако у нас есть общая кухня со всем необходимым оборудованием для гостей всех номеров.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Правила">
+        <summary><h3>Можно ли проживать с домашними животными?</h3></summary>
+        <div class="faq-a"><p>К сожалению, животные не допускаются. Исключения возможны — напишите нам об особых обстоятельствах.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Как добраться">
+        <summary><h3>Какое метро ближе всего?</h3></summary>
+        <div class="faq-a"><p>«Площадь Восстания» — 770 м, около 10 минут пешком. «Чернышевская» — 810 м. <a href="location.html">Подробнее, как добраться</a>.</p></div>
+      </details>
+      <details class="faq-item" data-cat="Как добраться">
+        <summary><h3>Как дойти от Московского вокзала?</h3></summary>
+        <div class="faq-a"><p>Около 1,1 км — примерно 14 минут пешком. <a href="moskovsky-vokzal.html">Маршрут по шагам</a>.</p></div>
+      </details>
     </div>
 
-    <div class="faq-item">
-      <h3>Как регулируется температура в номере?</h3>
-      <p>
-        В холодное время года (осень, зима, весна) номера отапливаются радиаторами.
-        В летний сезон в каждом номере есть вентилятор для комфорта.
-      </p>
-    </div>
+    <p id="faqEmpty" class="faq-empty" hidden>Ничего не нашлось — спросите нас напрямую, ответим быстро.</p>
 
-    <div class="faq-item">
-      <h3>Можно ли готовить в номере?</h3>
-      <p>
-        В номерах готовить нельзя. Однако у нас есть общая кухня со всем необходимым оборудованием
-        для гостей всех номеров.
-      </p>
-    </div>
-
-    <div class="faq-item">
-      <h3>Как забронировать номер?</h3>
-      <p>
-        Вы можете забронировать номер прямо на нашем сайте через форму,
-        или написать нам в WhatsApp, Telegram или MAX.
-      </p>
-    </div>
-
-    <div class="faq-item">
-      <h3>Какие способы оплаты вы принимаете?</h3>
-      <p>
-        Мы принимаем наличные и все основные виды карт. Уточнить детали можно при бронировании.
-      </p>
-    </div>
-
-    <div class="faq-item">
-      <h3>Есть ли отмена бронирования?</h3>
-      <p>
-        Обсудите условия отмены со своим менеджером при бронировании.
-      </p>
+    <div class="ask-box">
+      <div>
+        <h3>Не нашли ответ?</h3>
+        <p>Напишите или позвоните — администратор ответит в течение 10 минут.</p>
+      </div>
+      <div class="ask-actions" data-pick-delay>
+        <a class="btn btn-outline" href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn-outline" href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn btn-outline" href="tel:+79992213311">Позвонить</a>
+      </div>
     </div>
 
     <p style="text-align: center; margin-top: 40px;">
@@ -200,6 +262,7 @@
       <div>
         <h4>Гостям</h4>
         <div class="footer-links">
+          <a href="nomera.html">Номера и цены</a>
           <a href="gallery.html">Галерея номеров</a>
           <a href="availability.html">Свободные даты</a>
           <a href="faq.html">Частые вопросы</a>
@@ -249,6 +312,56 @@
     document.querySelectorAll('.scroll-fade').forEach(el => {
       observer.observe(el);
     });
+  </script>
+
+
+  <script>
+    // ========== FAQ: поиск и темы ==========
+    (function () {
+      const items = [...document.querySelectorAll('.faq-item')];
+      const input = document.getElementById('faqSearch');
+      const chips = [...document.querySelectorAll('.chip')];
+      const empty = document.getElementById('faqEmpty');
+      let cat = '';
+      const norm = t => t.toLowerCase().replace(/ё/g, 'е');
+      items.forEach(d => d.dataset.text = norm(d.textContent));
+
+      function apply() {
+        const words = norm(input.value).split(/\s+/).filter(w => w.length > 1);
+        let shown = 0;
+        items.forEach(d => {
+          const ok = (!cat || d.dataset.cat === cat) && words.every(w => d.dataset.text.includes(w.slice(0, Math.max(3, w.length - 2))));
+          d.hidden = !ok;
+          if (ok) shown++;
+          if (words.length && ok && shown <= 2) d.open = true;   // первые совпадения сразу раскрываем
+        });
+        empty.hidden = shown > 0;
+      }
+      input.addEventListener('input', apply);
+      chips.forEach(c => c.addEventListener('click', () => {
+        cat = c.dataset.cat;
+        chips.forEach(x => x.setAttribute('aria-pressed', x === c ? 'true' : 'false'));
+        apply();
+      }));
+      // ссылка вида faq.html#oplata или ?q=душ — сразу ищем
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) { input.value = q; apply(); }
+    })();
+
+    // ========== «Не нашли ответ?»: кнопка сначала подсвечивается, потом открывается ==========
+    document.querySelectorAll('[data-pick-delay] a').forEach(a => a.addEventListener('click', e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) return;           // открыть в новой вкладке — как обычно
+      e.preventDefault();
+      const box = a.parentElement;
+      if (box.dataset.busy) return;
+      box.dataset.busy = '1';
+      box.querySelectorAll('a').forEach(x => x.classList.toggle('is-picked', x === a));
+      const url = a.href, newTab = a.target === '_blank';
+      setTimeout(() => {
+        if (newTab) window.open(url, '_blank', 'noopener'); else location.href = url;
+        setTimeout(() => { delete box.dataset.busy; }, 400);
+      }, 450);
+    }));
   </script>
 
   <script src="../effects.js"></script>

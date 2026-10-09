@@ -226,7 +226,7 @@
   // ---------- 3. ЗАГОЛОВОК ПЕРВОГО ЭКРАНА: слова появляются по очереди ----------
   function heroTitle() {
     const h1 = document.querySelector('.hero h1');
-    if (!h1 || reduceMotion) return;
+    if (!h1 || reduceMotion || h1.classList.contains('hero-title')) return;   // у главной своя анимация
     const words = h1.textContent.trim().split(/\s+/);
     h1.innerHTML = words.map((word, i) =>
       `<span class="word" style="animation-delay:${0.15 + i * 0.12}s">${word}</span>`).join(' ');

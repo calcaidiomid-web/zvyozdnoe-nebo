@@ -21,7 +21,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d4af37' d='M12 0C12.6 7.4 16.6 11.4 24 12 16.6 12.6 12.6 16.6 12 24 11.4 16.6 7.4 12.6 0 12 7.4 11.4 11.4 7.4 12 0Z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Lato:wght@400;700&display=swap">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
   <script src="analytics.js" async></script>
@@ -114,7 +114,7 @@
   <header>
     <a class="logo" href="index.html" aria-label="Звёздное небо — на главную">
       <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
-      <span class="logo-text">Звёздное небо</span>
+      <span class="logo-words"><span class="logo-text">Звёздное небо</span><span class="logo-sub">мини-отель · Петербург</span></span>
     </a>
 
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
@@ -122,15 +122,21 @@
     </button>
 
     <nav>
-      <a href="index.html">Главная</a>
+      <a href="pages/nomera.html">Номера и цены</a>
       <a href="pages/gallery.html">Галерея</a>
-      <a href="pages/about.html">О нас</a>
-      <a href="pages/faq.html">FAQ</a>
-      <a href="pages/services.html">Услуги</a>
-      <a href="pages/availability.html">Доступность</a>
-      <a href="pages/map.html">Карта</a>
+      <a href="pages/availability.html">Свободные даты</a>
       <a href="pages/reviews.html">Отзывы</a>
-      <a href="pages/location.html">Адрес</a>
+      <a href="pages/location.html">Как добраться</a>
+      <details class="nav-more">
+        <summary>Ещё</summary>
+        <div class="nav-more-list">
+          <a href="pages/about.html">О нас</a>
+          <a href="pages/services.html">Услуги</a>
+          <a href="pages/faq.html">Вопросы и ответы</a>
+          <a href="pages/map.html">Карта</a>
+          <a href="pages/ryadom.html">Что рядом</a>
+        </div>
+      </details>
     </nav>
 
     <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
@@ -140,8 +146,15 @@
 
   <!-- ========== ГЕРОЙ (ПЕРВЫЙ ЭКРАН) ========== -->
   <section class="hero">
-    <h1>Отель «Звёздное небо»</h1>
-    <p>Комфортабельный отель в центре Санкт-Петербурга</p>
+    <h1 class="hero-title">
+      <span class="hero-eyebrow">Мини-отель · Санкт-Петербург</span>
+      <span class="hero-name">Звёздное небо</span>
+    </h1>
+    <div class="hero-orn" aria-hidden="true"><i></i><b>✦</b><i></i></div>
+    <ul class="hero-badges">
+      <li><b>от 1 500 ₽</b> за ночь</li>
+      <li><b>770 м</b> до метро</li>
+    </ul>
 
     <!-- Быстрая проверка дат (ведёт на страницу доступности) -->
     <form class="quick-book" action="pages/availability.html" method="get">
@@ -158,8 +171,10 @@
     <div id="qbResults" class="qb-results" hidden aria-live="polite"></div>
 
     <!-- Большое фото в светящейся рамке -->
-    <div class="glow-frame">
-      <img src="images-edit/komfort-3.webp" alt="Номер стандарт комфорт" width="1280" height="960" fetchpriority="high" decoding="async">
+    <div class="glow-frame" id="heroPhoto">
+      <div class="gf-clip"><div class="gf-zoom">
+        <img src="images-edit/komfort-3.webp" alt="Номер стандарт комфорт" width="1280" height="960" fetchpriority="high" decoding="async">
+      </div></div>
     </div>
 
     <p style="margin-top: 32px; text-align: center;">
@@ -168,21 +183,10 @@
   </section>
 
 
-  <!-- ========== ЦИФРЫ ========== -->
-  <section class="stats-section">
-    <div class="stats">
-      <div class="stat"><span class="stat-number" data-count="9">9</span><span class="stat-label">уютных номеров</span></div>
-      <div class="stat"><span class="stat-number">24/7</span><span class="stat-label">бесконтактное заселение</span></div>
-      <div class="stat"><span class="stat-number" data-count="770" data-suffix=" м">770 м</span><span class="stat-label">до метро «Площадь Восстания»</span></div>
-      <div class="stat"><span class="stat-number" data-count="100" data-suffix="+">100+</span><span class="stat-label">отзывов на Яндекс Картах</span></div>
-    </div>
-  </section>
-
-
   <!-- ========== НОМЕРА ========== -->
   <section id="nomera" class="scroll-fade">
     <h2>Наши номера</h2>
-    <p>Всего 9 уютных номеров для вашего комфорта.</p>
+    <p><a class="rooms-compare" href="pages/nomera.html">Сравнить номера и подобрать за 3 вопроса →</a></p>
 
     <div class="rooms">
 
@@ -192,21 +196,16 @@
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом маленький»">
           <img src="images-edit/ekonom-mal-1.webp" alt="Эконом маленький — фото 1" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
           <img src="images-edit/ekonom-mal-2.webp" alt="Эконом маленький — фото 2" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" data-caption="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
           <h3>Эконом маленький</h3>
-          <p>Уютный компактный номер для одного гостя — для коротких поездок в центр города.</p>
-          <p class="card-hint">Нажмите на карточку — все фото и подробности</p>
 
           <ul class="amen-list">
             <li>🛏️ Кровать</li>
             <li>🚿 Общая душевая</li>
             <li>🧴 Полотенца</li>
             <li>🧥 Вешалка</li>
-            <li>📶 Wi-Fi</li>
-            <li>🍳 Общая кухня</li>
           </ul>
 
           <p class="price">1 500 ₽ <span>за ночь</span></p>
@@ -221,20 +220,16 @@
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом большой»">
           <img src="images-edit/ekonom-bol-1.webp" alt="Эконом большой — фото 1" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
           <img src="images-edit/ekonom-bol-2.webp" alt="Эконом большой — фото 2" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
-          <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" data-caption="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
           <h3>Эконом большой</h3>
-          <p>Больше места для отдыха — для тех, кто любит свободное пространство.</p>
-          <p class="card-hint">Нажмите на карточку — все фото и подробности</p>
 
           <ul class="amen-list">
             <li>🛏️ Большая кровать</li>
             <li>🚿 Общая душевая</li>
             <li>🧥 Вешалка</li>
             <li>📶 Wi-Fi</li>
-            <li>🍳 Общая кухня</li>
           </ul>
 
           <p class="price">1 900 ₽ <span>за ночь</span></p>
@@ -251,21 +246,16 @@
           <img src="images-edit/komfort-1.webp" alt="Стандарт комфорт — фото 2" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
           <img src="images-edit/komfort-6.webp" alt="Стандарт комфорт — фото 3" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
           <img src="images-edit/dush-1.webp" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" data-caption="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
           <h3>Стандарт комфорт</h3>
-          <p>Светлый номер с удобной кроватью, личным душем и Smart TV.</p>
-          <p class="card-hint">Нажмите на карточку — все фото и подробности</p>
 
           <ul class="amen-list">
             <li>🛏️ Кровать премиум</li>
             <li>🚿 Личный душ</li>
             <li>📺 Smart TV</li>
             <li>🗄️ Шкаф</li>
-            <li>📶 Wi-Fi</li>
-            <li>🍳 Общая кухня</li>
           </ul>
 
           <p class="price">2 700 ₽ <span>за ночь</span></p>
@@ -282,22 +272,16 @@
           <img src="images-edit/premium-2.webp" alt="Стандарт премиум — фото 2" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
           <img src="images-edit/premium-3.webp" alt="Стандарт премиум — фото 3" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
           <img src="images-edit/dush-1.webp" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" data-caption="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
           <h3>Стандарт премиум</h3>
-          <p>Просторный номер с личным душем, Smart TV и кофейным столиком.</p>
-          <p class="card-hint">Нажмите на карточку — все фото и подробности</p>
 
           <ul class="amen-list">
             <li>🛏️ Кровать премиум</li>
             <li>🚿 Личный душ</li>
             <li>📺 Smart TV</li>
             <li>☕ Кофейный столик</li>
-            <li>🗄️ Шкаф</li>
-            <li>📶 Wi-Fi</li>
-            <li>🍳 Общая кухня</li>
           </ul>
 
           <p class="price">3 000 ₽ <span>за ночь</span></p>
@@ -313,17 +297,12 @@
   <!-- ========== УДОБСТВА ========== -->
   <section id="udobstva" class="scroll-fade">
     <h2>Удобства</h2>
-    <p>Всё необходимое для комфортного пребывания:</p>
     <div class="features">
-      <p class="feature"><strong>Заселение 24/7.</strong> Бесконтактно — приезжайте в любое удобное время.</p>
-      <p class="feature"><strong>Общая кухня.</strong> Всё оборудование, чтобы готовить самим, как дома.</p>
-      <p class="feature"><strong>Бесплатный Wi-Fi.</strong> Работает на всей территории отеля.</p>
-      <p class="feature"><strong>Центр города.</strong> 770 м до метро «Площадь Восстания».</p>
+      <p class="feature"><strong>Заселение 24/7.</strong></p>
+      <p class="feature"><strong>Общая кухня.</strong></p>
+      <p class="feature"><strong>Бесплатный Wi-Fi.</strong></p>
+      <p class="feature"><strong>Центр города.</strong></p>
     </div>
-    <figure class="photo-frame">
-      <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
-      <figcaption>Общая кухня — для гостей всех номеров</figcaption>
-    </figure>
   </section>
 
 
@@ -331,7 +310,7 @@
   <section id="kontakty" class="scroll-fade">
     <div class="bf-head">
       <h2>Забронировать номер</h2>
-      <p>Четыре простых шага — и администратор ответит вам в течение 10 минут.</p>
+      <p>Ответим в течение 10 минут</p>
     </div>
 
     <form id="bookingForm" class="booking-form" novalidate>
@@ -362,7 +341,7 @@
             <img src="images-edit/ekonom-mal-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Эконом маленький</span>
-              <span class="rp-desc">1 гость · душ на этаже</span>
+              <span class="rp-desc">1 гость · общий душ</span>
               <span class="rp-price">1 500 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
@@ -373,7 +352,7 @@
             <img src="images-edit/ekonom-bol-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Эконом большой</span>
-              <span class="rp-desc">Большая кровать · душ на этаже</span>
+              <span class="rp-desc">Большая кровать · общий душ</span>
               <span class="rp-price">1 900 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
@@ -533,6 +512,7 @@
       <div>
         <h4>Гостям</h4>
         <div class="footer-links">
+          <a href="pages/nomera.html">Номера и цены</a>
           <a href="pages/gallery.html">Галерея номеров</a>
           <a href="pages/availability.html">Свободные даты</a>
           <a href="pages/faq.html">Частые вопросы</a>
@@ -1081,6 +1061,49 @@
       document.addEventListener('DOMContentLoaded', () => {
         if (window.ZNDates) ZNDates.load().then(() => { loaded = true; render(); });
       });
+    })();
+
+    // ========== ГЛАВНОЕ ФОТО: «раскрывается» и приближается при прокрутке ==========
+    // Фото не прыгает за колёсиком мыши, а мягко «догоняет» прокрутку (как с инерцией).
+    (function () {
+      const frame = document.getElementById('heroPhoto');
+      if (!frame || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      frame.classList.add('gf-live');
+
+      const ease = t => t * t * (3 - 2 * t);           // плавный старт и плавная остановка
+      const clamp = t => Math.min(1, Math.max(0, t));
+      let top = 0, height = 1, vh = innerHeight;      // положение фото на странице
+      let curP = null, curQ = 0, raf = 0;
+
+      function measure() {
+        const r = frame.getBoundingClientRect();
+        top = r.top + scrollY; height = r.height; vh = innerHeight;
+      }
+      function targets() {
+        const y = top - scrollY;                       // где фото сейчас относительно экрана
+        return [ease(clamp((vh - y) / (vh * 0.9))), ease(clamp((vh * 0.3 - y) / (height * 1.2)))];
+      }
+      function frameStep() {
+        const [p, q] = targets();
+        if (curP === null) { curP = p; curQ = q; }
+        curP += (p - curP) * 0.09;                     // меньше число — плавнее и медленнее
+        curQ += (q - curQ) * 0.09;
+        frame.style.setProperty('--gf-p', curP.toFixed(4));
+        frame.style.setProperty('--gf-q', curQ.toFixed(4));
+        raf = Math.abs(p - curP) > 0.0005 || Math.abs(q - curQ) > 0.0005 ? requestAnimationFrame(frameStep) : 0;
+      }
+      const wake = () => { if (!raf) raf = requestAnimationFrame(frameStep); };
+
+      measure();
+      // при открытии фото мягко «выплывает» из уменьшенного состояния
+      curP = Math.max(0, targets()[0] - 0.35);
+      frame.style.setProperty('--gf-p', curP.toFixed(4));
+      requestAnimationFrame(wake);
+
+      addEventListener('scroll', wake, { passive: true });
+      addEventListener('resize', () => { measure(); wake(); }, { passive: true });
+      addEventListener('load', () => { measure(); wake(); });
+      if (window.ResizeObserver) new ResizeObserver(() => { measure(); wake(); }).observe(document.body);
     })();
 
     // ========== АНИМАЦИЯ ПРИ СКРОЛЛЕ ==========

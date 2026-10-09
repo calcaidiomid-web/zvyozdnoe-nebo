@@ -57,7 +57,7 @@
   <header>
     <a class="logo" href="../index.html" aria-label="Звёздное небо — на главную">
       <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
-      <span class="logo-text">Звёздное небо</span>
+      <span class="logo-words"><span class="logo-text">Звёздное небо</span><span class="logo-sub">мини-отель · Петербург</span></span>
     </a>
 
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
@@ -65,15 +65,21 @@
     </button>
 
     <nav>
-      <a href="../index.html">Главная</a>
+      <a href="nomera.html">Номера и цены</a>
       <a href="gallery.html">Галерея</a>
-      <a href="about.html">О нас</a>
-      <a href="faq.html">FAQ</a>
-      <a href="services.html">Услуги</a>
-      <a href="availability.html">Доступность</a>
-      <a href="map.html">Карта</a>
+      <a href="availability.html">Свободные даты</a>
       <a href="reviews.html">Отзывы</a>
-      <a href="location.html">Адрес</a>
+      <a href="location.html">Как добраться</a>
+      <details class="nav-more">
+        <summary>Ещё</summary>
+        <div class="nav-more-list">
+          <a href="about.html">О нас</a>
+          <a href="services.html">Услуги</a>
+          <a href="faq.html">Вопросы и ответы</a>
+          <a href="map.html">Карта</a>
+          <a href="ryadom.html">Что рядом</a>
+        </div>
+      </details>
     </nav>
 
     <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
@@ -99,36 +105,50 @@
       <a class="btn" href="https://yandex.ru/maps/org/zvezdnoye_nebo/1345277823/reviews/" target="_blank" rel="noopener">Все отзывы</a>
     </div>
 
-    <h3>Адрес</h3>
-    <p style="font-size: 18px; color: var(--primary-gold); font-weight: 600;">
-      ул. Восстания, 22<br>
-      Санкт-Петербург, 191014
-    </p>
+    <div class="addr-card">
+      <div>
+        <p class="addr-label">Адрес</p>
+        <p class="addr-big" id="hotelAddr">ул. Восстания, 22, Санкт-Петербург, 191014</p>
+      </div>
+      <div class="addr-actions">
+        <button type="button" class="btn btn-outline" id="copyAddr">📋 Скопировать адрес</button>
+        <button type="button" class="btn btn-outline" id="shareAddr" hidden>📤 Отправить</button>
+      </div>
+      <p class="copy-ok" id="copyOk" role="status"></p>
+    </div>
+
+    <h3>Построить маршрут до отеля</h3>
+    <p>Откроются Яндекс Карты: маршрут проложится от того места, где вы сейчас.</p>
+    <div class="route-btns">
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=pd" target="_blank" rel="noopener"><span>🚶</span>Пешком</a>
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=mt" target="_blank" rel="noopener"><span>🚇</span>На транспорте</a>
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=auto" target="_blank" rel="noopener"><span>🚕</span>На машине или такси</a>
+    </div>
 
     <h3>Как доехать</h3>
 
     <div class="direction-card">
-      <h4>🚕 Яндекс Такси</h4>
-      <p>
-        Заказывайте Яндекс Такси, указав адрес: ул. Восстания, 22.
-        Водитель без проблем найдет наш отель.
-        Поездка от аэропорта Пулково займет 30-40 минут.
-      </p>
-    </div>
-
-    <div class="direction-card">
       <h4>🚇 На метро</h4>
       <p>
-        От станции метро «Площадь Восстания» идите примерно 10-12 минут пешком.
-        Это ближайшее метро к отелю. Также есть станции «Маяковская» и «Чернышевская» (15-20 минут).
+        Ближайшая станция — «Площадь Восстания», 770 м, около 10 минут пешком.
+        Рядом также «Чернышевская» — 810 м.
       </p>
     </div>
 
     <div class="direction-card">
-      <h4>🚌 На автобусе</h4>
+      <h4>🚆 С Московского вокзала</h4>
       <p>
-        Остановка «Улица Восстания» находится прямо у нас.
-        Также можно выйти на других близлежащих остановках.
+        Около 1,1 км — примерно 14 минут пешком.
+        <a href="moskovsky-vokzal.html">Маршрут по шагам →</a>
+      </p>
+    </div>
+
+    <div class="direction-card">
+      <h4>🚕 На такси</h4>
+      <p>
+        Укажите в приложении адрес: ул. Восстания, 22. Время в пути от аэропорта Пулково
+        зависит от пробок — точное покажет приложение такси.
+        <a href="location.html">Все способы добраться →</a>
       </p>
     </div>
 
@@ -151,6 +171,7 @@
       <div>
         <h4>Гостям</h4>
         <div class="footer-links">
+          <a href="nomera.html">Номера и цены</a>
           <a href="gallery.html">Галерея номеров</a>
           <a href="availability.html">Свободные даты</a>
           <a href="faq.html">Частые вопросы</a>
@@ -199,6 +220,28 @@
     document.querySelectorAll('.scroll-fade').forEach(el => {
       observer.observe(el);
     });
+  </script>
+
+  <script>
+    // ========== АДРЕС: скопировать и отправить ==========
+    (function () {
+      const addr = document.getElementById('hotelAddr').textContent.trim();
+      const ok = document.getElementById('copyOk');
+      document.getElementById('copyAddr').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(addr); ok.textContent = '✓ Адрес скопирован — вставьте его в такси или карты'; }
+        catch (e) { ok.textContent = addr; }
+        setTimeout(() => { ok.textContent = ''; }, 4000);
+      });
+      const share = document.getElementById('shareAddr');
+      if (navigator.share) {
+        share.hidden = false;
+        share.addEventListener('click', () => navigator.share({
+          title: 'Отель «Звёздное небо»',
+          text: 'Отель «Звёздное небо», ' + addr,
+          url: 'https://yandex.ru/maps/org/zvezdnoye_nebo/1345277823/'
+        }).catch(() => {}));
+      }
+    })();
   </script>
 
   <script src="../effects.js"></script>

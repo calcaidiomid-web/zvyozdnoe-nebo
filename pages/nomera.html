@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Номера и цены — подбор номера | отель «Звёздное небо»</title>
+  <meta name="description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 500 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
+  <link rel="canonical" href="https://zvyozdnoe-nebo.ru/pages/nomera.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Отель «Звёздное небо»">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://zvyozdnoe-nebo.ru/pages/nomera.html">
+  <meta property="og:title" content="Номера и цены — отель «Звёздное небо»">
+  <meta property="og:description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 500 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
+  <meta property="og:image" content="https://zvyozdnoe-nebo.ru/images-edit/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23d4af37' d='M12 0C12.6 7.4 16.6 11.4 24 12 16.6 12.6 12.6 16.6 12 24 11.4 16.6 7.4 12.6 0 12 7.4 11.4 11.4 7.4 12 0Z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../theme.js"></script>
+  <script src="../analytics.js" async></script>
+</head>
+
+<body>
+
+  <!-- ========== ШАПКА САЙТА (ОДИНАКОВАЯ НА ВСЕХ СТРАНИЦАХ) ========== -->
+  <header>
+    <a class="logo" href="../index.html" aria-label="Звёздное небо — на главную">
+      <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+      <span class="logo-words"><span class="logo-text">Звёздное небо</span><span class="logo-sub">мини-отель · Петербург</span></span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav>
+      <a href="nomera.html">Номера и цены</a>
+      <a href="gallery.html">Галерея</a>
+      <a href="availability.html">Свободные даты</a>
+      <a href="reviews.html">Отзывы</a>
+      <a href="location.html">Как добраться</a>
+      <details class="nav-more">
+        <summary>Ещё</summary>
+        <div class="nav-more-list">
+          <a href="about.html">О нас</a>
+          <a href="services.html">Услуги</a>
+          <a href="faq.html">Вопросы и ответы</a>
+          <a href="map.html">Карта</a>
+          <a href="ryadom.html">Что рядом</a>
+        </div>
+      </details>
+    </nav>
+
+    <a class="phone" href="tel:+79992213311">+7 999 221-33-11</a>
+    <a class="header-cta" href="../index.html#kontakty">Забронировать</a>
+  </header>
+
+
+  <!-- ========== НОМЕРА И ЦЕНЫ ========== -->
+  <section class="hero">
+    <h1>Номера и цены</h1>
+    <p>Ответьте на три вопроса — подскажем, какой номер подойдёт, и посчитаем стоимость</p>
+  </section>
+
+  <!-- ПОДБОР НОМЕРА -->
+  <section class="scroll-fade" id="podbor">
+    <h2>Подбор номера</h2>
+    <div class="quiz" id="quiz">
+      <div class="quiz-q" data-q="guests">
+        <p class="quiz-title"><span class="bf-num">1</span>Сколько вас?</p>
+        <div class="quiz-opts">
+          <button type="button" class="quiz-opt" data-v="1">🧍 Я один</button>
+          <button type="button" class="quiz-opt" data-v="2">👥 Нас двое</button>
+        </div>
+      </div>
+      <div class="quiz-q" data-q="shower">
+        <p class="quiz-title"><span class="bf-num">2</span>Нужен свой душ в номере?</p>
+        <div class="quiz-opts">
+          <button type="button" class="quiz-opt" data-v="own">🚿 Да, обязательно</button>
+          <button type="button" class="quiz-opt" data-v="any">👌 Подойдёт общий</button>
+        </div>
+      </div>
+      <div class="quiz-q" data-q="prio">
+        <p class="quiz-title"><span class="bf-num">3</span>Что важнее?</p>
+        <div class="quiz-opts">
+          <button type="button" class="quiz-opt" data-v="price">💰 Цена пониже</button>
+          <button type="button" class="quiz-opt" data-v="comfort">✨ Больше комфорта</button>
+        </div>
+      </div>
+
+      <div class="quiz-result" id="quizResult" aria-live="polite" hidden></div>
+      <button type="button" class="link-btn quiz-reset" id="quizReset" hidden>Ответить заново</button>
+    </div>
+  </section>
+
+  <!-- СРАВНЕНИЕ -->
+  <section class="scroll-fade" id="sravnenie">
+    <h2>Сравнение номеров</h2>
+
+    <div class="nights-calc">
+      <span>Посчитать стоимость за</span>
+      <div class="stepper">
+        <button type="button" id="nMinus" aria-label="Меньше ночей">−</button>
+        <output id="nCount" aria-live="polite">1</output>
+        <button type="button" id="nPlus" aria-label="Больше ночей">+</button>
+      </div>
+      <span id="nWord">ночь</span>
+    </div>
+
+    <div class="cmp-wrap" tabindex="0" aria-label="Таблица сравнения номеров, листается вбок">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">Параметр</span></th>
+            <th scope="col" data-room="Эконом маленький"><img src="../images-edit/ekonom-mal-1.webp" alt="" width="160" height="110" loading="lazy" decoding="async">Эконом маленький</th>
+            <th scope="col" data-room="Эконом большой"><img src="../images-edit/ekonom-bol-1.webp" alt="" width="160" height="110" loading="lazy" decoding="async">Эконом большой</th>
+            <th scope="col" data-room="Стандарт комфорт"><img src="../images-edit/komfort-3.webp" alt="" width="160" height="110" loading="lazy" decoding="async">Стандарт комфорт</th>
+            <th scope="col" data-room="Стандарт премиум"><img src="../images-edit/premium-1.webp" alt="" width="160" height="110" loading="lazy" decoding="async">Стандарт премиум</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cmp-price"><th scope="row">Цена за ночь</th><td>1 500 ₽</td><td>1 900 ₽</td><td>2 700 ₽</td><td>3 000 ₽</td></tr>
+          <tr class="cmp-total"><th scope="row" id="totalLabel">За 1 ночь</th><td data-p="1500"></td><td data-p="1900"></td><td data-p="2700"></td><td data-p="3000"></td></tr>
+          <tr><th scope="row">Душ</th><td>Общая душевая</td><td>Общая душевая</td><td class="yes">Личный душ</td><td class="yes">Личный душ</td></tr>
+          <tr><th scope="row">Кровать</th><td>Кровать</td><td>Большая кровать</td><td>Кровать премиум</td><td>Кровать премиум</td></tr>
+          <tr><th scope="row">Smart TV</th><td class="no">—</td><td class="no">—</td><td class="yes">Есть</td><td class="yes">Есть</td></tr>
+          <tr><th scope="row">Для вещей</th><td>Вешалка</td><td>Вешалка</td><td>Шкаф</td><td>Шкаф</td></tr>
+          <tr><th scope="row">Кофейный столик</th><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">Есть</td></tr>
+          <tr><th scope="row">Wi-Fi</th><td class="yes">Бесплатно</td><td class="yes">Бесплатно</td><td class="yes">Бесплатно</td><td class="yes">Бесплатно</td></tr>
+          <tr><th scope="row">Общая кухня</th><td class="yes">Есть</td><td class="yes">Есть</td><td class="yes">Есть</td><td class="yes">Есть</td></tr>
+          <tr><th scope="row">Таких номеров</th><td>2</td><td>2</td><td>3</td><td>2</td></tr>
+          <tr class="cmp-cta"><th scope="row"></th>
+            <td><a class="btn" href="../index.html?room=%D0%AD%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%20%D0%BC%D0%B0%D0%BB%D0%B5%D0%BD%D1%8C%D0%BA%D0%B8%D0%B9#kontakty">Выбрать</a></td>
+            <td><a class="btn" href="../index.html?room=%D0%AD%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%20%D0%B1%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9#kontakty">Выбрать</a></td>
+            <td><a class="btn" href="../index.html?room=%D0%A1%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%20%D0%BA%D0%BE%D0%BC%D1%84%D0%BE%D1%80%D1%82#kontakty">Выбрать</a></td>
+            <td><a class="btn" href="../index.html?room=%D0%A1%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%20%D0%BF%D1%80%D0%B5%D0%BC%D0%B8%D1%83%D0%BC#kontakty">Выбрать</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cmp-note">На телефоне таблицу можно листать вбок. Фото всех номеров — в <a href="gallery.html">галерее</a>, свободные даты — на странице <a href="availability.html">«Доступность»</a>.</p>
+  </section>
+
+  <!-- ========== ПОДВАЛ «НОЧНОЕ НЕБО» ========== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <a class="logo" href="../index.html">
+          <svg class="logo-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+          <span class="logo-text">Звёздное небо</span>
+        </a>
+        <p>Уютный мини-отель в центре Санкт-Петербурга.<br>ул. Восстания, 22 · 770 м от метро «Площадь Восстания»</p>
+      </div>
+      <div>
+        <h4>Гостям</h4>
+        <div class="footer-links">
+          <a href="nomera.html">Номера и цены</a>
+          <a href="gallery.html">Галерея номеров</a>
+          <a href="availability.html">Свободные даты</a>
+          <a href="faq.html">Частые вопросы</a>
+          <a href="reviews.html">Отзывы</a>
+          <a href="moskovsky-vokzal.html">От Московского вокзала</a>
+          <a href="ryadom.html">Что посмотреть рядом</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+        </div>
+      </div>
+      <div>
+        <h4>Связаться</h4>
+        <div class="footer-links">
+          <a href="tel:+79992213311">+7 (999) 221-33-11</a>
+          <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+          <a href="map.html">Как добраться</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Отель «Звёздное небо»</span>
+      <span>Спокойной ночи под звёздным небом ✦</span>
+    </div>
+  </footer>
+
+  <script>
+    // ========== НОМЕРА: ПОДБОР И СРАВНЕНИЕ ==========
+    (function () {
+      const ROOMS = {
+        'Эконом маленький': { price: 1500, own: false, rank: 1, img: 'ekonom-mal-1', why: 'Самый выгодный вариант для одного гостя: уютный компактный номер в центре.' },
+        'Эконом большой':   { price: 1900, own: false, rank: 2, img: 'ekonom-bol-1', why: 'Больше места и большая кровать, при этом цена остаётся экономной.' },
+        'Стандарт комфорт': { price: 2700, own: true,  rank: 3, img: 'komfort-3',    why: 'Светлый номер с личным душем и Smart TV.' },
+        'Стандарт премиум': { price: 3000, own: true,  rank: 4, img: 'premium-1',    why: 'Самый просторный: личный душ, Smart TV, шкаф и кофейный столик.' }
+      };
+      const rub = n => n.toLocaleString('ru-RU') + ' ₽';
+      const nightsWord = n => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'ночь' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'ночи' : 'ночей'; };
+      const bookUrl = room => '../index.html?room=' + encodeURIComponent(room) + '#kontakty';
+
+      // ----- Калькулятор ночей -----
+      let nights = 1;
+      const out = document.getElementById('nCount');
+      function renderTotals() {
+        out.textContent = nights;
+        document.getElementById('nWord').textContent = nightsWord(nights);
+        document.getElementById('totalLabel').textContent = `За ${nights} ${nightsWord(nights)}`;
+        document.querySelectorAll('.cmp-total td').forEach(td => td.textContent = rub(td.dataset.p * nights));
+        document.getElementById('nMinus').disabled = nights <= 1;
+        document.getElementById('nPlus').disabled = nights >= 30;
+        renderResult();
+      }
+      document.getElementById('nMinus').addEventListener('click', () => { nights = Math.max(1, nights - 1); renderTotals(); });
+      document.getElementById('nPlus').addEventListener('click', () => { nights = Math.min(30, nights + 1); renderTotals(); });
+
+      // ----- Подбор номера -----
+      const answers = {};
+      const result = document.getElementById('quizResult');
+      const reset = document.getElementById('quizReset');
+
+      document.querySelectorAll('.quiz-q').forEach(q => {
+        q.addEventListener('click', e => {
+          const b = e.target.closest('.quiz-opt');
+          if (!b) return;
+          answers[q.dataset.q] = b.dataset.v;
+          q.querySelectorAll('.quiz-opt').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+          q.classList.add('is-done');
+          const next = q.nextElementSibling;
+          if (next && next.classList.contains('quiz-q') && !next.classList.contains('is-done') && matchMedia('(max-width: 640px)').matches) {
+            next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          renderResult(true);
+        });
+      });
+      document.querySelectorAll('.quiz-opt').forEach(b => b.setAttribute('aria-pressed', 'false'));
+
+      function pickRooms() {
+        let list = Object.keys(ROOMS);
+        if (answers.guests === '2') list = list.filter(r => r !== 'Эконом маленький');
+        if (answers.shower === 'own') list = list.filter(r => ROOMS[r].own);
+        list.sort((a, b) => answers.prio === 'comfort' ? ROOMS[b].rank - ROOMS[a].rank : ROOMS[a].rank - ROOMS[b].rank);
+        return list;
+      }
+
+      function renderResult(scroll) {
+        if (!answers.guests || !answers.shower || !answers.prio) return;
+        const [best, alt] = pickRooms();
+        const r = ROOMS[best];
+        result.innerHTML = `
+          <img src="../images-edit/${r.img}.webp" alt="" width="240" height="170">
+          <div class="qr-body">
+            <p class="qr-label">Вам подойдёт</p>
+            <h3>${best}</h3>
+            <p>${r.why}</p>
+            <p class="qr-price">${rub(r.price)} <span>за ночь</span>${nights > 1 ? ` · <b>${rub(r.price * nights)}</b> за ${nights} ${nightsWord(nights)}` : ''}</p>
+            ${answers.guests === '2' ? '<p class="qr-note">Сколько гостей можно разместить в номере, администратор уточнит при бронировании.</p>' : ''}
+            <div class="qr-actions">
+              <a class="btn" href="${bookUrl(best)}">Забронировать</a>
+              ${alt ? `<a class="gal-more" href="${bookUrl(alt)}">Или ${alt} — ${rub(ROOMS[alt].price)} →</a>` : ''}
+            </div>
+          </div>`;
+        result.hidden = false;
+        reset.hidden = false;
+        document.querySelectorAll('.cmp th[data-room]').forEach(th => th.classList.toggle('is-best', th.dataset.room === best));
+        if (scroll) {
+          if (window.znGoal) znGoal('room_choose', { room: best, from: 'quiz' });
+          result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
+      reset.addEventListener('click', () => {
+        Object.keys(answers).forEach(k => delete answers[k]);
+        document.querySelectorAll('.quiz-q').forEach(q => q.classList.remove('is-done'));
+        document.querySelectorAll('.quiz-opt').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        document.querySelectorAll('.cmp th.is-best').forEach(th => th.classList.remove('is-best'));
+        result.hidden = true; reset.hidden = true;
+        document.querySelector('.quiz-opt').focus();
+      });
+
+      renderTotals();
+    })();
+
+    // Анимация при скролле
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
+  </script>
+
+  <script src="../effects.js"></script>
+  <script src="../menu.js"></script>
+
+</body>
+
+</html>

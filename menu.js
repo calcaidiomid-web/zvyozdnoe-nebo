@@ -40,6 +40,26 @@
     if (e.key === 'Escape') closeMenu();
   });
 
+  // ---------- Пункт «Ещё» ----------
+  const more = nav.querySelector('.nav-more');
+  if (more) {
+    // нажали мимо — закрываем список
+    document.addEventListener('click', e => { if (more.open && !more.contains(e.target)) more.open = false; });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && more.open) { more.open = false; more.querySelector('summary').focus(); } });
+  }
+
+  // ---------- Отмечаем текущую страницу в меню ----------
+  const here = location.pathname.split('/').pop() || 'index.html';
+  nav.querySelectorAll('a').forEach(a => {
+    const file = a.getAttribute('href').split('#')[0].split('/').pop();
+    if (file && file === here) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+      const d = a.closest('.nav-more');
+      if (d) d.classList.add('has-active');
+    }
+  });
+
   // Повернули телефон / расширили окно — убираем открытое меню
   window.addEventListener('resize', function () {
     if (window.innerWidth > 1150) closeMenu();
