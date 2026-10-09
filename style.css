@@ -3037,3 +3037,20 @@ html[data-theme="dark"] .hero-badges li { background: rgba(23, 26, 39, .6); bord
   html[data-theme="dark"] .nav-glass { background: rgba(14, 16, 26, .78); box-shadow: 0 16px 30px -12px rgba(0, 0, 0, .5); }
 }
 @media (min-width: 1151px) { .nav-glass { display: none; } }
+
+/* ---------- Плавность на компьютере ----------
+   Размытие «под стеклом» (backdrop-filter) у шапки и кнопки «Наверх» браузер пересчитывает
+   в каждом кадре прокрутки — на большом экране это главная нагрузка на видеокарту.
+   На телефонах оно и так было выключено; теперь и на компьютере фон просто почти непрозрачный. */
+header, .to-top { -webkit-backdrop-filter: none; backdrop-filter: none; }
+header { background-color: rgba(255, 255, 255, 0.96); }
+html[data-theme="dark"] header { background-color: rgba(14, 16, 24, 0.96); }
+.to-top { background: rgba(255, 255, 255, 0.95); }
+html[data-theme="dark"] .to-top { background: rgba(23, 26, 39, 0.95); }
+/* Свечение за главным фото — мягче и дешевле */
+.glow-frame::before { filter: blur(22px); }
+/* Пока страницу крутят — перелив названия и мерцание звёздочки тоже на паузе */
+.is-scrolling .hero-name,
+.is-scrolling .hero-orn b { animation-play-state: paused; }
+header.scrolled { background-color: rgba(255, 255, 255, 0.96); }
+html[data-theme="dark"] header.scrolled { background-color: rgba(14, 16, 24, 0.96); }
