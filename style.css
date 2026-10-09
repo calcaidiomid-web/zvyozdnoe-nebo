@@ -1480,7 +1480,9 @@ section:not(.hero) > h2::after {
   nav a.active::before { display: none; }
 }
 
-@media (max-width: 560px) {
+/* На узких экранах кнопку «Забронировать» в шапке прячем: иначе кнопка меню (☰) уезжает за край.
+   Забронировать можно кнопкой внизу экрана. */
+@media (max-width: 760px) {
   .header-cta { display: none; }
 }
 
@@ -2968,7 +2970,21 @@ html[data-theme="dark"] .hero-badges li { background: rgba(23, 26, 39, .6); bord
   .hero-eyebrow, .hero .hero-lead, .hero-badges, .hero-orn b { opacity: 1; animation: none; }
   .hero-orn i { width: 90px; animation: none; }
 }
-@media (min-width: 601px) { .hero-name { white-space: nowrap; } }
+/* Название всегда в одну строку: на телефоне размер подстраивается под ширину экрана,
+   а анимация появления не меняет межбуквенный интервал (иначе строка «прыгает»). */
+.hero-name { white-space: nowrap; }
+@media (max-width: 600px) {
+  .hero-name {
+    font-size: min(60px, calc((100vw - 40px) / 6.4));
+    letter-spacing: -.01em;
+    animation: heroTrackM 1.4s .25s cubic-bezier(.2, .7, .2, 1) both, heroShine 9s 1.6s ease-in-out infinite;
+  }
+}
+@keyframes heroTrackM {
+  from { opacity: 0; transform: scale(.94); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-name { animation: none !important; opacity: 1; } }
 /* на компьютере у меню нет тени (она нужна только выпадающему меню на телефоне) */
 @media (min-width: 1151px) { html[data-theme="dark"] header nav { box-shadow: none; background: transparent; } }
 @media (max-width: 1150px) {
@@ -2976,4 +2992,22 @@ html[data-theme="dark"] .hero-badges li { background: rgba(23, 26, 39, .6); bord
   .nav-more summary::after { margin-left: 4px; }
   .nav-more-list { padding: 0 0 6px; align-items: stretch; }
   .nav-more-list a { text-align: center; font-size: 15px; color: var(--text-gray); }
+}
+
+/* ---------- Шапка на телефоне: все кнопки (особенно ☰ меню) всегда помещаются ---------- */
+@media (max-width: 560px) {
+  header { padding-left: 12px; padding-right: 12px; gap: 8px; }
+  .logo { min-width: 0; flex-shrink: 1; gap: 6px; }
+  .logo-words { min-width: 0; }
+  .logo-text { font-size: 18px; letter-spacing: 0; }
+  .logo-sub { font-size: 8.5px; letter-spacing: .12em; }
+  .logo-star { width: 17px; height: 17px; }
+}
+@media (max-width: 380px) {
+  .logo-sub { display: none; }
+  .phone, .burger { width: 40px; height: 40px; }
+  .theme-toggle { width: 42px; height: 24px; }
+}
+@media (max-width: 330px) {
+  .logo-text { font-size: 16px; }
 }

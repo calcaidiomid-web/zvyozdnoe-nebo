@@ -239,9 +239,13 @@
       function pickRooms() {
         let list = Object.keys(ROOMS);
         if (answers.guests === '2') list = list.filter(r => r !== 'Эконом маленький');
-        if (answers.shower === 'own') list = list.filter(r => ROOMS[r].own);
-        list.sort((a, b) => answers.prio === 'comfort' ? ROOMS[b].rank - ROOMS[a].rank : ROOMS[a].rank - ROOMS[b].rank);
-        return list;
+        const byPrio = (a, b) => answers.prio === 'comfort' ? ROOMS[b].rank - ROOMS[a].rank : ROOMS[a].rank - ROOMS[b].rank;
+        if (answers.shower === 'own') return list.filter(r => ROOMS[r].own).sort(byPrio);
+        // «Подойдёт общий» — советуем номера с общим душем (эконом),
+        // а номер с личным душем — только как запасной вариант
+        const shared = list.filter(r => !ROOMS[r].own).sort(byPrio);
+        const own = list.filter(r => ROOMS[r].own).sort((a, b) => ROOMS[a].rank - ROOMS[b].rank);
+        return shared.length > 1 ? shared : shared.concat(own);
       }
 
       function renderResult(scroll) {
