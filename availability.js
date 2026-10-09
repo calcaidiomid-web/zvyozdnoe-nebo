@@ -153,7 +153,7 @@ function renderResults() {
       return `
         <div class="av-card av-card-free">
           <h4>${room.name}</h4>
-          <p class="av-status status-available">✓ Свободно: ${free} из ${bookable(room)}</p>
+          <p class="av-status status-available">✓ Свободно: ${free} из ${room.total}</p>
           <p class="av-sum">${nights} ${nightsWord(nights)} × ${rub(room.price)} = <strong>${rub(nights * room.price)}</strong></p>
           <a class="btn" href="${link}">Забронировать</a>
         </div>`;
@@ -209,16 +209,16 @@ function renderCalendars() {
       let cls, label;
       if (d < today)               { cls = 'cal-past';    label = ''; }
       else if (!dataOk)            { cls = 'cal-unknown'; label = ''; }
-      else if (free === bookable(room)){ cls = 'cal-free';    label = ''; }
+      else if (free === room.total)   { cls = 'cal-free';    label = ''; }
       else if (free === 0)         { cls = 'cal-full';    label = ''; }
       else                         { cls = 'cal-partial'; label = free; }
-      const title = d < today ? '' : (dataOk ? `title="${day}: свободно ${free} из ${bookable(room)}"` : '');
+      const title = d < today ? '' : (dataOk ? `title="${day}: свободно ${free} из ${room.total}"` : '');
       cells += `<span class="cal-day ${cls}" ${title}>${day}${label !== '' ? `<small>${label}</small>` : ''}</span>`;
     }
 
     return `
       <div class="cal-block">
-        <h4>${room.name} <span class="cal-count">для брони: ${bookable(room)} из ${room.total}</span></h4>
+        <h4>${room.name} <span class="cal-count">${room.total} шт.${room.blocked ? ` · ${room.blocked} занят на долгий срок` : ''}</span></h4>
         <div class="cal-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
         <div class="cal-grid">${cells}</div>
       </div>`;

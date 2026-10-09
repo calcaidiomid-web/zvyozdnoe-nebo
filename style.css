@@ -3054,3 +3054,12 @@ html[data-theme="dark"] .to-top { background: rgba(23, 26, 39, 0.95); }
 .is-scrolling .hero-orn b { animation-play-state: paused; }
 header.scrolled { background-color: rgba(255, 255, 255, 0.96); }
 html[data-theme="dark"] header.scrolled { background-color: rgba(14, 16, 24, 0.96); }
+
+/* Шапка на ноутбуке (1151–1300 px): кнопка «Забронировать» не сжимается и не обрезается */
+.header-cta { flex-shrink: 0; white-space: nowrap; }
+@media (min-width: 1151px) and (max-width: 1320px) {
+  header { gap: 14px; padding-left: 24px; padding-right: 24px; }
+  header nav { gap: 18px; }
+  header nav a, .nav-more summary { font-size: 15px; }
+  .header-cta { padding: 10px 16px; }
+}
