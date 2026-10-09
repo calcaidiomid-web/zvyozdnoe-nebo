@@ -2975,7 +2975,7 @@ html[data-theme="dark"] .hero-badges li { background: rgba(23, 26, 39, .6); bord
 .hero-name { white-space: nowrap; }
 @media (max-width: 600px) {
   .hero-name {
-    font-size: min(60px, calc((100vw - 40px) / 6.4));
+    font-size: min(56px, calc((100vw - 48px) / 7.2));
     letter-spacing: -.01em;
     animation: heroTrackM 1.4s .25s cubic-bezier(.2, .7, .2, 1) both, heroShine 9s 1.6s ease-in-out infinite;
   }
@@ -3011,3 +3011,29 @@ html[data-theme="dark"] .hero-badges li { background: rgba(23, 26, 39, .6); bord
 @media (max-width: 330px) {
   .logo-text { font-size: 16px; }
 }
+
+/* ---------- Выпадающее меню на телефоне — полупрозрачное, со «стеклом» ----------
+   Размытие делает отдельный слой .nav-glass (его создаёт menu.js) прямо под меню:
+   внутри шапки браузер не может размыть страницу, поэтому слой лежит на уровне страницы. */
+@media (max-width: 1150px) {
+  header nav {
+    background-color: transparent;
+    box-shadow: none;
+    border-top-color: rgba(212, 175, 55, .18);
+  }
+  header nav a { border-bottom-color: rgba(0, 0, 0, .07); }
+  .nav-glass {
+    position: fixed; left: 0; right: 0; top: 0; height: 0;
+    z-index: 99;                                  /* сразу под шапкой (у неё 100) */
+    background: rgba(255, 255, 255, .8);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 16px 30px -12px rgba(0, 0, 0, .12);
+    pointer-events: none;
+    opacity: 0; transition: opacity .25s ease;
+  }
+  html[data-theme="dark"] header nav { background-color: transparent; box-shadow: none; }
+  .nav-glass.on { opacity: 1; }
+  html[data-theme="dark"] .nav-glass { background: rgba(14, 16, 26, .78); box-shadow: 0 16px 30px -12px rgba(0, 0, 0, .5); }
+}
+@media (min-width: 1151px) { .nav-glass { display: none; } }

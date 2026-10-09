@@ -7,7 +7,30 @@
   const nav = document.querySelector('header nav');
   if (!burger || !nav) return;
 
+  // «Стеклянная» подложка под выпадающим меню: размывает страницу под ним.
+  // Лежит на уровне страницы и повторяет положение и высоту меню.
+  const glass = document.createElement('div');
+  glass.className = 'nav-glass';
+  glass.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(glass);
+  function syncGlass() {
+    const r = nav.getBoundingClientRect();
+    glass.style.top = Math.max(0, r.top) + 'px';
+    glass.style.height = Math.max(0, r.bottom - Math.max(0, r.top)) + 'px';
+  }
+  let glassRaf = 0;
+  function followGlass(ms) {             // пока меню раскрывается/сворачивается — двигаем подложку за ним
+    const end = performance.now() + ms;
+    cancelAnimationFrame(glassRaf);
+    (function step() { syncGlass(); if (performance.now() < end) glassRaf = requestAnimationFrame(step); })();
+  }
+  window.addEventListener('scroll', () => { if (nav.classList.contains('open')) syncGlass(); }, { passive: true });
+  window.addEventListener('resize', syncGlass);
+  nav.addEventListener('toggle', () => followGlass(400), true);   // открыли/закрыли «Ещё»
+
   function openMenu() {
+    glass.classList.add('on');
+    followGlass(450);
     nav.classList.add('open');
     burger.classList.add('open');
     burger.setAttribute('aria-expanded', 'true');
@@ -15,6 +38,8 @@
   }
 
   function closeMenu() {
+    glass.classList.remove('on');
+    followGlass(450);
     nav.classList.remove('open');
     burger.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');

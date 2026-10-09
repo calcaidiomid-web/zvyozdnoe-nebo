@@ -150,6 +150,23 @@
       <span class="hero-eyebrow">Мини-отель · Санкт-Петербург</span>
       <span class="hero-name">Звёздное небо</span>
     </h1>
+    <script>
+    /* Название «Звёздное небо» всегда помещается в одну строку:
+       если на этом устройстве шрифт шире — уменьшаем размер ровно настолько, насколько нужно. */
+    (function () {
+      var el = document.querySelector('.hero-name');
+      if (!el) return;
+      function fit() {
+        el.style.fontSize = '';
+        var w = el.clientWidth, sw = el.scrollWidth;
+        if (sw > w) el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * w / sw * 0.97) + 'px';
+      }
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      window.addEventListener('load', fit);
+      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 100); });
+    })();
+    </script>
     <div class="hero-orn" aria-hidden="true"><i></i><b>✦</b><i></i></div>
     <ul class="hero-badges">
       <li><b>от 1 500 ₽</b> за ночь</li>
@@ -209,7 +226,7 @@
           </ul>
 
           <p class="price">1 500 ₽ <span>за ночь</span></p>
-          <p class="count">Доступно 2 номера</p>
+          <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
       </article>
@@ -233,7 +250,7 @@
           </ul>
 
           <p class="price">1 900 ₽ <span>за ночь</span></p>
-          <p class="count">Доступно 2 номера</p>
+          <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
       </article>
@@ -259,7 +276,7 @@
           </ul>
 
           <p class="price">2 700 ₽ <span>за ночь</span></p>
-          <p class="count">Доступно 3 номера</p>
+          <p class="count">Доступно 2 номера</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
       </article>
@@ -285,7 +302,7 @@
           </ul>
 
           <p class="price">3 000 ₽ <span>за ночь</span></p>
-          <p class="count">Доступно 2 номера</p>
+          <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
       </article>
@@ -1001,7 +1018,8 @@
         'Эконом маленький': 'ekonom-mal-1', 'Эконом большой': 'ekonom-bol-1',
         'Стандарт комфорт': 'komfort-3', 'Стандарт премиум': 'premium-1'
       };
-      const TOTAL = { 'Эконом маленький': 2, 'Эконом большой': 2, 'Стандарт комфорт': 3, 'Стандарт премиум': 2 };
+      // сколько номеров можно забронировать (по одному каждого типа занято на неопределённый срок)
+      const TOTAL = { 'Эконом маленький': 1, 'Эконом большой': 1, 'Стандарт комфорт': 2, 'Стандарт премиум': 1 };
       let loaded = false;
 
       function render() {
