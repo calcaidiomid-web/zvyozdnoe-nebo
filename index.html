@@ -824,7 +824,7 @@
         <p class="ok-sum">${esc(data.room)} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}` +
           (c ? ` · ${c.nights} ${nightsWord(c.nights)} · <strong>${rub(c.total)}</strong>` : '') + `</p>
         <ol class="ok-steps">
-          <li class="is-done"><b>Заявка уже у администратора</b><span>Она пришла нам в Telegram сразу после отправки</span></li>
+          <li class="is-done"><b>Заявка принята</b><span>Она записана у нас, администратор увидит её в ближайшее время</span></li>
           <li class="is-now"><b>Проверяем номер на ваши даты</b><span>Обычно это занимает до 15 минут</span></li>
           <li><b>Пишем вам в ${CHANNEL_NAMES[data.channel]}</b><span>на номер ${esc(data.phone)} — подтвердим бронь и расскажем, как заселиться</span></li>
         </ol>
