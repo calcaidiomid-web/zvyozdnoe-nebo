@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Lato:wght@400;700&display=swap">
   <link rel="stylesheet" href="style.css?v=20261010a">
   <script src="theme.js?v=20261010a"></script>
+  <script src="rooms.js?v=20261014a"></script>
   <script src="analytics.js?v=20261010a" async></script>
   <script type="application/ld+json">
 {
@@ -171,7 +172,7 @@
     </script>
     <div class="hero-orn" aria-hidden="true"><i></i><b>✦</b><i></i></div>
     <ul class="hero-badges">
-      <li><b>от 1 500 ₽</b> за ночь</li>
+      <li><b data-room-price-min>от 1 500 ₽</b> за ночь</li>
       <li><b>770 м</b> до метро</li>
     </ul>
 
@@ -227,7 +228,7 @@
             <li>🧥 Вешалка</li>
           </ul>
 
-          <p class="price">1 500 ₽ <span>за ночь</span></p>
+          <p class="price" data-room-price="Эконом маленький">1 500 ₽ <span>за ночь</span></p>
           <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
@@ -251,7 +252,7 @@
             <li>📶 Wi-Fi</li>
           </ul>
 
-          <p class="price">1 900 ₽ <span>за ночь</span></p>
+          <p class="price" data-room-price="Эконом большой">1 900 ₽ <span>за ночь</span></p>
           <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
@@ -277,7 +278,7 @@
             <li>🗄️ Шкаф</li>
           </ul>
 
-          <p class="price">2 700 ₽ <span>за ночь</span></p>
+          <p class="price" data-room-price="Стандарт комфорт">2 700 ₽ <span>за ночь</span></p>
           <p class="count">Доступно 2 номера</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
@@ -303,7 +304,7 @@
             <li>☕ Кофейный столик</li>
           </ul>
 
-          <p class="price">3 000 ₽ <span>за ночь</span></p>
+          <p class="price" data-room-price="Стандарт премиум">3 000 ₽ <span>за ночь</span></p>
           <p class="count">Доступен 1 номер</p>
           <a class="btn" href="#kontakty">Забронировать</a>
         </div>
@@ -366,7 +367,7 @@
             <span class="rp-body">
               <span class="rp-name">Эконом маленький</span>
               <span class="rp-desc">1 гость · общий душ</span>
-              <span class="rp-price">1 500 ₽ <small>/ ночь</small></span>
+              <span class="rp-price" data-room-price="Эконом маленький">1 500 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
             <span class="rp-check" aria-hidden="true"></span>
@@ -377,7 +378,7 @@
             <span class="rp-body">
               <span class="rp-name">Эконом большой</span>
               <span class="rp-desc">Большая кровать · общий душ</span>
-              <span class="rp-price">1 900 ₽ <small>/ ночь</small></span>
+              <span class="rp-price" data-room-price="Эконом большой">1 900 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
             <span class="rp-check" aria-hidden="true"></span>
@@ -388,7 +389,7 @@
             <span class="rp-body">
               <span class="rp-name">Стандарт комфорт</span>
               <span class="rp-desc">Личный душ · Smart TV</span>
-              <span class="rp-price">2 700 ₽ <small>/ ночь</small></span>
+              <span class="rp-price" data-room-price="Стандарт комфорт">2 700 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
             <span class="rp-check" aria-hidden="true"></span>
@@ -399,7 +400,7 @@
             <span class="rp-body">
               <span class="rp-name">Стандарт премиум</span>
               <span class="rp-desc">Просторнее · личный душ · Smart TV</span>
-              <span class="rp-price">3 000 ₽ <small>/ ночь</small></span>
+              <span class="rp-price" data-room-price="Стандарт премиум">3 000 ₽ <small>/ ночь</small></span>
               <span class="rp-status" hidden></span>
             </span>
             <span class="rp-check" aria-hidden="true"></span>
@@ -646,9 +647,14 @@
     }
 
     // Подсказки в выпадающем списке под полями «Имя» и «Телефон»
+    // Текст от гостя вставляем в страницу только «обезвреженным»: < > & " ' не станут кодом
+    function escHtml(t) {
+      return String(t == null ? '' : t).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+
     function fillHints(guest) {
-      document.getElementById('savedNames').innerHTML = guest && guest.name ? `<option value="${guest.name.replace(/"/g, '&quot;')}">` : '';
-      document.getElementById('savedPhones').innerHTML = guest && guest.phone ? `<option value="${guest.phone}">` : '';
+      document.getElementById('savedNames').innerHTML = guest && guest.name ? `<option value="${escHtml(guest.name)}">` : '';
+      document.getElementById('savedPhones').innerHTML = guest && guest.phone ? `<option value="${escHtml(guest.phone)}">` : '';
     }
 
     function showWelcome() {
@@ -690,12 +696,9 @@
     // ========== РАСЧЁТ СТОИМОСТИ ==========
     const roomSelect = document.getElementById('room');
     const priceCalc = document.getElementById('priceCalc');
-    const PRICES = {
-      'Эконом маленький': 1500,
-      'Эконом большой': 1900,
-      'Стандарт комфорт': 2700,
-      'Стандарт премиум': 3000
-    };
+    // Цены берутся из rooms.js — менять их нужно только там
+    const PRICES = {};
+    window.ZN_ROOMS.forEach(r => { PRICES[r.name] = r.price; });
 
     // 1 ночь, 2 ночи, 5 ночей
     function nightsWord(n) {
@@ -725,7 +728,7 @@
       const dates = window.ZNDates ? ZNDates.rangeText(checkinInput.value, checkoutInput.value)
                                    : `${formatDate(checkinInput.value)} – ${formatDate(checkoutInput.value)}`;
       priceCalc.innerHTML =
-        `<div class="pc-info"><b>${roomSelect.value}</b>` +
+        `<div class="pc-info"><b>${escHtml(roomSelect.value)}</b>` +
         `<span>${dates} · ${c.nights} ${nightsWord(c.nights)} × ${rub(c.price)}</span></div>` +
         `<div class="pc-total"><small>Итого</small><strong>${rub(c.total)}</strong></div>`;
       priceCalc.hidden = false;
@@ -800,7 +803,7 @@
 
     // ========== ОТПРАВКА ФОРМЫ ==========
 
-    // Ссылка на бота бронирований (веб-приложение Google Apps Script).
+    // Ссылка на функцию приёма заявок (Яндекс Облако). Заявки хранятся в России.
     // Пока пусто — форма, как раньше, открывает мессенджер гостя.
     const BOOKING_API = 'https://functions.yandexcloud.net/d4eallm32pm88l3ad6jj?a=book';
 
@@ -818,7 +821,7 @@
     // Что будет дальше после заявки — понятные шаги вместо одной строки
     function showSuccess(data, id) {
       const c = calcPrice();
-      const esc = t => String(t).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+      const esc = escHtml;
       showNotice(`
         <p class="ok-head">✅ <strong>Заявка${id ? ' №' + esc(id) : ''} отправлена</strong></p>
         <p class="ok-sum">${esc(data.room)} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}` +
@@ -826,7 +829,7 @@
         <ol class="ok-steps">
           <li class="is-done"><b>Заявка принята</b><span>Она записана у нас, администратор увидит её в ближайшее время</span></li>
           <li class="is-now"><b>Проверяем номер на ваши даты</b><span>Обычно это занимает до 15 минут</span></li>
-          <li><b>Пишем вам в ${CHANNEL_NAMES[data.channel]}</b><span>на номер ${esc(data.phone)} — подтвердим бронь и расскажем, как заселиться</span></li>
+          <li><b>Пишем вам в ${esc(CHANNEL_NAMES[data.channel] || 'мессенджер')}</b><span>на номер ${esc(data.phone)} — подтвердим бронь и расскажем, как заселиться</span></li>
         </ol>
         <p class="ok-note">Ответа долго нет? Позвоните: <a href="tel:+79992213311">+7 999 221-33-11</a></p>`);
       notice.classList.add('form-notice-ok');
@@ -844,9 +847,20 @@
     };
 
     // Отправка с повтором: Google иногда отвечает не тем (страницей вместо ответа бота)
+    // Ждём ответа не дольше 15 секунд, потом честно говорим гостю, что делать
+    const BOOKING_TIMEOUT = 15000;
     async function postBooking(data, attempt) {
-      const r = await fetch(BOOKING_API, { method: 'POST', body: JSON.stringify(data) });
-      const text = await r.text();
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), BOOKING_TIMEOUT);
+      let r, text;
+      try {
+        r = await fetch(BOOKING_API, { method: 'POST', body: JSON.stringify(data), signal: ctrl.signal });
+        text = await r.text();
+      } catch (e) {
+        throw new Error(e.name === 'AbortError' ? 'timeout' : 'network');
+      } finally {
+        clearTimeout(timer);
+      }
       try {
         return JSON.parse(text);
       } catch (e) {
@@ -878,7 +892,7 @@
       // Сразу показываем, что заявка в пути, — гость не смотрит на «зависшую» кнопку
       showNotice(`
         <p class="ok-head"><span class="send-spin" aria-hidden="true"></span> <strong>Отправляем заявку…</strong></p>
-        <p class="ok-sum">${data.room} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}</p>
+        <p class="ok-sum">${escHtml(data.room)} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}</p>
         <p class="ok-note">Обычно это занимает несколько секунд. Не закрывайте страницу.</p>`);
       notice.classList.add('form-notice-wait');
       const slow = setTimeout(() => { submitBtn.textContent = 'Ещё пара секунд…'; }, 6000);
@@ -896,7 +910,7 @@
         })
         .catch(err => {
           console.warn('Заявка не отправилась:', err);
-          showNotice(fallbackText(message));
+          showNotice(err && err.message === 'timeout' ? timeoutText(message) : fallbackText(message));
         })
         .finally(() => {
           clearTimeout(slow);
@@ -905,6 +919,13 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Отправить запрос';
         });
+    }
+
+    // Сервер не ответил вовремя: заявка могла всё-таки записаться, поэтому не просим отправлять её заново
+    function timeoutText(message) {
+      return '⚠️ Сервер долго не отвечает — заявка могла дойти, а могла и нет. ' +
+        'Чтобы не потерять бронь, позвоните <a href="tel:+79992213311">+7 (999) 221-33-11</a> ' +
+        `или <a href="https://wa.me/79992213311?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">напишите в WhatsApp</a> (текст уже готов).`;
     }
 
     function fallbackText(message) {
@@ -1016,12 +1037,10 @@
       const qbOut = document.getElementById('qbOut');
       const box = document.getElementById('qbResults');
       if (!qbForm || !box) return;
-      const PHOTOS = {
-        'Эконом маленький': 'ekonom-mal-1', 'Эконом большой': 'ekonom-bol-1',
-        'Стандарт комфорт': 'komfort-3', 'Стандарт премиум': 'premium-1'
-      };
-      // сколько номеров каждого типа в отеле (свободные считаются с учётом занятых на долгий срок)
-      const TOTAL = { 'Эконом маленький': 2, 'Эконом большой': 2, 'Стандарт комфорт': 3, 'Стандарт премиум': 2 };
+      // фото и число номеров каждого типа — из rooms.js
+      // (свободные считаются с учётом занятых на долгий срок)
+      const PHOTOS = {}, TOTAL = {};
+      window.ZN_ROOMS.forEach(r => { PHOTOS[r.name] = r.photo; TOTAL[r.name] = r.total; });
       let loaded = false;
 
       function render() {
@@ -1285,7 +1304,7 @@
       });
     })();
   </script>
-  <script src="datepicker.js?v=20261014a"></script>
+  <script src="datepicker.js?v=20261014b"></script>
   <script src="gallery.js?v=20261010a"></script>
   <script src="effects.js?v=20261010a"></script>
   <script src="menu.js?v=20261010a"></script>

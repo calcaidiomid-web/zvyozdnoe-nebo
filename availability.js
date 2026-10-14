@@ -9,15 +9,8 @@
 // Как её получить — см. инструкцию (Файл → Поделиться → Опубликовать в интернете → CSV).
 const BOOKINGS_URL = 'https://functions.yandexcloud.net/d4eallm32pm88l3ad6jj?a=avail';
 
-// Сколько номеров каждого типа в отеле (всего 9).
-// blocked — сколько номеров этого типа занято на неопределённый срок (долгосрочные жильцы).
-// Когда номер освободится — поставьте blocked: 0 (и то же число в datepicker.js).
-const ROOMS = [
-  { name: 'Эконом маленький', total: 2, blocked: 1, price: 1500 },
-  { name: 'Эконом большой',   total: 2, blocked: 1, price: 1900 },
-  { name: 'Стандарт комфорт', total: 3, blocked: 1, price: 2700 },
-  { name: 'Стандарт премиум', total: 2, blocked: 1, price: 3000 }
-];
+// Номера, их количество и цены — в rooms.js (менять только там)
+const ROOMS = window.ZN_ROOMS;
 // Сколько номеров этого типа вообще можно забронировать
 function bookable(room) { return room.total - (room.blocked || 0); }
 
