@@ -7,7 +7,7 @@
 
 // Ссылка на опубликованную Google Таблицу в формате CSV.
 // Как её получить — см. инструкцию (Файл → Поделиться → Опубликовать в интернете → CSV).
-const BOOKINGS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyPd_NQEW61TabPoUFcFddiE6q_lX8X2pFVZtBMcqfDDFcAqaCpwvWI6LUNZ8rhn28b8g8MucxMR5W/pub?gid=41014459&single=true&output=csv';
+const BOOKINGS_URL = 'https://functions.yandexcloud.net/d4eallm32pm88l3ad6jj?a=avail';
 
 // Сколько номеров каждого типа в отеле (всего 9).
 // blocked — сколько номеров этого типа занято на неопределённый срок (долгосрочные жильцы).

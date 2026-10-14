@@ -10,7 +10,7 @@
   'use strict';
 
   // ---------- НАСТРОЙКИ ----------
-  const BOOKINGS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyPd_NQEW61TabPoUFcFddiE6q_lX8X2pFVZtBMcqfDDFcAqaCpwvWI6LUNZ8rhn28b8g8MucxMR5W/pub?gid=41014459&single=true&output=csv';
+  const BOOKINGS_URL = 'https://functions.yandexcloud.net/d4eallm32pm88l3ad6jj?a=avail';
   // Сколько номеров каждого типа можно забронировать.
   // В отеле 2 / 2 / 3 / 2, но по одному номеру каждого типа занято на неопределённый срок.
   // Когда номер освободится — увеличьте число (и уберите blocked в availability.js).
