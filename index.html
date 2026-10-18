@@ -23,9 +23,9 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Lato:wght@400;700&display=swap">
-  <link rel="stylesheet" href="style.css?v=20261010a">
-  <script src="theme.js?v=20261010a"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  <link rel="stylesheet" href="site.css?v=20261019b">
+  <script src="theme.js?v=20261014a"></script>
   <script src="rooms.js?v=20261014a"></script>
   <script src="analytics.js?v=20261010a" async></script>
   <script type="application/ld+json">
@@ -147,36 +147,81 @@
   </header>
 
 
-  <!-- ========== ГЕРОЙ (ПЕРВЫЙ ЭКРАН) ========== -->
-  <section class="hero">
-    <h1 class="hero-title">
-      <span class="hero-eyebrow">Мини-отель · Санкт-Петербург</span>
-      <span class="hero-name">Звёздное небо</span>
-    </h1>
-    <script>
-    /* Название «Звёздное небо» всегда помещается в одну строку:
-       если на этом устройстве шрифт шире — уменьшаем размер ровно настолько, насколько нужно. */
-    (function () {
-      var el = document.querySelector('.hero-name');
-      if (!el) return;
-      function fit() {
-        el.style.fontSize = '';
-        var w = el.clientWidth, sw = el.scrollWidth;
-        if (sw > w) el.style.fontSize = (parseFloat(getComputedStyle(el).fontSize) * w / sw * 0.97) + 'px';
-      }
-      fit();
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-      window.addEventListener('load', fit);
-      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 100); });
-    })();
-    </script>
-    <div class="hero-orn" aria-hidden="true"><i></i><b>✦</b><i></i></div>
-    <ul class="hero-badges">
-      <li><b data-room-price-min>от 1 500 ₽</b> за ночь</li>
-      <li><b>770 м</b> до метро</li>
-    </ul>
+  <!-- ========== ПЕРВЫЙ ЭКРАН: заставка при прокрутке (story.js) ==========
+       Ночь, вертикальный золотой луч и огромные буквы «ЗВЁЗДНОЕ ✦ НЕБО» вокруг звезды.
+       Гость листает — из-под луча поднимается большая карточка с фото номера. -->
+  <section class="story theme-night" id="story">
+    <div class="story-pin">
+      <div class="nebula" aria-hidden="true"><i class="nb-1"></i><i class="nb-2"></i><i class="nb-3"></i></div>
+      <div class="story-sky" aria-hidden="true"></div>
+      <div class="beam" aria-hidden="true"><i class="beam-glow"></i><i class="beam-core"></i><i class="beam-flare"></i></div>
 
-    <!-- Быстрая проверка дат (ведёт на страницу доступности) -->
+      <div class="story-sky story-sky-2" aria-hidden="true"></div>
+      <div class="shooting" aria-hidden="true"></div>
+
+      <div class="hero-words">
+        <!-- Звезда: ореол, кольцо, длинные и короткие лучи, горизонтальный блик и «звёздная пыль» -->
+        <div class="star" aria-hidden="true">
+          <canvas class="star-dust" width="360" height="360"></canvas>
+          <span class="st-halo"></span>
+          <span class="st-ring"></span><span class="st-ring st-ring-2"></span>
+          <span class="st-streak"></span>
+          <svg class="st-rays st-rays-long" viewBox="-100 -100 200 200">
+            <defs>
+              <radialGradient id="rayG" r="1" cx="0" cy="0" gradientUnits="userSpaceOnUse" gradientTransform="scale(100)">
+                <stop offset="0" stop-color="#fffdf2"/><stop offset=".18" stop-color="#f6dc8e"/><stop offset=".55" stop-color="#d4af37" stop-opacity=".55"/><stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path fill="url(#rayG)" d="M0-100C2-30 3-6 7-7 6-3 30-2 100 0 30 2 6 3 7 7 3 6 2 30 0 100-2 30-3 6-7 7-6 3-30 2-100 0-30-2-6-3-7-7-3-6-2-30 0-100Z"/>
+          </svg>
+          <svg class="st-rays st-rays-short" viewBox="-100 -100 200 200">
+            <path fill="url(#rayG)" d="M0-100C2-30 3-6 7-7 6-3 30-2 100 0 30 2 6 3 7 7 3 6 2 30 0 100-2 30-3 6-7 7-6 3-30 2-100 0-30-2-6-3-7-7-3-6-2-30 0-100Z"/>
+          </svg>
+          <span class="st-core"></span>
+        </div>
+
+        <h1 class="hw-title">
+          <span class="eyebrow hw-eyebrow">Мини-отель · Санкт-Петербург</span>
+          <span class="hw-line">Звёздное небо</span>
+        </h1>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true"><span>Листайте</span><i></i></div>
+
+      <div class="hero-cta"><a class="btn" href="#daty">Проверить свободные даты</a><a class="more-link" href="#nomera">Смотреть номера</a></div>
+
+      <div class="showcase">
+        <div class="sc-frame">
+                    <div class="sc-inner">
+            <span class="sc-glare" aria-hidden="true"></span>
+            <img src="images-edit/komfort-3.webp" alt="Номер «Стандарт комфорт»" width="1280" height="960" fetchpriority="high" decoding="async">
+            <div class="sc-bar">
+              <div class="sc-item"><small>Номера</small><b>4 типа</b></div>
+              <div class="sc-item"><small>Цена</small><b data-room-price-min>от 1 500 ₽</b></div>
+              <div class="sc-item"><small>До метро</small><b>770 м</b></div>
+              <a class="btn" href="#daty">Выбрать даты</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== СВОБОДНЫЕ ДАТЫ ========== -->
+  <!-- Цифры об отеле: досчитываются, когда появляются на экране -->
+  <div class="stats" aria-label="Отель в цифрах">
+    <div class="stat"><b data-count="9">9</b><span>номеров</span></div>
+    <div class="stat"><b data-count="4">4</b><span>типа номеров</span></div>
+    <div class="stat"><b data-count="770" data-suffix=" м">770 м</b><span>до метро</span></div>
+    <div class="stat"><b data-count="14" data-suffix=" мин">14 мин</b><span>до Московского вокзала</span></div>
+  </div>
+
+  <section id="daty" class="dates">
+    <div class="section-head">
+      <span class="eyebrow"><span class="idx">01</span>Свободные даты</span>
+      <h2>Когда вы приедете?</h2>
+    </div>
     <form class="quick-book" action="pages/availability.html" method="get">
       <label class="qb-field">
         <span>Заезд</span>
@@ -188,79 +233,24 @@
       </label>
       <button type="submit" class="btn qb-btn">Показать свободные номера</button>
     </form>
+    <p class="hero-alt"><a href="#kontakty">Или сразу оставьте заявку</a></p>
     <div id="qbResults" class="qb-results" hidden aria-live="polite"></div>
-
-    <!-- Большое фото в светящейся рамке -->
-    <div class="glow-frame" id="heroPhoto">
-      <div class="gf-clip"><div class="gf-zoom">
-        <img src="images-edit/komfort-3.webp" alt="Номер стандарт комфорт" width="1280" height="960" fetchpriority="high" decoding="async">
-      </div></div>
-    </div>
-
-    <p style="margin-top: 32px; text-align: center;">
-      <a class="btn" href="#kontakty">Забронировать номер</a>
-    </p>
   </section>
 
 
   <!-- ========== НОМЕРА ========== -->
-  <section id="nomera" class="scroll-fade">
-    <h2>Наши номера</h2>
-    <p><a class="rooms-compare" href="pages/nomera.html">Сравнить номера и подобрать за 3 вопроса →</a></p>
+  <section id="nomera">
+    <div class="section-head">
+      <span class="eyebrow"><span class="idx">02</span>Номера</span>
+      <h2>Четыре типа номеров</h2>
+      <a class="rooms-compare" href="pages/nomera.html">Сравнить номера и подобрать за 3 вопроса</a>
+    </div>
 
     <div class="rooms">
 
-      <!-- Эконом маленький -->
-      <article class="card scroll-fade" data-room="Эконом маленький">
-        <div class="card-gallery" data-gallery>
-          <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом маленький»">
-          <img src="images-edit/ekonom-mal-1.webp" alt="Эконом маленький — фото 1" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/ekonom-mal-2.webp" alt="Эконом маленький — фото 2" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
-          </div>
-        </div>
-        <div class="card-body">
-          <h3>Эконом маленький</h3>
-
-          <ul class="amen-list">
-            <li>🛏️ Кровать</li>
-            <li>🚿 Общая душевая</li>
-            <li>🧴 Полотенца</li>
-            <li>🧥 Вешалка</li>
-          </ul>
-
-          <p class="price" data-room-price="Эконом маленький">1 500 ₽ <span>за ночь</span></p>
-          <p class="count">Доступен 1 номер</p>
-          <a class="btn" href="#kontakty">Забронировать</a>
-        </div>
-      </article>
-
-      <!-- Эконом большой -->
-      <article class="card scroll-fade" data-room="Эконом большой">
-        <div class="card-gallery" data-gallery>
-          <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом большой»">
-          <img src="images-edit/ekonom-bol-1.webp" alt="Эконом большой — фото 1" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
-          <img src="images-edit/ekonom-bol-2.webp" alt="Эконом большой — фото 2" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
-          </div>
-        </div>
-        <div class="card-body">
-          <h3>Эконом большой</h3>
-
-          <ul class="amen-list">
-            <li>🛏️ Большая кровать</li>
-            <li>🚿 Общая душевая</li>
-            <li>🧥 Вешалка</li>
-            <li>📶 Wi-Fi</li>
-          </ul>
-
-          <p class="price" data-room-price="Эконом большой">1 900 ₽ <span>за ночь</span></p>
-          <p class="count">Доступен 1 номер</p>
-          <a class="btn" href="#kontakty">Забронировать</a>
-        </div>
-      </article>
-
       <!-- Стандарт комфорт -->
-      <article class="card scroll-fade" data-room="Стандарт комфорт">
-        <div class="card-gallery" data-gallery>
+      <article class="card card-big" data-room="Стандарт комфорт">
+                <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Стандарт комфорт»">
           <img src="images-edit/komfort-3.webp" alt="Стандарт комфорт — фото 1" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
           <img src="images-edit/komfort-1.webp" alt="Стандарт комфорт — фото 2" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
@@ -272,21 +262,21 @@
           <h3>Стандарт комфорт</h3>
 
           <ul class="amen-list">
-            <li>🛏️ Кровать премиум</li>
-            <li>🚿 Личный душ</li>
-            <li>📺 Smart TV</li>
-            <li>🗄️ Шкаф</li>
+            <li><span class="ico" aria-hidden="true">🛏️</span>Кровать премиум</li>
+            <li><span class="ico" aria-hidden="true">🚿</span>Личный душ</li>
+            <li><span class="ico" aria-hidden="true">📺</span>Smart TV</li>
+            <li><span class="ico" aria-hidden="true">🗄️</span>Шкаф</li>
           </ul>
 
           <p class="price" data-room-price="Стандарт комфорт">2 700 ₽ <span>за ночь</span></p>
           <p class="count">Доступно 2 номера</p>
-          <a class="btn" href="#kontakty">Забронировать</a>
+          <div class="card-actions"><a class="btn btn-ghost" href="#kontakty">Забронировать</a><span class="more-link">Подробнее</span></div>
         </div>
       </article>
 
       <!-- Стандарт премиум -->
-      <article class="card scroll-fade" data-room="Стандарт премиум">
-        <div class="card-gallery" data-gallery>
+      <article class="card card-wide" data-room="Стандарт премиум">
+                <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Стандарт премиум»">
           <img src="images-edit/premium-1.webp" alt="Стандарт премиум — фото 1" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
           <img src="images-edit/premium-2.webp" alt="Стандарт премиум — фото 2" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
@@ -298,45 +288,123 @@
           <h3>Стандарт премиум</h3>
 
           <ul class="amen-list">
-            <li>🛏️ Кровать премиум</li>
-            <li>🚿 Личный душ</li>
-            <li>📺 Smart TV</li>
-            <li>☕ Кофейный столик</li>
+            <li><span class="ico" aria-hidden="true">🛏️</span>Кровать премиум</li>
+            <li><span class="ico" aria-hidden="true">🚿</span>Личный душ</li>
+            <li><span class="ico" aria-hidden="true">📺</span>Smart TV</li>
+            <li><span class="ico" aria-hidden="true">☕</span>Кофейный столик</li>
           </ul>
 
           <p class="price" data-room-price="Стандарт премиум">3 000 ₽ <span>за ночь</span></p>
           <p class="count">Доступен 1 номер</p>
-          <a class="btn" href="#kontakty">Забронировать</a>
+          <div class="card-actions"><a class="btn btn-ghost" href="#kontakty">Забронировать</a><span class="more-link">Подробнее</span></div>
         </div>
       </article>
 
+      <!-- Эконом большой -->
+      <article class="card" data-room="Эконом большой">
+                <div class="card-gallery" data-gallery>
+          <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом большой»">
+          <img src="images-edit/ekonom-bol-1.webp" alt="Эконом большой — фото 1" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-bol-2.webp" alt="Эконом большой — фото 2" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>Эконом большой</h3>
+
+          <ul class="amen-list">
+            <li><span class="ico" aria-hidden="true">🛏️</span>Большая кровать</li>
+            <li><span class="ico" aria-hidden="true">🚿</span>Общая душевая</li>
+            <li><span class="ico" aria-hidden="true">🧥</span>Вешалка</li>
+            <li><span class="ico" aria-hidden="true">📶</span>Wi-Fi</li>
+          </ul>
+
+          <p class="price" data-room-price="Эконом большой">1 900 ₽ <span>за ночь</span></p>
+          <p class="count">Доступен 1 номер</p>
+          <div class="card-actions"><a class="btn btn-ghost" href="#kontakty">Забронировать</a><span class="more-link">Подробнее</span></div>
+        </div>
+      </article>
+
+      <!-- Эконом маленький -->
+      <article class="card" data-room="Эконом маленький">
+                <div class="card-gallery" data-gallery>
+          <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом маленький»">
+          <img src="images-edit/ekonom-mal-1.webp" alt="Эконом маленький — фото 1" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-mal-2.webp" alt="Эконом маленький — фото 2" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>Эконом маленький</h3>
+
+          <ul class="amen-list">
+            <li><span class="ico" aria-hidden="true">🛏️</span>Кровать</li>
+            <li><span class="ico" aria-hidden="true">🚿</span>Общая душевая</li>
+            <li><span class="ico" aria-hidden="true">🧴</span>Полотенца</li>
+            <li><span class="ico" aria-hidden="true">🧥</span>Вешалка</li>
+          </ul>
+
+          <p class="price" data-room-price="Эконом маленький">1 500 ₽ <span>за ночь</span></p>
+          <p class="count">Доступен 1 номер</p>
+          <div class="card-actions"><a class="btn btn-ghost" href="#kontakty">Забронировать</a><span class="more-link">Подробнее</span></div>
+        </div>
+      </article>
     </div>
   </section>
 
 
   <!-- ========== УДОБСТВА ========== -->
-  <section id="udobstva" class="scroll-fade">
-    <h2>Удобства</h2>
-    <p>Всё необходимое для комфортного пребывания:</p>
-    <div class="features">
-      <p class="feature"><strong>Заселение 24/7.</strong> Бесконтактно — приезжайте в любое удобное время.</p>
-      <p class="feature"><strong>Общая кухня.</strong> Всё оборудование, чтобы готовить самим, как дома.</p>
-      <p class="feature"><strong>Бесплатный Wi-Fi.</strong> Работает на всей территории отеля.</p>
-      <p class="feature"><strong>Центр города.</strong> 770 м до метро «Площадь Восстания».</p>
+  <section id="udobstva" class="theme-night">
+    <div class="section-head">
+      <span class="eyebrow">Удобства</span>
+      <h2>Всё, что нужно в городе</h2>
+      <p>Кухня как дома, Wi-Fi во всём отеле и Московский вокзал — около 14 минут пешком.</p>
     </div>
-    <figure class="photo-frame">
-      <img src="images-edit/kuhnya-1.webp" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async">
+    <dl class="features">
+      <div class="feature"><dt><span class="ico" aria-hidden="true">🔑</span>Заселение 24/7</dt><dd>Бесконтактно, в любое время.</dd></div>
+      <div class="feature"><dt><span class="ico" aria-hidden="true">🍳</span>Общая кухня</dt><dd>Готовьте сами, как дома.</dd></div>
+      <div class="feature"><dt><span class="ico" aria-hidden="true">📶</span>Бесплатный Wi-Fi</dt><dd>Во всём отеле.</dd></div>
+      <div class="feature"><dt><span class="ico" aria-hidden="true">🚇</span>Центр города</dt><dd>770 м до метро.</dd></div>
+    </dl>
+    <div class="ud-row">
+      <figure class="route" aria-label="Схема: 770 метров до метро «Площадь Восстания», 14 минут пешком до Московского вокзала">
+        <svg viewBox="0 0 520 170" aria-hidden="true">
+          <path class="r-line" d="M24 96 C 130 96, 170 44, 300 44"/>
+          <path class="r-dash" d="M24 96 C 150 96, 220 140, 496 140"/>
+          <path class="r-dash" d="M300 44 H496"/>
+          <circle class="r-node r-home" cx="24" cy="96" r="6"/>
+          <circle class="r-node" cx="300" cy="44" r="5"/>
+          <circle class="r-node" cx="496" cy="140" r="5"/>
+          <text x="24" y="128">ОТЕЛЬ</text>
+          <text class="r-big" x="24" y="150">Восстания, 22</text>
+          <text x="300" y="20" text-anchor="middle">М «ПЛ. ВОССТАНИЯ»</text>
+          <text class="r-big" x="300" y="76" text-anchor="middle">770 м</text>
+          <text x="496" y="114" text-anchor="end">МОСКОВСКИЙ ВОКЗАЛ</text>
+          <text class="r-big" x="496" y="168" text-anchor="end">14 мин пешком</text>
+        </svg>
+        <figcaption>Схема, не карта · подробнее — «Как добраться»</figcaption>
+      </figure>
+      <figure class="photo-frame">
+      <div class="pf-img"><img src="images-edit/kuhnya-1.webp" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async"></div>
       <figcaption>Общая кухня — для гостей всех номеров</figcaption>
     </figure>
+    </div>
   </section>
 
 
   <!-- ========== ФОРМА БРОНИРОВАНИЯ И КОНТАКТЫ ========== -->
-  <section id="kontakty" class="scroll-fade">
-    <div class="bf-head">
-      <h2>Забронировать номер</h2>
-      <p>Ответим в течение 10 минут</p>
-    </div>
+  <section id="kontakty">
+    <aside class="bf-aside">
+      <div class="section-head">
+        <span class="eyebrow"><span class="idx">04</span>Бронирование</span>
+        <h2>Забронировать номер</h2>
+        <p>Ответим за 10 минут. Это заявка, а не оплата.</p>
+      </div>
+      <div class="contacts">
+        <h3>Связаться напрямую</h3>
+        <p><span>Телефон</span><a href="tel:+79992213311">+7 999 221-33-11</a></p>
+        <p><span>Мессенджеры</span><a href="https://wa.me/79992213311">WhatsApp</a> · <a href="https://t.me/+79992213311">Telegram</a> · MAX</p>
+        <p><span>Адрес</span>ул. Восстания, 22, Санкт-Петербург</p>
+      </div>
+    </aside>
 
     <form id="bookingForm" class="booking-form" novalidate>
 
@@ -448,7 +516,7 @@
           <label class="messenger-card">
             <input type="radio" name="channel" value="whatsapp" checked>
             <div class="messenger-card-content">
-              <span class="messenger-icon">💬</span>
+              <span class="messenger-icon" aria-hidden="true">💬</span>
               <div class="messenger-name">WhatsApp</div>
               <div class="messenger-checkmark">✓</div>
             </div>
@@ -456,7 +524,7 @@
           <label class="messenger-card">
             <input type="radio" name="channel" value="telegram">
             <div class="messenger-card-content">
-              <span class="messenger-icon">✈️</span>
+              <span class="messenger-icon" aria-hidden="true">✈️</span>
               <div class="messenger-name">Telegram</div>
               <div class="messenger-checkmark">✓</div>
             </div>
@@ -464,7 +532,7 @@
           <label class="messenger-card">
             <input type="radio" name="channel" value="max">
             <div class="messenger-card-content">
-              <span class="messenger-icon">📱</span>
+              <span class="messenger-icon" aria-hidden="true">📱</span>
               <div class="messenger-name">MAX</div>
               <div class="messenger-checkmark">✓</div>
             </div>
@@ -485,33 +553,38 @@
       </label>
 
       <button type="submit" id="submitBtn" class="btn btn-large">Отправить запрос</button>
-      <p class="bf-safe">Это заявка, а не оплата — мы сначала подтвердим номер</p>
+      
       <div id="formNotice" class="form-notice" hidden></div>
     </form>
 
-    <hr class="section-divider">
+  </section>
 
-    <h3>Свяжитесь с нами</h3>
-    <p><strong>Адрес:</strong> ул. Восстания, 22, Санкт-Петербург</p>
-    <p><strong>Телефон:</strong> <a href="tel:+79992213311">+7 999 221-33-11</a></p>
-
-    <p>
-      <strong>Напишите нам:</strong><br>
-      <a href="https://wa.me/79992213311">WhatsApp</a> •
-      <a href="https://t.me/+79992213311">Telegram</a> •
-      MAX: +7 999 221-33-11
-    </p>
+  <!-- ========== ФИНАЛ: светящееся кольцо и связь с нами ========== -->
+  <section class="finale theme-night" id="finale">
+    <div class="finale-star" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 0 C12.6 7.4 16.6 11.4 24 12 C16.6 12.6 12.6 16.6 12 24 C11.4 16.6 7.4 12.6 0 12 C7.4 11.4 11.4 7.4 12 0 Z"/></svg>
+    </div>
+    <div class="finale-text">
+      <h2>Спокойной ночи<br>под <em>звёздным небом</em>.</h2>
+      <p>Остались вопросы? Позвоните или напишите — ответим за 10 минут.</p>
+      <div class="finale-actions">
+        <a class="btn" href="#kontakty">Забронировать</a>
+        <a class="btn btn-ghost" href="tel:+79992213311">+7 999 221-33-11</a>
+        <a class="more-link" href="https://wa.me/79992213311" target="_blank" rel="noopener">Написать в WhatsApp</a>
+      </div>
+    </div>
   </section>
 
   <!-- ========== МОДАЛЬНОЕ ОКНО ДЛЯ ПОДРОБНОГО ОПИСАНИЯ НОМЕРА ========== -->
   <div id="roomModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalRoomName">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <span class="close-btn" role="button" tabindex="0" aria-label="Закрыть">&times;</span>
       <h2 id="modalRoomName">Название номера</h2>
       <div id="modalGallery" class="card-gallery modal-gallery"></div>
       <p id="modalRoomDescription">Описание номера</p>
 
-      <h3 style="margin-top: 24px; font-size: 20px;">Удобства:</h3>
+      <h3 class="modal-sub">Удобства</h3>
       <ul id="modalRoomAmenities" class="modal-amenities">
       </ul>
 
@@ -772,7 +845,7 @@
       e.preventDefault();
       e.stopImmediatePropagation();
       stepRoom.classList.add('is-missing');
-      showNotice('⚠️ Выберите номер — нажмите на одну из карточек.');
+      showNotice('Выберите номер — нажмите на одну из карточек.');
       stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, true);
     form.addEventListener('reset', () => setTimeout(() => { syncRoomCards(); updateRoomStatus(); }, 0));
@@ -823,7 +896,7 @@
       const c = calcPrice();
       const esc = escHtml;
       showNotice(`
-        <p class="ok-head">✅ <strong>Заявка${id ? ' №' + esc(id) : ''} отправлена</strong></p>
+        <p class="ok-head"><strong>Заявка${id ? ' №' + esc(id) : ''} отправлена</strong></p>
         <p class="ok-sum">${esc(data.room)} · ${formatDate(data.checkin)} – ${formatDate(data.checkout)}` +
           (c ? ` · ${c.nights} ${nightsWord(c.nights)} · <strong>${rub(c.total)}</strong>` : '') + `</p>
         <ol class="ok-steps">
@@ -906,7 +979,7 @@
           }
           console.warn('Бот не принял заявку:', res.error);
           const why = BOT_ERRORS[res.error];
-          showNotice(why ? '⚠️ ' + why : fallbackText(message));
+          showNotice(why ? why : fallbackText(message));
         })
         .catch(err => {
           console.warn('Заявка не отправилась:', err);
@@ -923,13 +996,13 @@
 
     // Сервер не ответил вовремя: заявка могла всё-таки записаться, поэтому не просим отправлять её заново
     function timeoutText(message) {
-      return '⚠️ Сервер долго не отвечает — заявка могла дойти, а могла и нет. ' +
+      return 'Сервер долго не отвечает — заявка могла дойти, а могла и нет. ' +
         'Чтобы не потерять бронь, позвоните <a href="tel:+79992213311">+7 (999) 221-33-11</a> ' +
         `или <a href="https://wa.me/79992213311?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">напишите в WhatsApp</a> (текст уже готов).`;
     }
 
     function fallbackText(message) {
-      return '⚠️ Не получилось отправить заявку автоматически. ' +
+      return 'Не получилось отправить заявку автоматически. ' +
         `<a href="https://wa.me/79992213311?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">Отправить её в WhatsApp</a> ` +
         '(текст уже готов) или позвоните <a href="tel:+79992213311">+7 (999) 221-33-11</a>.';
     }
@@ -947,31 +1020,31 @@
       // Проверяем по порядку шагов и показываем, что именно не заполнено
       if (!room) {
         stepRoom.classList.add('is-missing');
-        showNotice('⚠️ Выберите номер — нажмите на одну из карточек.');
+        showNotice('Выберите номер — нажмите на одну из карточек.');
         stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
       if (!checkin || !checkout) {
-        showNotice('⚠️ Выберите даты заезда и выезда.');
+        showNotice('Выберите даты заезда и выезда.');
         (document.getElementById('checkinBtn') || checkinInput).focus();
         return;
       }
       if (name.length < 2) {
-        showNotice('⚠️ Укажите ваше имя.');
+        showNotice('Укажите ваше имя.');
         document.getElementById('name').focus();
         return;
       }
       if (phone.replace(/\D/g, '').length !== 11) {
-        showNotice('⚠️ Проверьте номер телефона — нужно 11 цифр.');
+        showNotice('Проверьте номер телефона — нужно 11 цифр.');
         phoneInput.focus();
         return;
       }
       if (checkout <= checkin) {
-        showNotice('⚠️ Дата выезда должна быть позже даты заезда.');
+        showNotice('Дата выезда должна быть позже даты заезда.');
         return;
       }
       if (!document.getElementById('consent').checked) {
-        showNotice('⚠️ Отметьте согласие на обработку персональных данных.');
+        showNotice('Отметьте согласие на обработку персональных данных.');
         document.getElementById('consent').focus();
         return;
       }
@@ -1002,13 +1075,13 @@
       if (channel === 'whatsapp') {
         // WhatsApp умеет сам подставлять текст в сообщение
         window.open(`https://wa.me/${hotelPhone}?text=${encodeURIComponent(message)}`, '_blank');
-        showNotice('✅ Открываем WhatsApp — текст заявки уже в сообщении, осталось нажать «Отправить».');
+        showNotice('Открываем WhatsApp — текст заявки уже в сообщении, осталось нажать «Отправить».');
       } else if (channel === 'telegram') {
         // Telegram НЕ умеет подставлять текст в чат по номеру — поэтому копируем
         window.open(`https://t.me/+${hotelPhone}`, '_blank');
-        showNotice('✅ Открываем Telegram. Текст заявки скопирован — вставьте его в чат (долгое нажатие → «Вставить») и отправьте.');
+        showNotice('Открываем Telegram. Текст заявки скопирован — вставьте его в чат (долгое нажатие → «Вставить») и отправьте.');
       } else if (channel === 'max') {
-        showNotice('✅ Текст заявки скопирован. Откройте MAX, найдите нас по номеру <strong>+7 (999) 221-33-11</strong>, вставьте текст и отправьте.');
+        showNotice('Текст заявки скопирован. Откройте MAX, найдите нас по номеру <strong>+7 (999) 221-33-11</strong>, вставьте текст и отправьте.');
       }
 
       afterSubmit();
@@ -1071,7 +1144,7 @@
           <p class="qbr-title">${dates} · ${nights} ${nightsWord(nights)}${!loaded ? ' · <span class="qbr-wait">проверяем свободные номера…</span>' : ''}</p>
           <div class="qbr-list">${cards}</div>
           ${loaded && !anyFree ? '<p class="qbr-empty">На эти даты всё занято — попробуйте соседние даты или позвоните нам: <a href="tel:+79992213311">+7 999 221-33-11</a></p>' : ''}
-          <a class="qbr-more" href="pages/availability.html?checkin=${a}&checkout=${b}">Календарь занятости по месяцам →</a>`;
+          <a class="qbr-more" href="pages/availability.html?checkin=${a}&checkout=${b}">Календарь занятости по месяцам ›</a>`;
         box.hidden = false;
       }
 
@@ -1177,24 +1250,24 @@
     const roomsData = {
       'Эконом маленький': {
         description: 'Уютный компактный номер, рассчитанный на одного гостя. Идеален для коротких поездок в центр города. В номере есть всё необходимое для комфорта.',
-        amenities: ['🛏️ Кровать', '🚿 Общая душевая', '🧴 Полотенца', '🧥 Вешалка для одежды', '📶 Wi-Fi', '🍳 Общая кухня']
+        amenities: ['Кровать', 'Общая душевая', 'Полотенца', 'Вешалка для одежды', 'Wi-Fi', 'Общая кухня']
       },
       'Эконом большой': {
         description: 'Больше места для отдыха и комфорта. Просторный номер для тех, кто любит больше свободного пространства.',
-        amenities: ['🛏️ Большая кровать', '🚿 Общая душевая', '🧥 Вешалка для одежды', '📶 Wi-Fi', '🍳 Общая кухня']
+        amenities: ['Большая кровать', 'Общая душевая', 'Вешалка для одежды', 'Wi-Fi', 'Общая кухня']
       },
       'Стандарт комфорт': {
         description: 'Светлый номер с удобной кроватью и личным душем. Современный интерьер, все необходимое для комфортного пребывания в городе.',
-        amenities: ['🛏️ Кровать премиум', '🚿 Личный душ', '📺 Телевизор Smart TV', '🗄️ Шкаф', '📶 Wi-Fi', '🍳 Общая кухня']
+        amenities: ['Кровать премиум', 'Личный душ', 'Телевизор Smart TV', 'Шкаф', 'Wi-Fi', 'Общая кухня']
       },
       'Стандарт премиум': {
         description: 'Просторный номер с кофейным столиком и удобствами. Идеальный выбор для гостей, ценящих комфорт и качество обслуживания.',
-        amenities: ['🛏️ Кровать премиум класса', '🚿 Личный душ', '📺 Smart TV', '☕ Кофейный столик', '🗄️ Шкаф', '📶 Wi-Fi', '🍳 Общая кухня']
+        amenities: ['Кровать премиум класса', 'Личный душ', 'Smart TV', 'Кофейный столик', 'Шкаф', 'Wi-Fi', 'Общая кухня']
       }
     };
 
     function closeModal() {
-      modal.classList.remove('show');
+      if (window.ZNSheet) ZNSheet.close(); else modal.classList.remove('show');
     }
 
     // ========== ОТКРЫТИЕ ПОДРОБНОСТЕЙ НОМЕРА — ТОЛЬКО ПО НАЖАТИЮ ==========
@@ -1247,15 +1320,18 @@
       old.replaceWith(gallery);
       if (window.ZNGallery) ZNGallery.setup(gallery);
 
+      const AMEN_ICONS = {"Кровать": "🛏️", "Большая кровать": "🛏️", "Кровать премиум": "🛏️", "Кровать премиум класса": "🛏️", "Общая душевая": "🚿", "Личный душ": "🚿", "Полотенца": "🧴", "Вешалка": "🧥", "Вешалка для одежды": "🧥", "Wi-Fi": "📶", "Smart TV": "📺", "Телевизор Smart TV": "📺", "Шкаф": "🗄️", "Кофейный столик": "☕", "Общая кухня": "🍳"};
       const amenitiesList = document.getElementById('modalRoomAmenities');
       amenitiesList.innerHTML = '';
       roomData.amenities.forEach(amenity => {
         const li = document.createElement('li');
-        li.textContent = amenity;
+        const ic = AMEN_ICONS[amenity];
+        if (ic) { const sp = document.createElement('span'); sp.className = 'ico'; sp.setAttribute('aria-hidden', 'true'); sp.textContent = ic; li.appendChild(sp); }
+        li.appendChild(document.createTextNode(amenity));
         amenitiesList.appendChild(li);
       });
 
-      modal.classList.add('show');
+      if (window.ZNSheet) ZNSheet.open(card); else modal.classList.add('show');
     }
 
     // «Забронировать этот номер» в окне — выбираем номер в форме и идём к ней
@@ -1306,8 +1382,9 @@
   </script>
   <script src="datepicker.js?v=20261014b"></script>
   <script src="gallery.js?v=20261010a"></script>
-  <script src="effects.js?v=20261010a"></script>
-  <script src="menu.js?v=20261010a"></script>
+  <script src="menu.js?v=20261019a"></script>
+  <script src="story.js?v=20261019b"></script>
+  <script src="ui.js?v=20261019b"></script>
 
 </body>
 

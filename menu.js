@@ -100,11 +100,16 @@
   if (!cta) return;
   const bookHref = cta.getAttribute('href');
 
+  // Самая низкая цена — из rooms.js (если файл подключён на странице)
+  const minPrice = window.ZN_ROOMS
+    ? Math.min.apply(null, window.ZN_ROOMS.map(r => r.price)).toLocaleString('ru-RU') + ' ₽'
+    : '1 500 ₽';
+
   const bar = document.createElement('div');
   bar.className = 'm-cta';
   bar.setAttribute('aria-hidden', 'true');
   bar.innerHTML =
-    '<div class="m-cta-price"><small>Номера</small><b>от 1 500 ₽<span> / ночь</span></b></div>' +
+    '<div class="m-cta-price"><small>Номера</small><b>от ' + minPrice + '<span> / ночь</span></b></div>' +
     '<a class="m-cta-chat" href="https://wa.me/79992213311" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" tabindex="-1">' +
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5V6.8A2.8 2.8 0 0 1 6.8 4h10.4A2.8 2.8 0 0 1 20 6.8v6.9a2.8 2.8 0 0 1-2.8 2.8H8.3L4 20z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></svg>' +
     '</a>' +
@@ -116,7 +121,10 @@
 
   function update() {
     raf = 0;
-    const want = window.scrollY > window.innerHeight * 0.6 && !formVisible;
+    // на главной — только после заставки (там своя кнопка «Выбрать даты»)
+    const story = document.getElementById('story');
+    const from = story ? story.offsetTop + story.offsetHeight - window.innerHeight * 0.4 : window.innerHeight * 0.6;
+    const want = window.scrollY > from && !formVisible;
     if (want === shown) return;
     shown = want;
     bar.classList.toggle('show', want);

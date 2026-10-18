@@ -23,9 +23,9 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
-  <link rel="stylesheet" href="../style.css?v=20261010a">
-  <script src="../theme.js?v=20261010a"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../site.css?v=20261019b">
+  <script src="../theme.js?v=20261014a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
 </head>
 
@@ -78,22 +78,22 @@
       <div class="quiz-q" data-q="guests">
         <p class="quiz-title"><span class="bf-num">1</span>Сколько вас?</p>
         <div class="quiz-opts">
-          <button type="button" class="quiz-opt" data-v="1">🧍 Я один</button>
-          <button type="button" class="quiz-opt" data-v="2">👥 Нас двое</button>
+          <button type="button" class="quiz-opt" data-v="1"><span class="ico" aria-hidden="true">🧍</span>Я один</button>
+          <button type="button" class="quiz-opt" data-v="2"><span class="ico" aria-hidden="true">👥</span>Нас двое</button>
         </div>
       </div>
       <div class="quiz-q" data-q="shower">
         <p class="quiz-title"><span class="bf-num">2</span>Нужен свой душ в номере?</p>
         <div class="quiz-opts">
-          <button type="button" class="quiz-opt" data-v="own">🚿 Да, обязательно</button>
-          <button type="button" class="quiz-opt" data-v="any">👌 Подойдёт общий</button>
+          <button type="button" class="quiz-opt" data-v="own"><span class="ico" aria-hidden="true">🚿</span>Да, обязательно</button>
+          <button type="button" class="quiz-opt" data-v="any"><span class="ico" aria-hidden="true">👌</span>Подойдёт общий</button>
         </div>
       </div>
       <div class="quiz-q" data-q="prio">
         <p class="quiz-title"><span class="bf-num">3</span>Что важнее?</p>
         <div class="quiz-opts">
-          <button type="button" class="quiz-opt" data-v="price">💰 Цена пониже</button>
-          <button type="button" class="quiz-opt" data-v="comfort">✨ Больше комфорта</button>
+          <button type="button" class="quiz-opt" data-v="price"><span class="ico" aria-hidden="true">💰</span>Цена пониже</button>
+          <button type="button" class="quiz-opt" data-v="comfort"><span class="ico" aria-hidden="true">✨</span>Больше комфорта</button>
         </div>
       </div>
 
@@ -264,7 +264,7 @@
             ${answers.guests === '2' ? '<p class="qr-note">Сколько гостей можно разместить в номере, администратор уточнит при бронировании.</p>' : ''}
             <div class="qr-actions">
               <a class="btn" href="${bookUrl(best)}">Забронировать</a>
-              ${alt ? `<a class="gal-more" href="${bookUrl(alt)}">Или ${alt} — ${rub(ROOMS[alt].price)} →</a>` : ''}
+              ${alt ? `<a class="gal-more" href="${bookUrl(alt)}">Или ${alt} — ${rub(ROOMS[alt].price)} ›</a>` : ''}
             </div>
           </div>`;
         result.hidden = false;
@@ -294,8 +294,8 @@
     document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
   </script>
 
-  <script src="../effects.js?v=20261010a"></script>
-  <script src="../menu.js?v=20261010a"></script>
+  <script src="../menu.js?v=20261019a"></script>
+  <script src="../ui.js?v=20261019b"></script>
 
 </body>
 

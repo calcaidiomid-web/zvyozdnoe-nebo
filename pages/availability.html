@@ -23,9 +23,9 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
-  <link rel="stylesheet" href="../style.css?v=20261010a">
-  <script src="../theme.js?v=20261010a"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../site.css?v=20261019b">
+  <script src="../theme.js?v=20261014a"></script>
   <script src="../rooms.js?v=20261014a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
   <style>
@@ -252,9 +252,9 @@
     <h2>Календарь по месяцам</h2>
 
     <div class="cal-legend">
-      <span><i style="background: rgba(39, 174, 96, 0.35)"></i>Свободны все</span>
-      <span><i style="background: rgba(212, 175, 55, 0.5)"></i>Свободны не все (цифра — сколько)</span>
-      <span><i style="background: rgba(231, 76, 60, 0.35)"></i>Всё занято</span>
+      <span><i class="cal-free"></i>Свободны все</span>
+      <span><i class="cal-partial"></i>Свободны не все (цифра — сколько)</span>
+      <span><i class="cal-full"></i>Всё занято</span>
     </div>
 
     <div class="cal-nav">
@@ -272,7 +272,7 @@
     </p>
 
     <div class="faq-item">
-      <h4>💡 Совет</h4>
+      <h4><span class="ico" aria-hidden="true">💡</span>Совет</h4>
       <p>
         Сезонные пики активности: май-сентябрь.
         В другое время года номеров обычно больше в наличии.
@@ -352,8 +352,8 @@
 
   <script src="../availability.js?v=20261014b"></script>
   <script src="../datepicker.js?v=20261014b"></script>
-  <script src="../effects.js?v=20261010a"></script>
-  <script src="../menu.js?v=20261010a"></script>
+  <script src="../menu.js?v=20261019a"></script>
+  <script src="../ui.js?v=20261019b"></script>
 
 </body>
 

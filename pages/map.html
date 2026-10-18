@@ -23,9 +23,9 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap">
-  <link rel="stylesheet" href="../style.css?v=20261010a">
-  <script src="../theme.js?v=20261010a"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../site.css?v=20261019b">
+  <script src="../theme.js?v=20261014a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
   <style>
     #map {
@@ -113,8 +113,8 @@
         <p class="addr-big" id="hotelAddr">ул. Восстания, 22, Санкт-Петербург, 191014</p>
       </div>
       <div class="addr-actions">
-        <button type="button" class="btn btn-outline" id="copyAddr">📋 Скопировать адрес</button>
-        <button type="button" class="btn btn-outline" id="shareAddr" hidden>📤 Отправить</button>
+        <button type="button" class="btn btn-outline" id="copyAddr"><span class="ico" aria-hidden="true">📋</span>Скопировать адрес</button>
+        <button type="button" class="btn btn-outline" id="shareAddr" hidden><span class="ico" aria-hidden="true">📤</span>Отправить</button>
       </div>
       <p class="copy-ok" id="copyOk" role="status"></p>
     </div>
@@ -122,15 +122,15 @@
     <h3>Построить маршрут до отеля</h3>
     <p>Откроются Яндекс Карты: маршрут проложится от того места, где вы сейчас.</p>
     <div class="route-btns">
-      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=pd" target="_blank" rel="noopener"><span>🚶</span>Пешком</a>
-      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=mt" target="_blank" rel="noopener"><span>🚇</span>На транспорте</a>
-      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=auto" target="_blank" rel="noopener"><span>🚕</span>На машине или такси</a>
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=pd" target="_blank" rel="noopener"><span class="ico" aria-hidden="true">🚶</span>Пешком</a>
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=mt" target="_blank" rel="noopener"><span class="ico" aria-hidden="true">🚇</span>На транспорте</a>
+      <a class="route-btn" href="https://yandex.ru/maps/?rtext=~59.938076%2C30.360065&amp;rtt=auto" target="_blank" rel="noopener"><span class="ico" aria-hidden="true">🚕</span>На машине или такси</a>
     </div>
 
     <h3>Как доехать</h3>
 
     <div class="direction-card">
-      <h4>🚇 На метро</h4>
+      <h4><span class="ico" aria-hidden="true">🚇</span>На метро</h4>
       <p>
         Ближайшая станция — «Площадь Восстания», 770 м, около 10 минут пешком.
         Рядом также «Чернышевская» — 810 м.
@@ -138,19 +138,19 @@
     </div>
 
     <div class="direction-card">
-      <h4>🚆 С Московского вокзала</h4>
+      <h4><span class="ico" aria-hidden="true">🚆</span>С Московского вокзала</h4>
       <p>
         Около 1,1 км — примерно 14 минут пешком.
-        <a href="moskovsky-vokzal.html">Маршрут по шагам →</a>
+        <a href="moskovsky-vokzal.html">Маршрут по шагам ›</a>
       </p>
     </div>
 
     <div class="direction-card">
-      <h4>🚕 На такси</h4>
+      <h4><span class="ico" aria-hidden="true">🚕</span>На такси</h4>
       <p>
         Укажите в приложении адрес: ул. Восстания, 22. Время в пути от аэропорта Пулково
         зависит от пробок — точное покажет приложение такси.
-        <a href="location.html">Все способы добраться →</a>
+        <a href="location.html">Все способы добраться ›</a>
       </p>
     </div>
 
@@ -246,8 +246,8 @@
     })();
   </script>
 
-  <script src="../effects.js?v=20261010a"></script>
-  <script src="../menu.js?v=20261010a"></script>
+  <script src="../menu.js?v=20261019a"></script>
+  <script src="../ui.js?v=20261019b"></script>
 
 </body>
 
