@@ -4,7 +4,7 @@
 //  2. Первый экран внутренних страниц: звёздное небо и маленькая звезда.
 //  3. Блоки мягко появляются при прокрутке (пружина без отскока).
 //  4. Цифры об отеле досчитываются, когда видны.
-//  5. Плавная прокрутка колесом мыши (только компьютер).
+//  5. (Прокрутка колесом — родная, браузерная, без перехвата.)
 //  6. Пружины (как в iOS): «отклик» (response) и «затухание» (damping).
 //  7. Окно номера: на компьютере вырастает из карточки и уходит обратно,
 //     на телефоне — шторка снизу: тянется за пальцем 1:1, бросок с инерцией.
@@ -26,7 +26,8 @@
     header.classList.toggle('is-scrolled', window.scrollY > 8);
     if (night) header.classList.toggle('theme-night', night.getBoundingClientRect().bottom > header.offsetHeight);
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
+  let scrollRaf = 0;
+  window.addEventListener('scroll', () => { if (!scrollRaf) scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; onScroll(); }); }, { passive: true });
 
   // ---------- 2. Первый экран внутренних страниц ----------
   const hero = document.querySelector('section.hero');
@@ -34,19 +35,9 @@
     hero.classList.add('page-hero', 'theme-night');
     const sky = document.createElement('div');
     sky.className = 'ph-sky'; sky.setAttribute('aria-hidden', 'true');
-    let seed = 3;
-    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
     const many = window.innerWidth < 760 ? 30 : 64;
-    for (let i = 0; i < many; i++) {
-      const s = document.createElement('i');
-      s.style.left = (rnd() * 100).toFixed(2) + '%';
-      s.style.top = (rnd() * 100).toFixed(2) + '%';
-      s.style.setProperty('--s', (0.4 + rnd()).toFixed(2));
-      s.style.animationDelay = (-rnd() * 6).toFixed(2) + 's';
-      s.style.animationDuration = (4 + rnd() * 5).toFixed(2) + 's';
-      sky.appendChild(s);
-    }
     hero.prepend(sky);
+    if (window.ZNSky) ZNSky(sky, { count: many, size: 2, spread: 1, alpha: .7, seed: 3 });
     const star = document.createElement('div');
     star.className = 'ph-star'; star.setAttribute('aria-hidden', 'true');
     star.innerHTML = '<i class="ph-halo"></i><svg viewBox="-100 -100 200 200"><path d="M0-100C2-30 3-6 7-7 6-3 30-2 100 0 30 2 6 3 7 7 3 6 2 30 0 100-2 30-3 6-7 7-6 3-30 2-100 0-30-2-6-3-7-7-3-6-2-30 0-100Z"/></svg><i class="ph-core"></i>';
@@ -103,7 +94,8 @@
       const el = e.target, to = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now(), dur = 1400;
       (function tick(now) {
         const k = Math.min(1, (now - t0) / dur), v = 1 - Math.pow(1 - k, 4);
-        el.textContent = fmt(Math.round(to * v)) + suf;
+        // меняем сам текст, а не узел — так браузер не пересчитывает стили всей страницы
+        const tn = el.firstChild; if (tn && tn.nodeType === 3) tn.data = fmt(Math.round(to * v)) + suf; else el.textContent = fmt(Math.round(to * v)) + suf;
         if (k < 1) requestAnimationFrame(tick);
       })(t0);
     }), { threshold: 0.6 });
@@ -111,45 +103,9 @@
   }
 })();
 
-// ---------- 5. Плавная прокрутка колесом мыши (только компьютер) ----------
-(function () {
-  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!fine || reduce) return;
-  const root = document.documentElement;
-  let cur = window.scrollY, target = cur, raf = 0, last = 0, mine = false;
-  const maxY = () => root.scrollHeight - window.innerHeight;
-  function canScrollInside(el, dy) {
-    for (; el && el !== document.body && el !== root; el = el.parentElement) {
-      const cs = getComputedStyle(el);
-      if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1) {
-        if (dy > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0) return true;
-      }
-    }
-    return false;
-  }
-  const locked = () => getComputedStyle(document.body).overflow === 'hidden' || getComputedStyle(root).overflow === 'hidden';
-  function step(now) {
-    const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
-    last = now;
-    cur += (target - cur) * (1 - Math.exp(-dt * 11));
-    if (Math.abs(target - cur) < 0.5) cur = target;
-    mine = true;
-    window.scrollTo({ top: cur, behavior: 'instant' });
-    if (cur !== target) raf = requestAnimationFrame(step);
-    else { raf = 0; last = 0; setTimeout(() => { mine = false; }, 60); }
-  }
-  window.addEventListener('wheel', e => {
-    if (e.ctrlKey || e.defaultPrevented || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    const dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
-    if (!dy || locked() || canScrollInside(e.target, dy)) return;
-    e.preventDefault();
-    if (!raf) cur = target = window.scrollY;
-    target = Math.max(0, Math.min(maxY(), target + dy));
-    if (!raf) { last = 0; raf = requestAnimationFrame(step); }
-  }, { passive: false });
-  window.addEventListener('scroll', () => { if (!raf && !mine) cur = target = window.scrollY; }, { passive: true });
-})();
+// ---------- 5. Прокрутка колесом — родная, браузерная ----------
+// Раньше колесо мыши перехватывалось и «сглаживалось» скриптом. Это давало
+// задержку и подлагивания: браузер сам прокручивает плавнее и без нагрузки.
 
 // ---------- 6. Пружина, как в iOS ----------
 // response — за сколько секунд значение примерно доходит до цели; damping 1 — без отскока.
@@ -351,4 +307,52 @@ window.ZNSpring = function (opts) {
     sp = ZNSpring({ from: scrollY, to, response: Math.min(1.1, 0.5 + dist / 9000), damping: 1, onUpdate: v => window.scrollTo({ top: v, behavior: 'instant' }), onDone: () => { sp = null; } }).start();
     if (history.replaceState) history.replaceState(null, '', url.hash);
   });
+})();
+
+// ---------- 10. «Перейти к содержанию» для клавиатуры и экранных дикторов ----------
+(function () {
+  const header = document.querySelector('header');
+  if (!header) return;
+  let main = header.nextElementSibling;
+  while (main && !/^(SECTION|MAIN|DIV)$/.test(main.tagName)) main = main.nextElementSibling;
+  if (!main) return;
+  if (!main.id) main.id = 'content';
+  main.setAttribute('tabindex', '-1');
+  main.style.outline = 'none';
+  const a = document.createElement('a');
+  a.className = 'skip-link'; a.href = '#' + main.id; a.textContent = 'Перейти к содержанию';
+  document.body.prepend(a);
+  a.addEventListener('click', e => { e.preventDefault(); main.focus({ preventScroll: true }); main.scrollIntoView(); });
+})();
+
+// ---------- 11. Сторож плавности ----------
+// Пока на экране идут анимации, считаем кадры. Если устройство не успевает
+// (медленные кадры встречаются часто), включаем лёгкий режим (класс lite).
+(function () {
+  if (!window.ZNPerf || ZNPerf.isLite() || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let raf = 0, t = [], last = 0, until = 0, checks = 0;
+  function judge() {
+    if (t.length < 24) return;
+    const s = t.slice().sort((a, b) => a - b), med = s[s.length >> 1];
+    const slow = t.filter(x => x > 34).length / t.length;
+    checks++;
+    if (med > 24 || slow > 0.22) ZNPerf.setLite();
+  }
+  function frame(now) {
+    if (document.hidden) { raf = 0; t = []; last = 0; return; }
+    if (last) { const d = now - last; if (d < 250) t.push(d); }   // долгие паузы (вкладка свёрнута) не считаем
+    last = now;
+    if (now < until && !ZNPerf.isLite()) raf = requestAnimationFrame(frame);
+    else { raf = 0; last = 0; judge(); t = []; }
+  }
+  function watch(ms) {
+    if (ZNPerf.isLite() || checks >= 6 || raf) return;
+    until = performance.now() + ms; t = []; last = 0;
+    raf = requestAnimationFrame(frame);
+  }
+  // первая проверка — после загрузки (идёт появление звезды), дальше — во время прокрутки
+  const start = () => setTimeout(() => watch(2500), 900);
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+  let cool = 0;
+  window.addEventListener('scroll', () => { if (!raf && performance.now() > cool) { cool = performance.now() + 4000; watch(1800); } }, { passive: true });
 })();

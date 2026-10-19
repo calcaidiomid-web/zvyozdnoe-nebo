@@ -62,7 +62,7 @@
     idx = (i + list.length) % list.length;
     const src = list[idx];
     box.classList.remove('lb-in');
-    img.src = src.currentSrc || src.src;
+    img.src = src.src;                            // всегда полное фото
     img.alt = src.alt;
     cap.textContent = src.dataset.caption || src.alt || '';
     count.textContent = list.length > 1 ? `${idx + 1} / ${list.length}` : '';
@@ -70,7 +70,7 @@
     void img.offsetWidth;                         // перезапуск анимации появления
     box.classList.add('lb-in');
     // соседние фото подгружаем заранее
-    [idx - 1, idx + 1].forEach(k => { const n = list[(k + list.length) % list.length]; if (n) new Image().src = n.currentSrc || n.src; });
+    [idx - 1, idx + 1].forEach(k => { const n = list[(k + list.length) % list.length]; if (n) new Image().src = n.src; });
   }
 
   function open(group, start) {

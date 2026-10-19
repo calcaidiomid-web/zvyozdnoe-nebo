@@ -1,3 +1,89 @@
+// ---------- Лёгкий режим для слабых телефонов и компьютеров ----------
+// Если устройство слабое (мало памяти/ядер, режим экономии трафика) или сайт
+// начинает «подлагивать» (это замечает ui.js), на <html> ставится класс lite:
+// тяжёлые украшения (размытое стекло, блики, искры) выключаются, вид остаётся тем же.
+(function () {
+  var root = document.documentElement, n = navigator, c = n.connection || {};
+  var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  var lite = !!c.saveData || (n.hardwareConcurrency && n.hardwareConcurrency <= 2) ||
+             (n.deviceMemory && (n.deviceMemory <= 2 || (coarse && n.deviceMemory <= 4)));
+  try { if (sessionStorage.getItem('zn-lite') === '1') lite = true; } catch (e) {}
+  if (lite) root.classList.add('lite');
+  var subs = [];
+  window.ZNPerf = {
+    isLite: function () { return root.classList.contains('lite'); },
+    setLite: function () {
+      if (root.classList.contains('lite')) return;
+      root.classList.add('lite');
+      try { sessionStorage.setItem('zn-lite', '1'); } catch (e) {}
+      subs.forEach(function (f) { try { f(); } catch (e) {} });
+    },
+    onLite: function (f) { subs.push(f); }
+  };
+
+  // Звёздное небо одним рисунком, а не сотнями отдельных точек: звёзды рисуются
+  // один раз в картинку, дальше браузер просто сдвигает готовые слои.
+  // Неподвижные звёзды — фон самого неба, мерцающие — один слой поверх (всего 2 слоя).
+  window.ZNSky = function (host, o) {
+    var seed = o.seed || 7;
+    var rnd = function () { return (seed = (seed * 9301 + 49297) % 233280) / 233280; };
+    var stars = [], layers = [], urls = [], lastW = 0, lastH = 0, rt = 0;
+    for (var i = 0; i < o.count; i++) stars.push({ x: rnd(), y: rnd(), r: o.size * (0.4 + rnd() * (o.spread || 1)) / 2, g: rnd() });
+    var tw = document.createElement('div'); tw.className = 'sky-c sky-c1'; host.appendChild(tw);
+    layers.push(host, tw);
+    function draw() {
+      var w = host.clientWidth, h = host.clientHeight;
+      // перерисовываем, только если размер заметно изменился (не из-за строки адреса на телефоне)
+      if (!w || !h || (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) / h < 0.12)) return;
+      lastW = w; lastH = h;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      layers.forEach(function (el, k) {
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        var x = cv.getContext('2d');
+        x.setTransform(dpr, 0, 0, dpr, 0, 0);
+        x.fillStyle = '#f4ecd6';
+        x.globalAlpha = k ? 1 : (o.alpha || .6);
+        stars.forEach(function (st) {
+          if ((st.g < .62 ? 0 : 1) !== k) return;
+          x.beginPath(); x.arc(st.x * w, st.y * h, Math.max(.45, st.r), 0, 6.283); x.fill();
+        });
+        var put = function (url) {
+          if (urls[k]) URL.revokeObjectURL(urls[k]);
+          urls[k] = url;
+          el.style.backgroundImage = 'url(' + url + ')';
+          el.style.backgroundSize = '100% 100%'; el.style.backgroundRepeat = 'no-repeat';
+        };
+        if (cv.toBlob) cv.toBlob(function (bl) { if (bl) put(URL.createObjectURL(bl)); }, 'image/png');
+        else el.style.backgroundImage = 'url(' + cv.toDataURL() + ')';
+      });
+    }
+    draw();
+    var later = function () { clearTimeout(rt); rt = setTimeout(draw, 150); };
+    if ('ResizeObserver' in window) new ResizeObserver(later).observe(host); else window.addEventListener('resize', later);
+    twinkles.push({ el: tw, host: host, lo: o.lo == null ? .15 : o.lo, hi: o.hi == null ? .85 : o.hi, period: o.period || 5000, phase: o.phase || 0, on: true });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { twinkles.forEach(function (t) { if (t.host === host) t.on = e[0].isIntersecting; }); }).observe(host);
+    startTwinkle();
+    return { redraw: function () { lastW = 0; draw(); } };
+  };
+
+  // Мерцание: яркость меняется 5 раз в секунду, а не 60 — глазу незаметно,
+  // а видеокарте не нужно перерисовывать весь экран в каждом кадре.
+  var twinkles = [], twTimer = 0;
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function twinkleTick() {
+    if (document.hidden || root.classList.contains('theme-switching')) return;
+    var now = performance.now(), lite = root.classList.contains('lite');
+    twinkles.forEach(function (t) {
+      if (!t.on) return;
+      var v = lite || still ? (t.lo + t.hi) / 2 : t.lo + (t.hi - t.lo) * (0.5 + 0.5 * Math.sin(now / t.period * 6.2832 + t.phase));
+      v = Math.round(v * 40) / 40;
+      if (v !== t.v) { t.v = v; t.el.style.opacity = v; }
+    });
+  }
+  function startTwinkle() { if (!twTimer) { twTimer = setInterval(twinkleTick, 200); twinkleTick(); } }
+})();
+
 // theme.js — переключатель светлой / тёмной темы.
 // Подключается в <head>, чтобы нужная тема включалась ДО отрисовки страницы (без «вспышки» белого).
 (function () {
@@ -16,7 +102,7 @@
     root.setAttribute('data-theme', dark ? 'dark' : 'light');
     var meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = 'theme-color'; document.head.appendChild(meta); }
-    meta.content = dark ? '#0e1018' : '#ffffff';
+    meta.content = dark ? '#121317' : '#ffffff';
     if (button) {
       button.setAttribute('aria-pressed', dark ? 'true' : 'false');
       button.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');

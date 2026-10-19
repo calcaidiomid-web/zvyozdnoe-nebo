@@ -13,7 +13,7 @@
   <meta property="og:url" content="https://zvyozdnoe-nebo.ru/">
   <meta property="og:title" content="Мини-отель «Звёздное небо» в центре Петербурга — номера от 1 500 ₽">
   <meta property="og:description" content="Мини-отель «Звёздное небо» в центре Санкт-Петербурга: ул. Восстания, 22, 770 м от метро «Площадь Восстания». 9 номеров от 1 500 ₽ за ночь, бесконтактное заселение 24/7.">
-  <meta property="og:image" content="https://zvyozdnoe-nebo.ru/images-edit/og.jpg">
+  <meta property="og:image" content="https://zvyozdnoe-nebo.ru/images-edit/og-night.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -21,11 +21,9 @@
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
-  <link rel="stylesheet" href="site.css?v=20261019b">
-  <script src="theme.js?v=20261014a"></script>
+  <link rel="preload" href="fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="site.css?v=20261022a">
+  <script src="theme.js?v=20261022a"></script>
   <script src="rooms.js?v=20261014a"></script>
   <script src="analytics.js?v=20261010a" async></script>
   <script type="application/ld+json">
@@ -38,7 +36,7 @@
   "url": "https://zvyozdnoe-nebo.ru/",
   "telephone": "+7-999-221-33-11",
   "image": [
-    "https://zvyozdnoe-nebo.ru/images-edit/og.jpg",
+    "https://zvyozdnoe-nebo.ru/images-edit/og-night.jpg",
     "https://zvyozdnoe-nebo.ru/images-edit/komfort-3.webp",
     "https://zvyozdnoe-nebo.ru/images-edit/premium-1.webp"
   ],
@@ -188,9 +186,9 @@
 
       <div class="scroll-cue" aria-hidden="true"><span>Листайте</span><i></i></div>
 
-      <div class="hero-cta"><a class="btn" href="#daty">Проверить свободные даты</a><a class="more-link" href="#nomera">Смотреть номера</a></div>
 
       <div class="showcase">
+        <div class="sc-glow" aria-hidden="true"></div>
         <div class="sc-frame">
                     <div class="sc-inner">
             <span class="sc-glare" aria-hidden="true"></span>
@@ -252,10 +250,10 @@
       <article class="card card-big" data-room="Стандарт комфорт">
                 <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Стандарт комфорт»">
-          <img src="images-edit/komfort-3.webp" alt="Стандарт комфорт — фото 1" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
-          <img src="images-edit/komfort-1.webp" alt="Стандарт комфорт — фото 2" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
-          <img src="images-edit/komfort-6.webp" alt="Стандарт комфорт — фото 3" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/dush-1.webp" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/komfort-3.webp" srcset="images-edit/komfort-3-320.webp 320w, images-edit/komfort-3-640.webp 640w, images-edit/komfort-3-960.webp 960w, images-edit/komfort-3.webp 1280w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт комфорт — фото 1" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
+          <img src="images-edit/komfort-1.webp" srcset="images-edit/komfort-1-320.webp 320w, images-edit/komfort-1-640.webp 640w, images-edit/komfort-1-960.webp 960w, images-edit/komfort-1.webp 1280w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт комфорт — фото 2" data-caption="" width="1280" height="960" loading="lazy" decoding="async">
+          <img src="images-edit/komfort-6.webp" srcset="images-edit/komfort-6-320.webp 320w, images-edit/komfort-6-640.webp 640w, images-edit/komfort-6.webp 721w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт комфорт — фото 3" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/dush-1.webp" srcset="images-edit/dush-1-320.webp 320w, images-edit/dush-1-640.webp 640w, images-edit/dush-1.webp 960w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
@@ -278,10 +276,10 @@
       <article class="card card-wide" data-room="Стандарт премиум">
                 <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Стандарт премиум»">
-          <img src="images-edit/premium-1.webp" alt="Стандарт премиум — фото 1" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/premium-2.webp" alt="Стандарт премиум — фото 2" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/premium-3.webp" alt="Стандарт премиум — фото 3" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/dush-1.webp" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/premium-1.webp" srcset="images-edit/premium-1-320.webp 320w, images-edit/premium-1-640.webp 640w, images-edit/premium-1.webp 960w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт премиум — фото 1" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/premium-2.webp" srcset="images-edit/premium-2-320.webp 320w, images-edit/premium-2-640.webp 640w, images-edit/premium-2.webp 960w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт премиум — фото 2" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/premium-3.webp" srcset="images-edit/premium-3-320.webp 320w, images-edit/premium-3-640.webp 640w, images-edit/premium-3.webp 960w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Стандарт премиум — фото 3" data-caption="" width="960" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/dush-1.webp" srcset="images-edit/dush-1-320.webp 320w, images-edit/dush-1-640.webp 640w, images-edit/dush-1.webp 960w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Личный душ в номере" data-caption="Личный душ" width="960" height="1280" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
@@ -304,8 +302,8 @@
       <article class="card" data-room="Эконом большой">
                 <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом большой»">
-          <img src="images-edit/ekonom-bol-1.webp" alt="Эконом большой — фото 1" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
-          <img src="images-edit/ekonom-bol-2.webp" alt="Эконом большой — фото 2" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-bol-1.webp" srcset="images-edit/ekonom-bol-1-320.webp 320w, images-edit/ekonom-bol-1-640.webp 640w, images-edit/ekonom-bol-1-960.webp 960w, images-edit/ekonom-bol-1.webp 1280w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 93vw, (max-width: 640px) 133vw, (max-width: 1000px) 66vw, 745px" alt="Эконом большой — фото 1" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-bol-2.webp" srcset="images-edit/ekonom-bol-2-320.webp 320w, images-edit/ekonom-bol-2-640.webp 640w, images-edit/ekonom-bol-2-960.webp 960w, images-edit/ekonom-bol-2.webp 1280w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 93vw, (max-width: 640px) 133vw, (max-width: 1000px) 66vw, 745px" alt="Эконом большой — фото 2" data-caption="" width="1280" height="721" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
@@ -328,8 +326,8 @@
       <article class="card" data-room="Эконом маленький">
                 <div class="card-gallery" data-gallery>
           <div class="cg-track" tabindex="0" aria-label="Фотографии номера «Эконом маленький»">
-          <img src="images-edit/ekonom-mal-1.webp" alt="Эконом маленький — фото 1" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
-          <img src="images-edit/ekonom-mal-2.webp" alt="Эконом маленький — фото 2" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-mal-1.webp" srcset="images-edit/ekonom-mal-1-320.webp 320w, images-edit/ekonom-mal-1-640.webp 640w, images-edit/ekonom-mal-1.webp 721w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Эконом маленький — фото 1" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
+          <img src="images-edit/ekonom-mal-2.webp" srcset="images-edit/ekonom-mal-2-320.webp 320w, images-edit/ekonom-mal-2-640.webp 640w, images-edit/ekonom-mal-2.webp 721w" sizes="(max-width: 640px) and (min-resolution: 2.5dppx) 70vw, (max-width: 640px) 100vw, (max-width: 1000px) 50vw, 560px" alt="Эконом маленький — фото 2" data-caption="" width="721" height="1280" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="card-body">
@@ -383,7 +381,7 @@
         <figcaption>Схема, не карта · подробнее — «Как добраться»</figcaption>
       </figure>
       <figure class="photo-frame">
-      <div class="pf-img"><img src="images-edit/kuhnya-1.webp" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async"></div>
+      <div class="pf-img"><img src="images-edit/kuhnya-1.webp" srcset="images-edit/kuhnya-1-320.webp 320w, images-edit/kuhnya-1-640.webp 640w, images-edit/kuhnya-1-960.webp 960w, images-edit/kuhnya-1.webp 1280w" sizes="(max-width: 1000px) and (min-resolution: 2.5dppx) 70vw, (max-width: 1000px) 100vw, 560px" alt="Общая кухня" width="1280" height="721" loading="lazy" decoding="async"></div>
       <figcaption>Общая кухня — для гостей всех номеров</figcaption>
     </figure>
     </div>
@@ -431,7 +429,7 @@
         <div class="room-pick" role="radiogroup" aria-label="Тип номера">
           <label class="rp-card">
             <input type="radio" name="roomPick" value="Эконом маленький">
-            <img src="images-edit/ekonom-mal-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <img src="images-edit/ekonom-mal-1-320.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Эконом маленький</span>
               <span class="rp-desc">1 гость · общий душ</span>
@@ -442,7 +440,7 @@
           </label>
           <label class="rp-card">
             <input type="radio" name="roomPick" value="Эконом большой">
-            <img src="images-edit/ekonom-bol-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <img src="images-edit/ekonom-bol-1-320.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Эконом большой</span>
               <span class="rp-desc">Большая кровать · общий душ</span>
@@ -453,7 +451,7 @@
           </label>
           <label class="rp-card">
             <input type="radio" name="roomPick" value="Стандарт комфорт">
-            <img src="images-edit/komfort-3.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <img src="images-edit/komfort-3-320.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Стандарт комфорт</span>
               <span class="rp-desc">Личный душ · Smart TV</span>
@@ -464,7 +462,7 @@
           </label>
           <label class="rp-card">
             <input type="radio" name="roomPick" value="Стандарт премиум">
-            <img src="images-edit/premium-1.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
+            <img src="images-edit/premium-1-320.webp" alt="" width="160" height="120" loading="lazy" decoding="async">
             <span class="rp-body">
               <span class="rp-name">Стандарт премиум</span>
               <span class="rp-desc">Просторнее · личный душ · Smart TV</span>
@@ -608,7 +606,7 @@
         <p>Уютный мини-отель в центре Санкт-Петербурга.<br>ул. Восстания, 22 · 770 м от метро «Площадь Восстания»</p>
       </div>
       <div>
-        <h4>Гостям</h4>
+        <h2>Гостям</h2>
         <div class="footer-links">
           <a href="pages/nomera.html">Номера и цены</a>
           <a href="pages/gallery.html">Галерея номеров</a>
@@ -621,7 +619,7 @@
         </div>
       </div>
       <div>
-        <h4>Связаться</h4>
+        <h2>Связаться</h2>
         <div class="footer-links">
           <a href="tel:+79992213311">+7 (999) 221-33-11</a>
           <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
@@ -845,6 +843,7 @@
       e.preventDefault();
       e.stopImmediatePropagation();
       stepRoom.classList.add('is-missing');
+      if (typeof clearFieldErrors === 'function') { clearFieldErrors(); fieldError(document.querySelector('.room-pick'), 'Выберите номер — нажмите на одну из карточек.'); }
       showNotice('Выберите номер — нажмите на одну из карточек.');
       stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, true);
@@ -1007,6 +1006,22 @@
         '(текст уже готов) или позвоните <a href="tel:+79992213311">+7 (999) 221-33-11</a>.';
     }
 
+    // Ошибки прямо под полями (с подсказкой, как исправить) — убираются, как только гость начинает исправлять
+    function clearFieldErrors() {
+      form.querySelectorAll('.field-err').forEach(p => p.remove());
+      form.querySelectorAll('[aria-invalid="true"]').forEach(el => { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); });
+    }
+    function fieldError(after, msg, field) {
+      if (!after) return;
+      const p = document.createElement('p');
+      p.className = 'field-err'; p.id = 'err-' + Math.random().toString(36).slice(2, 8);
+      p.setAttribute('role', 'alert'); p.textContent = msg;
+      after.insertAdjacentElement('afterend', p);
+      if (field) { field.setAttribute('aria-invalid', 'true'); field.setAttribute('aria-describedby', p.id); }
+    }
+    form.addEventListener('input', e => { const g = e.target.closest('.form-group, .bf-row, .room-pick, .consent'); if (g && g.nextElementSibling && g.nextElementSibling.classList.contains('field-err')) { g.nextElementSibling.remove(); e.target.removeAttribute('aria-invalid'); } });
+    form.addEventListener('change', e => { const g = e.target.closest('.form-group, .bf-row, .room-pick, .consent'); if (g && g.nextElementSibling && g.nextElementSibling.classList.contains('field-err')) { g.nextElementSibling.remove(); e.target.removeAttribute('aria-invalid'); } });
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -1017,33 +1032,41 @@
       const checkout = checkoutInput.value;
       const channel = document.querySelector('input[name="channel"]:checked').value;
 
-      // Проверяем по порядку шагов и показываем, что именно не заполнено
+      // Проверяем по порядку шагов и показываем, что именно не заполнено —
+      // сообщение появляется прямо под полем, а поле подсвечивается
+      clearFieldErrors();
       if (!room) {
         stepRoom.classList.add('is-missing');
+        fieldError(document.querySelector('.room-pick'), 'Выберите номер — нажмите на одну из карточек.');
         showNotice('Выберите номер — нажмите на одну из карточек.');
         stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
       if (!checkin || !checkout) {
+        fieldError(checkinInput.closest('.bf-row'), 'Выберите даты заезда и выезда.', document.getElementById('checkinBtn') || checkinInput);
         showNotice('Выберите даты заезда и выезда.');
         (document.getElementById('checkinBtn') || checkinInput).focus();
         return;
       }
       if (name.length < 2) {
+        fieldError(document.getElementById('name').closest('.form-group'), 'Укажите ваше имя — хотя бы 2 буквы.', document.getElementById('name'));
         showNotice('Укажите ваше имя.');
         document.getElementById('name').focus();
         return;
       }
       if (phone.replace(/\D/g, '').length !== 11) {
+        fieldError(phoneInput.closest('.form-group'), 'Нужно 11 цифр, например +7 (999) 123-45-67.', phoneInput);
         showNotice('Проверьте номер телефона — нужно 11 цифр.');
         phoneInput.focus();
         return;
       }
       if (checkout <= checkin) {
+        fieldError(checkinInput.closest('.bf-row'), 'Дата выезда должна быть позже даты заезда.');
         showNotice('Дата выезда должна быть позже даты заезда.');
         return;
       }
       if (!document.getElementById('consent').checked) {
+        fieldError(document.querySelector('.consent'), 'Отметьте согласие, чтобы отправить заявку.', document.getElementById('consent'));
         showNotice('Отметьте согласие на обработку персональных данных.');
         document.getElementById('consent').focus();
         return;
@@ -1131,7 +1154,7 @@
             : '<span class="qbr-st qbr-no">Занято на эти даты</span>';
           return `
             <div class="qbr-card${free === 0 ? ' is-busy' : ''}">
-              <img src="images-edit/${PHOTOS[room]}.webp" alt="" width="96" height="96" loading="lazy" decoding="async">
+              <img src="images-edit/${PHOTOS[room]}-320.webp" alt="" width="96" height="96" loading="lazy" decoding="async">
               <div class="qbr-info">
                 <b>${room}</b>
                 ${status}
@@ -1315,6 +1338,8 @@
       card.querySelectorAll('.cg-track img').forEach(img => {
         const copy = img.cloneNode(false);
         copy.loading = 'eager';
+        copy.classList.remove('lz', 'ok');           // в окне фото видно сразу
+        if (copy.srcset) copy.sizes = '(max-width: 760px) 100vw, 760px';
         gallery.firstChild.appendChild(copy);
       });
       old.replaceWith(gallery);
@@ -1383,8 +1408,8 @@
   <script src="datepicker.js?v=20261014b"></script>
   <script src="gallery.js?v=20261010a"></script>
   <script src="menu.js?v=20261019a"></script>
-  <script src="story.js?v=20261019b"></script>
-  <script src="ui.js?v=20261019b"></script>
+  <script src="story.js?v=20261021c"></script>
+  <script src="ui.js?v=20261021a"></script>
 
 </body>
 

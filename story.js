@@ -26,6 +26,7 @@
   const dust = section.querySelector('.star-dust');
   const cue = section.querySelector('.scroll-cue');
   const glare = section.querySelector('.sc-glare');
+  const glow = section.querySelector('.sc-glow');
   const nebula = section.querySelector('.nebula');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -83,7 +84,7 @@
   let shineRaf = 0, shineTimer = 0;
   function sweep() {
     clearTimeout(shineTimer);
-    if (reduce || document.hidden || !visible || cur > 0.02) { shineTimer = setTimeout(sweep, 4000); return; }
+    if (reduce || weak || document.hidden || !visible || cur > 0.02) { shineTimer = setTimeout(sweep, 4000); return; }
     const w = line.getBoundingClientRect().width, t0 = performance.now(), dur = 2200;
     cancelAnimationFrame(shineRaf);
     (function f(now) {
@@ -102,24 +103,21 @@
   // ---------- Звёзды на небе: два слоя (ближний ярче, дальний мельче) ----------
   let seed = 7;
   const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  // рисуются один раз на холсте (см. ZNSky в theme.js) — это в десятки раз легче
   const small = window.innerWidth < 760;
   skies.forEach((sky, layer) => {
-    const many = (small ? 35 : 90) * (layer ? 1.4 : 1);
-    for (let i = 0; i < many; i++) {
-      const s = document.createElement('i');
-      s.style.left = (rnd() * 100).toFixed(2) + '%';
-      s.style.top = (rnd() * 100).toFixed(2) + '%';
-      s.style.setProperty('--s', (0.4 + rnd() * (layer ? 0.6 : 1)).toFixed(2));
-      s.style.animationDelay = (-rnd() * 6).toFixed(2) + 's';
-      s.style.animationDuration = (3 + rnd() * 5).toFixed(2) + 's';
-      sky.appendChild(s);
-    }
+    const many = Math.round((small ? 35 : 90) * (layer ? 1.4 : 1));
+    if (window.ZNSky) ZNSky(sky, layer
+      ? { count: many, size: 1.5, spread: 0.6, alpha: .35, seed: 38, lo: .1, hi: .5, period: 7000, phase: 2 }
+      : { count: many, size: 2.2, spread: 1, alpha: .6, seed: 7, lo: .15, hi: .85, period: 5000 });
   });
 
-  let narrow = false, lite = false;
+  let narrow = false, lite = false, coarse = false, weak = false;
   function measure() {
     narrow = window.innerWidth < 760;
-    lite = narrow || window.matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency || 8) <= 4;
+    coarse = window.matchMedia('(pointer: coarse)').matches;
+    weak = !!(window.ZNPerf && ZNPerf.isLite());
+    lite = weak || narrow || coarse || (navigator.hardwareConcurrency || 8) <= 4;
     section.classList.toggle('is-lite', lite);
     memo.clear();
   }
@@ -150,7 +148,7 @@
   let dustLast = 0;
   function drawDust(now) {
     if (!dctx || !dustOn) return;
-    if (lite && now - dustLast < 33) { requestAnimationFrame(drawDust); return; }   // на телефоне 30 кадров хватает
+    if (dustLast && now - dustLast < 31) { requestAnimationFrame(drawDust); return; }   // 30 кадров в секунду хватает, это вдвое легче
     const dt = dustLast ? Math.min(0.05, (now - dustLast) / 1000) : 0.016;
     dustLast = now;
     const c = dustW / 2;
@@ -169,7 +167,7 @@
     requestAnimationFrame(drawDust);
   }
   function dustState(on) {
-    if (reduce || !dctx) return;
+    if (reduce || !dctx || weak) on = false;
     if (on && !dustOn) { dustOn = true; dustLast = 0; requestAnimationFrame(drawDust); }
     if (!on) dustOn = false;
   }
@@ -203,9 +201,10 @@
 
   // ---------- Кадр ----------
   function render(p) {
-    const a = smooth(0.0, 0.42, p);           // название и звезда уходят
-    const r = smooth(0.08, 0.8, p);           // карточка поднимается и растёт
-    const fade = 1 - smooth(0.12, 0.42, p);
+    // название стоит на месте, пока не начнёт подниматься фото, и только потом уходит
+    const a = smooth(0.14, 0.46, p);
+    const r = smooth(0.05, 0.62, p);          // карточка поднимается и растёт (быстрее, чем раньше)
+    const fade = 1 - smooth(0.16, 0.44, p);
 
     // буквы разлетаются от центра в стороны и чуть вверх
     const mid = (letters.length - 1) / 2;
@@ -231,11 +230,11 @@
     put(flare, 'opacity', e.toFixed(3));
     put(bglow, 'opacity', e.toFixed(3));
     put(core, 'transform', 'translateX(-50%) scaleY(' + lerp(0.5, 1, e).toFixed(4) + ')');
-    const ci = e * (1 - smooth(0.34, 0.46, p));
+    const ci = e * (1 - smooth(0.13, 0.22, p));      // кнопка уходит раньше, чем её накроет фото
     put(cta, 'opacity', ci.toFixed(3));
     put(cta, 'transform', 'translate3d(0,' + ((1 - ci) * 20).toFixed(1) + 'px,0)');
     put(cta, 'visibility', ci < 0.02 ? 'hidden' : 'visible');
-    const so = smooth(0.03, 0.16, p);
+    const so = smooth(0.02, 0.1, p);
     put(show, 'opacity', so.toFixed(3));
     put(show, 'visibility', so < 0.01 ? 'hidden' : 'visible');
     // карточка из-под горизонта: наклонена → выпрямляется
@@ -252,10 +251,12 @@
     put(cue, 'opacity', (1 - smooth(0.0, 0.05, p)).toFixed(3));
     // блик пробегает по фото, когда карточка выпрямляется
     if (glare) {
-      const g = smooth(0.12, 0.7, p);
+      const g = smooth(0.1, 0.55, p);
       put(glare, 'transform', 'translate3d(' + (-130 + g * 330).toFixed(1) + '%,0,0) skewX(-18deg)');
       put(glare, 'opacity', (Math.sin(g * Math.PI) * 0.55).toFixed(3));
     }
+    // подсветка фото: вспыхивает, пока карточка поднимается, и остаётся мягким сиянием
+    if (glow) put(glow, 'opacity', (smooth(0.04, 0.3, p) * (1 - 0.5 * smooth(0.36, 0.7, p))).toFixed(3));
     // туманность — самый дальний слой, сдвигается медленнее всех
     put(nebula, 'transform', 'translate3d(' + (-mx * 12).toFixed(1) + 'px,' + (-p * 40 - my * 8).toFixed(1) + 'px,0)');
     put(nebula, 'opacity', (1 - smooth(0.3, 0.8, p) * 0.6).toFixed(3));
@@ -267,7 +268,9 @@
   function readTarget() {
     if (reduce) return 1;
     const rr = section.getBoundingClientRect();
-    const total = section.offsetHeight - window.innerHeight;
+    // высота закреплённого экрана постоянна (не меняется, когда телефон прячет строку адреса),
+    // поэтому сцена не «подрагивает» от движения строки адреса
+    const total = section.offsetHeight - (pin.offsetHeight || window.innerHeight);
     return total > 0 ? clamp(-rr.top / total, 0, 1) : 1;
   }
   function loop(now) {
@@ -275,7 +278,7 @@
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
     last = now;
     target = readTarget();
-    const k = 1 - Math.exp(-dt * (window.matchMedia('(pointer: coarse)').matches ? 14 : 9));
+    const k = 1 - Math.exp(-dt * (coarse ? 14 : 9));
     cur += (target - cur) * k;
     const km = 1 - Math.exp(-dt * 3); mx += (tmx - mx) * km; my += (tmy - my) * km;
     if (Math.abs(target - cur) < 0.0002) cur = target;
@@ -297,6 +300,8 @@
     }).observe(section);
   }
   window.addEventListener('scroll', request, { passive: true });
+  // устройство оказалось слабым — переходим на лёгкий режим на ходу
+  if (window.ZNPerf) ZNPerf.onLite(() => { measure(); setupDust(); dustState(cur < 0.6); render(cur); });
   window.addEventListener('resize', () => { measure(); setupDust(); render(cur); request(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) dustState(false); else { dustState(cur < 0.6); request(); } });
   // для записи видео-превью: показать кадр с заданной прокруткой
