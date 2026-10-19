@@ -383,13 +383,21 @@ html.theme-anim *:not(.theme-toggle):not(.theme-toggle *) { transition: backgrou
   margin-left: calc(min(1100px, 90vw) / -2); margin-top: calc(min(68vh, 620px) / -2 + 20px);
   transform-origin: 50% 0; will-change: transform;
 }
-/* подсветка фото: тёплое золотое сияние вокруг, вспыхивает при появлении и мягко остаётся */
-.sc-glow { position: absolute; inset: -9% -7%; z-index: -1; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(240, 206, 110, .75) 78%, rgba(212, 175, 55, .28) 88%, transparent 100%); will-change: opacity; }
-@media (max-width: 760px) { .sc-glow { inset: -7% -5%; } }
-.sc-frame { position: relative; width: 100%; height: 100%; border-radius: var(--r-tile); overflow: hidden; isolation: isolate; background: #0b0b0d; box-shadow: 0 -20px 100px -30px rgba(212, 175, 55, .35), 0 50px 120px -40px rgba(0, 0, 0, .9); }
-.sc-frame::after { content: ''; position: absolute; inset: 0; z-index: 3; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1); pointer-events: none; }
-.sc-inner { position: absolute; inset: 0; overflow: hidden; }
+.sc-frame { position: relative; width: 100%; height: 100%; border-radius: var(--r-tile); overflow: hidden; isolation: isolate; background: #3a311c; transition: background-color .8s ease; box-shadow: 0 -20px 100px -30px rgba(212, 175, 55, .35), 0 50px 120px -40px rgba(0, 0, 0, .9); }
+/* Рамка фото — тонкая золотая линия (просвет 1.5px между краем и снимком).
+   По ней бегут огоньки: квадрат с конусным градиентом поворачивается за снимком,
+   и виден только в просвете — это дёшево, двигается только поворот. */
+.sc-inner { position: absolute; inset: 2px; z-index: 1; overflow: hidden; border-radius: calc(var(--r-tile) - 2px); background: #0b0b0d; }
+@media (max-width: 760px) { .sc-inner { inset: 1.5px; border-radius: calc(var(--r-tile) - 1.5px); } }
+.sc-run { position: absolute; z-index: 0; display: block; pointer-events: none; opacity: 0; will-change: rotate, opacity;
+  background: conic-gradient(from 0deg, transparent 0deg 268deg, rgba(212, 175, 55, 0) 268deg, rgba(212, 175, 55, .7) 315deg, #f6dc8e 340deg, #fffdf5 354deg, #fff 358.5deg, transparent 360deg);
+  transition: opacity .45s ease; }
+.sc-run-l { transform: scaleX(-1); }
+.sc-run.orbit { animation: scOrbit 6s linear infinite; }
+@keyframes scOrbit { from { rotate: 180deg; } to { rotate: 540deg; } }
+/* вспышка там, где луч касается фото */
+.sc-hit { position: absolute; left: 50%; top: 0; z-index: 6; width: 130px; height: 130px; margin: -65px 0 0 -65px; pointer-events: none; opacity: 0; border-radius: 50%;
+  background: radial-gradient(circle, #fffaf0 0%, rgba(246, 220, 142, .8) 12%, rgba(212, 175, 55, .28) 34%, transparent 66%); will-change: opacity, transform; }
 .sc-inner img { width: 100%; height: 100%; object-fit: cover; }
 .sc-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, .2) 0%, transparent 30%, transparent 55%, rgba(0, 0, 0, .75) 100%); pointer-events: none; }
 .sc-bar {
@@ -1339,3 +1347,11 @@ html.lite .st-streak, html.lite .st-rays-long { animation: none; }
 html.lite .st-ring, html.lite .st-rays-short, html.lite .story-sky-2, html.lite .shooting, html.lite .star-dust { display: none; }
 html.lite .ph-star svg { animation: none; filter: none; }
 html.lite .rv, html.lite .rv-photo { transition-duration: .5s, .6s; }
+
+/* Лёгкий режим: огоньки пробегают по прокрутке, а после слияния рамка просто мягко горит */
+html.lite .sc-run.orbit { animation: none; opacity: 0 !important; }
+html.lite .sc-frame.lit { background: #8a7130; }
+@media (prefers-reduced-motion: reduce) {
+  .sc-run.orbit { animation: none; opacity: 0 !important; }
+  .sc-frame.lit { background: #8a7130; }
+}
