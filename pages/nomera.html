@@ -5,15 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Номера и цены — подбор номера | отель «Звёздное небо»</title>
-  <meta name="description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 500 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
+  <meta name="description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 920 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
   <link rel="canonical" href="https://zvyozdnoe-nebo.ru/pages/nomera.html">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Отель «Звёздное небо»">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:url" content="https://zvyozdnoe-nebo.ru/pages/nomera.html">
   <meta property="og:title" content="Номера и цены — отель «Звёздное небо»">
-  <meta property="og:description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 500 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
-  <meta property="og:image" content="https://zvyozdnoe-nebo.ru/images-edit/og-night.jpg">
+  <meta property="og:description" content="Сравните номера мини-отеля «Звёздное небо» у площади Восстания: цены от 1 920 ₽, душ, кровать, Smart TV. Подберите номер за 3 вопроса и посчитайте стоимость.">
+  <meta property="og:image" content="https://zvyozdnoe-nebo.ru/images-edit/og-night-v2.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="../fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../site.css?v=20261024a">
+  <link rel="stylesheet" href="../site.css?v=20261024b">
   <script src="../theme.js?v=20261022a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
 </head>
@@ -126,8 +126,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="cmp-price"><th scope="row">Цена за ночь</th><td>1 500 ₽</td><td>1 900 ₽</td><td>2 700 ₽</td><td>3 000 ₽</td></tr>
-          <tr class="cmp-total"><th scope="row" id="totalLabel">За 1 ночь</th><td data-p="1500"></td><td data-p="1900"></td><td data-p="2700"></td><td data-p="3000"></td></tr>
+          <tr class="cmp-price"><th scope="row">Цена за ночь</th><td>1 920 ₽</td><td>2 120 ₽</td><td>2 680 ₽</td><td>2 980 ₽</td></tr>
+          <tr class="cmp-total"><th scope="row" id="totalLabel">За 1 ночь</th><td data-p="1920"></td><td data-p="2120"></td><td data-p="2680"></td><td data-p="2980"></td></tr>
           <tr><th scope="row">Душ</th><td>Общая душевая</td><td>Общая душевая</td><td class="yes">Личный душ</td><td class="yes">Личный душ</td></tr>
           <tr><th scope="row">Кровать</th><td>Кровать</td><td>Большая кровать</td><td>Кровать премиум</td><td>Кровать премиум</td></tr>
           <tr><th scope="row">Smart TV</th><td class="no">—</td><td class="no">—</td><td class="yes">Есть</td><td class="yes">Есть</td></tr>
@@ -191,10 +191,10 @@
     // ========== НОМЕРА: ПОДБОР И СРАВНЕНИЕ ==========
     (function () {
       const ROOMS = {
-        'Эконом маленький': { price: 1500, own: false, rank: 1, img: 'ekonom-mal-1', why: 'Самый выгодный вариант для одного гостя: уютный компактный номер в центре.' },
-        'Эконом большой':   { price: 1900, own: false, rank: 2, img: 'ekonom-bol-1', why: 'Больше места и большая кровать, при этом цена остаётся экономной.' },
-        'Стандарт комфорт': { price: 2700, own: true,  rank: 3, img: 'komfort-3',    why: 'Светлый номер с личным душем и Smart TV.' },
-        'Стандарт премиум': { price: 3000, own: true,  rank: 4, img: 'premium-1',    why: 'Самый просторный: личный душ, Smart TV, шкаф и кофейный столик.' }
+        'Эконом маленький': { price: 1920, own: false, rank: 1, img: 'ekonom-mal-1', why: 'Самый выгодный вариант для одного гостя: уютный компактный номер в центре.' },
+        'Эконом большой':   { price: 2120, own: false, rank: 2, img: 'ekonom-bol-1', why: 'Больше места и большая кровать, при этом цена остаётся экономной.' },
+        'Стандарт комфорт': { price: 2680, own: true,  rank: 3, img: 'komfort-3',    why: 'Светлый номер с личным душем и Smart TV.' },
+        'Стандарт премиум': { price: 2980, own: true,  rank: 4, img: 'premium-1',    why: 'Самый просторный: личный душ, Smart TV, шкаф и кофейный столик.' }
       };
       const rub = n => n.toLocaleString('ru-RU') + ' ₽';
       const nightsWord = n => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'ночь' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'ночи' : 'ночей'; };
@@ -292,8 +292,8 @@
     document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
   </script>
 
-  <script src="../menu.js?v=20261019a"></script>
-  <script src="../ui.js?v=20261024a"></script>
+  <script src="../menu.js?v=20261025a"></script>
+  <script src="../ui.js?v=20261024b"></script>
 
 </body>
 

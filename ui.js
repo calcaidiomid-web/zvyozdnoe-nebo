@@ -182,7 +182,7 @@ window.ZNSpring = function (opts) {
     root.classList.add('sheet-lock');
     modal.classList.add('show');
     sheet.scrollTop = 0;
-    if (reduce) { reset(); return; }
+    if (reduce) { reset(); modal.classList.add('blurred'); return; }
     // и на компьютере, и на телефоне окно вырастает из карточки, на которую нажали
     mode = 'pop'; dragOff = 0;
     if (back) { back.stop(); back = null; }
@@ -198,7 +198,8 @@ window.ZNSpring = function (opts) {
       }
       const startP = spring && spring.raf ? spring.value : 0;
       if (spring) spring.stop();
-      spring = ZNSpring({ from: startP, to: 1, response: 0.5, damping: 1, precision: 0.002, onUpdate: setP }).start();
+      modal.classList.remove('blurred');
+      spring = ZNSpring({ from: startP, to: 1, response: 0.5, damping: 1, precision: 0.002, onUpdate: setP, onDone: () => { if (open) modal.classList.add('blurred'); } }).start();
     }
     setTimeout(() => { const b = modal.querySelector('.close-btn'); if (b) b.focus({ preventScroll: true }); }, 50);
   }
@@ -207,8 +208,9 @@ window.ZNSpring = function (opts) {
     if (!open) return;
     open = false;
     root.classList.remove('sheet-lock');                    // страницу можно листать сразу (ссылка «Забронировать» сработает)
-    const done = () => { if (!open) { modal.classList.remove('show'); reset(); } };
+    const done = () => { if (!open) { modal.classList.remove('show', 'blurred'); reset(); } };
     if (reduce || !spring) { done(); return; }
+    modal.classList.remove('blurred');                     // размытие убираем сразу — уход окна лёгкий
     if (back) { back.stop(); back = null; }
     spring.retarget(0, { response: 0.42, damping: 1, onDone: done });   // уходит туда же, откуда пришло
   }
@@ -238,6 +240,7 @@ window.ZNSpring = function (opts) {
       if (inGrab || (sheet.scrollTop <= 0 && dy > 0)) {
         dragging = true;
         if (back) { back.stop(); base = back.value; back = null; } else base = 0;
+        modal.classList.remove('blurred');                    // пока тянут пальцем — без размытия
         H = sheet.offsetHeight;
         y0 = t.clientY;                                           // уважаем место, где схватили
       } else { tracking = false; return; }
@@ -267,7 +270,7 @@ window.ZNSpring = function (opts) {
     const projected = y + (v / 1000) * 0.998 / (1 - 0.998);
     if (projected > H * 0.35 && v > -200) closeSheet(v);              // смахнули — уходит обратно в карточку
     else {                                                            // не дотянули — мягко возвращается на место
-      back = ZNSpring({ from: y, to: 0, velocity: v, response: 0.32, damping: 1, onUpdate: yy => { dragOff = yy; setDrag(yy); }, onDone: () => { back = null; dragOff = 0; } }).start();
+      back = ZNSpring({ from: y, to: 0, velocity: v, response: 0.32, damping: 1, onUpdate: yy => { dragOff = yy; setDrag(yy); }, onDone: () => { back = null; dragOff = 0; if (open) modal.classList.add('blurred'); } }).start();
     }
   }
   sheet.addEventListener('touchend', endDrag);

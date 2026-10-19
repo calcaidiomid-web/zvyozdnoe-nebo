@@ -708,7 +708,13 @@ html[data-theme="dark"] .messenger-card input:checked + .messenger-card-content 
    ================================================================ */
 .modal { display: none; position: fixed; inset: 0; z-index: 1000; padding: 24px; }
 .modal.show { display: flex; align-items: center; justify-content: center; }
-.modal::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .42); opacity: var(--scrim, 1); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.modal::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .42); opacity: var(--scrim, 1); }
+/* Размытие страницы под окном — отдельным слоем, который включается только когда окно
+   уже встало на место (ui.js добавляет класс blurred). Пока окно летит или его тянут пальцем,
+   размытия нет — поэтому анимация не нагружает телефон; неподвижное размытие почти ничего не стоит. */
+.modal::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s ease; -webkit-backdrop-filter: blur(9px) saturate(120%); backdrop-filter: blur(9px) saturate(120%); }
+.modal.blurred::after { opacity: 1; }
+.modal-content { z-index: 1; }
 .modal-content {
   position: relative; width: min(760px, 100%); max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px); overflow-y: auto; overscroll-behavior: contain;
   padding: clamp(24px, 4vw, 40px); border-radius: var(--r-tile); background: var(--panel); color: var(--ink-80);
@@ -732,7 +738,8 @@ html.sheet-lock, html.sheet-lock body { overflow: hidden; }
 
 /* Телефон: окно по центру с отступами, вырастает из карточки (ui.js); фото — на всю ширину сверху */
 @media (max-width: 760px) {
-  .modal { padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom)); }
+  /* окно поменьше: сверху и снизу остаётся место, куда можно нажать, чтобы закрыть */
+  .modal { padding: max(11vh, calc(env(safe-area-inset-top) + 24px)) 20px max(11vh, calc(env(safe-area-inset-bottom) + 24px)); }
   .modal.show { align-items: center; }
   .modal-content {
     display: flex; flex-direction: column; width: 100%; max-height: 100%;
@@ -1238,7 +1245,7 @@ details.faq-item[open] .faq-a { animation: faqIn .5s var(--spring); }
   .btn:active, .card:active, .chip:active, .quiz-opt:active, .rp-card:active { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
-  header, .nav-glass, .m-cta, .sc-bar, .nav-more-list, .cg-dots, .cg-arrow, .photo-frame figcaption, .modal::before, .dp-overlay, .lb-close, .lb-arrow {
+  header, .nav-glass, .m-cta, .sc-bar, .nav-more-list, .cg-dots, .cg-arrow, .photo-frame figcaption, .modal::after, .dp-overlay, .lb-close, .lb-arrow {
     -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
   }
   header { --glass: var(--paper); }
@@ -1251,7 +1258,7 @@ details.faq-item[open] .faq-a { animation: faqIn .5s var(--spring); }
   .card, .booking-form, .service-card, .feature, .quiz, .faq-item { box-shadow: inset 0 0 0 1px var(--line); }
 }
 /* телефоны: без размытия под затемнением — плавнее при перетаскивании шторки */
-@media (pointer: coarse) { .modal::before, .dp-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; } .modal::before { background: rgba(0, 0, 0, .48); } }
+@media (pointer: coarse) { .dp-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; } }
 /* Поля и легенда на странице «Свободные даты» */
 .av-dates .dp-field, .av-dates input { background: var(--panel) !important; }
 .cal-day { border-radius: 12px !important; }
@@ -1342,7 +1349,8 @@ html.lite header { background: color-mix(in srgb, var(--paper) 95%, transparent)
 html.lite header.theme-night { background: rgba(27, 28, 33, .96); }
 html.lite .m-cta, html.lite .nav-more-list { background: var(--panel); }
 html.lite .nav-glass { background: var(--paper); }
-html.lite .modal::before { background: rgba(0, 0, 0, .5); }
+html.lite .modal::before { background: rgba(0, 0, 0, .58); }
+html.lite .modal::after { display: none; }
 html.lite .ch { filter: none; animation-name: chInLite; }
 @keyframes chInLite { 0% { opacity: 0; } 30% { opacity: .9; } to { opacity: 1; transform: none; } }
 html.lite .st-streak, html.lite .st-rays-long { animation: none; }

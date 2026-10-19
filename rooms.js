@@ -21,10 +21,10 @@
 //  И увеличьте ?v=… у rooms.js в index.html и pages/availability.html.
 // ============================================================
 window.ZN_ROOMS = [
-  { name: 'Эконом маленький', total: 2, blocked: 1, price: 1500, photo: 'ekonom-mal-1' },
-  { name: 'Эконом большой',   total: 2, blocked: 1, price: 1900, photo: 'ekonom-bol-1' },
-  { name: 'Стандарт комфорт', total: 3, blocked: 1, price: 2700, photo: 'komfort-3' },
-  { name: 'Стандарт премиум', total: 2, blocked: 1, price: 3000, photo: 'premium-1' }
+  { name: 'Эконом маленький', total: 2, blocked: 1, price: 1920, photo: 'ekonom-mal-1' },
+  { name: 'Эконом большой',   total: 2, blocked: 1, price: 2120, photo: 'ekonom-bol-1' },
+  { name: 'Стандарт комфорт', total: 3, blocked: 1, price: 2680, photo: 'komfort-3' },
+  { name: 'Стандарт премиум', total: 2, blocked: 1, price: 2980, photo: 'premium-1' }
 ];
 
 // Цены в карточках: элементы с data-room-price="<название>" (или data-room-price-min)

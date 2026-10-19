@@ -103,7 +103,7 @@
   // Самая низкая цена — из rooms.js (если файл подключён на странице)
   const minPrice = window.ZN_ROOMS
     ? Math.min.apply(null, window.ZN_ROOMS.map(r => r.price)).toLocaleString('ru-RU') + ' ₽'
-    : '1 500 ₽';
+    : '1 920 ₽';
 
   const bar = document.createElement('div');
   bar.className = 'm-cta';
