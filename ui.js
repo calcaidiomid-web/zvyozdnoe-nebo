@@ -6,8 +6,8 @@
 //  4. Цифры об отеле досчитываются, когда видны.
 //  5. (Прокрутка колесом — родная, браузерная, без перехвата.)
 //  6. Пружины (как в iOS): «отклик» (response) и «затухание» (damping).
-//  7. Окно номера: на компьютере вырастает из карточки и уходит обратно,
-//     на телефоне — шторка снизу: тянется за пальцем 1:1, бросок с инерцией.
+//  7. Окно номера вырастает из карточки и уходит обратно (компьютер и телефон);
+//     на телефоне его можно смахнуть вниз пальцем.
 // Двигаем только transform и opacity — это плавно даже на телефоне.
 // ============================================================
 (function () {
@@ -151,7 +151,7 @@ window.ZNSpring = function (opts) {
   const root = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobileQ = window.matchMedia('(max-width: 760px)');
-  let mode = '', spring = null, from = null, open = false, H = 0;
+  let mode = '', spring = null, from = null, open = false, H = 0, dragOff = 0, back = null;
 
   // ---- Телефон: шторка двигается по вертикали (y в пикселях, 0 — открыта, H — спрятана) ----
   function setY(y) {
@@ -162,9 +162,16 @@ window.ZNSpring = function (opts) {
   function setP(p) {
     if (!from) { sheet.style.transform = 'scale(' + (0.94 + 0.06 * p).toFixed(4) + ')'; sheet.style.opacity = Math.min(1, p * 1.6).toFixed(3); modal.style.setProperty('--scrim', Math.max(0, Math.min(1, p)).toFixed(3)); return; }
     const q = 1 - p;
-    sheet.style.transform = 'translate3d(' + (from.dx * q).toFixed(2) + 'px,' + (from.dy * q).toFixed(2) + 'px,0) scale(' + (from.s + (1 - from.s) * p).toFixed(4) + ')';
+    // dragOff — насколько окно стянули пальцем вниз: из этого места оно и уходит обратно в карточку
+    sheet.style.transform = 'translate3d(' + (from.dx * q).toFixed(2) + 'px,' + (from.dy * q + dragOff * p).toFixed(2) + 'px,0) scale(' + ((from.s + (1 - from.s) * p) * (1 - dragShrink(dragOff) * p)).toFixed(4) + ')';
     sheet.style.opacity = Math.max(0, Math.min(1, p * 1.8)).toFixed(3);
-    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, p)).toFixed(3));
+    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, p * (1 - Math.max(0, Math.min(1, dragOff / (H || 1))) * 0.8))).toFixed(3));
+  }
+  // ---- Телефон: окно тянут пальцем вниз (y — сдвиг в пикселях) ----
+  const dragShrink = y => Math.max(0, Math.min(1, y / (H || 1))) * 0.08;
+  function setDrag(y) {
+    sheet.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + (1 - dragShrink(y)).toFixed(4) + ')';
+    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, 1 - Math.max(0, y) / (H || 1) * 0.8)).toFixed(3));
   }
   function reset() {
     sheet.style.transform = ''; sheet.style.opacity = ''; modal.style.removeProperty('--scrim');
@@ -176,13 +183,10 @@ window.ZNSpring = function (opts) {
     modal.classList.add('show');
     sheet.scrollTop = 0;
     if (reduce) { reset(); return; }
-    mode = mobileQ.matches ? 'sheet' : 'pop';
-    if (mode === 'sheet') {
-      H = sheet.offsetHeight + 40;
-      const startY = spring && spring.raf ? spring.value : H;        // перехват на лету — с текущего места
-      if (spring) spring.stop();
-      spring = ZNSpring({ from: startY, to: 0, velocity: spring ? spring.velocity : 0, response: 0.42, damping: 1, onUpdate: setY }).start();
-    } else {
+    // и на компьютере, и на телефоне окно вырастает из карточки, на которую нажали
+    mode = 'pop'; dragOff = 0;
+    if (back) { back.stop(); back = null; }
+    {
       from = null;
       if (card) {
         const c = card.getBoundingClientRect(), r = sheet.getBoundingClientRect();
@@ -205,11 +209,8 @@ window.ZNSpring = function (opts) {
     root.classList.remove('sheet-lock');                    // страницу можно листать сразу (ссылка «Забронировать» сработает)
     const done = () => { if (!open) { modal.classList.remove('show'); reset(); } };
     if (reduce || !spring) { done(); return; }
-    if (mode === 'sheet') {
-      spring.retarget(H, { velocity: velocity || spring.velocity, response: 0.36, damping: 1, onDone: done });
-    } else {
-      spring.retarget(0, { response: 0.42, damping: 1, onDone: done });   // уходит туда же, откуда пришло
-    }
+    if (back) { back.stop(); back = null; }
+    spring.retarget(0, { response: 0.42, damping: 1, onDone: done });   // уходит туда же, откуда пришло
   }
   window.ZNSheet = { open: openSheet, close: () => closeSheet(0) };
 
@@ -221,7 +222,7 @@ window.ZNSpring = function (opts) {
   let tracking = false, dragging = false, decided = false, y0 = 0, x0 = 0, base = 0, inGrab = false, hist = [];
   const rubber = (over, dim) => (over * dim * 0.55) / (dim + 0.55 * Math.abs(over));   // мягкое сопротивление у края
   sheet.addEventListener('touchstart', e => {
-    if (mode !== 'sheet' || !open || e.touches.length > 1) return;
+    if (!mobileQ.matches || reduce || !open || e.touches.length > 1 || (spring && spring.raf)) return;
     const t = e.touches[0];
     tracking = true; dragging = false; decided = false;
     x0 = t.clientX; y0 = t.clientY; hist = [{ y: t.clientY, t: e.timeStamp }];
@@ -236,8 +237,8 @@ window.ZNSpring = function (opts) {
       if (Math.abs(dx) > Math.abs(dy) && !inGrab) { tracking = false; return; }   // листают фото — не мешаем
       if (inGrab || (sheet.scrollTop <= 0 && dy > 0)) {
         dragging = true;
-        if (spring) spring.stop();
-        base = spring ? spring.value : 0;
+        if (back) { back.stop(); base = back.value; back = null; } else base = 0;
+        H = sheet.offsetHeight;
         y0 = t.clientY;                                           // уважаем место, где схватили
       } else { tracking = false; return; }
     }
@@ -245,8 +246,8 @@ window.ZNSpring = function (opts) {
     e.preventDefault();
     let y = base + (t.clientY - y0);
     if (y < 0) y = -rubber(-y, H);
-    if (spring) { spring.value = y; spring.velocity = 0; }
-    setY(y);
+    dragOff = y;
+    setDrag(y);
     hist.push({ y: t.clientY, t: e.timeStamp });
     if (hist.length > 6) hist.shift();
   }, { passive: false });
@@ -261,11 +262,13 @@ window.ZNSpring = function (opts) {
     for (let i = hist.length - 2; i >= 0; i--) {
       if (lastP.t - hist[i].t > 30) { v = (lastP.y - hist[i].y) / ((lastP.t - hist[i].t) / 1000); break; }
     }
-    const y = spring ? spring.value : 0;
-    // куда «долетит» шторка по инерции (формула Apple, замедление 0.998)
+    const y = dragOff;
+    // куда «долетело» бы окно по инерции (формула Apple, замедление 0.998)
     const projected = y + (v / 1000) * 0.998 / (1 - 0.998);
-    if (projected > H * 0.5 && v > -200) closeSheet(v);
-    else if (spring) spring.retarget(0, { velocity: v, response: 0.32, damping: 0.8 });   // бросок — лёгкий отскок
+    if (projected > H * 0.35 && v > -200) closeSheet(v);              // смахнули — уходит обратно в карточку
+    else {                                                            // не дотянули — мягко возвращается на место
+      back = ZNSpring({ from: y, to: 0, velocity: v, response: 0.32, damping: 1, onUpdate: yy => { dragOff = yy; setDrag(yy); }, onDone: () => { back = null; dragOff = 0; } }).start();
+    }
   }
   sheet.addEventListener('touchend', endDrag);
   sheet.addEventListener('touchcancel', endDrag);

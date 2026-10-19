@@ -300,7 +300,7 @@ html.theme-anim *:not(.theme-toggle):not(.theme-toggle *) { transition: backgrou
 /* ================================================================
    ПЕРВЫЙ ЭКРАН — ночное небо, звезда и название (story.js)
    ================================================================ */
-.story { height: 260vh; padding: 0; overflow-x: clip; }
+.story { height: 205vh; padding: 0; overflow-x: clip; }
 .story-pin {
   /* высота «большого» экрана (lvh): когда телефон прячет строку адреса при прокрутке,
      снизу не остаётся чёрной полосы */
@@ -422,7 +422,7 @@ html.theme-anim *:not(.theme-toggle):not(.theme-toggle *) { transition: backgrou
 .story.is-lite .story-sky-2 { display: none; }
 
 @media (max-width: 760px) {
-  .story { height: 230vh; }
+  .story { height: 185vh; }
   .hw-line { font-size: clamp(60px, 21vw, 112px); white-space: normal; line-height: .92; }
   .hw-eyebrow { gap: 10px; letter-spacing: .26em; }
   .hero-words { padding-bottom: 22vh; }
@@ -433,7 +433,7 @@ html.theme-anim *:not(.theme-toggle):not(.theme-toggle *) { transition: backgrou
   .sc-bar { left: 10px; right: 10px; bottom: 10px; flex-wrap: wrap; gap: 10px 20px; padding: 14px 16px; border-radius: 20px; }
   .sc-item b { font-size: 18px; }
   .sc-bar .btn { width: 100%; margin: 4px 0 0; }
-  body.m-cta-on .showcase { margin-top: calc(-35vh - 10px); }
+  body.m-cta-on .showcase { translate: 0 -36px; }
 }
 
 /* ================================================================
@@ -730,17 +730,19 @@ html[data-theme="dark"] .messenger-card input:checked + .messenger-card-content 
 .modal-price span { font: 400 15px var(--sans); letter-spacing: 0; color: var(--ink-60); }
 html.sheet-lock, html.sheet-lock body { overflow: hidden; }
 
+/* Телефон: окно по центру с отступами, вырастает из карточки (ui.js); фото — на всю ширину сверху */
 @media (max-width: 760px) {
-  .modal { padding: 0; }
-  .modal.show { align-items: flex-end; }
+  .modal { padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom)); }
+  .modal.show { align-items: center; }
   .modal-content {
-    width: 100%; max-height: 92vh; max-height: 92dvh; padding: 8px 18px calc(24px + env(safe-area-inset-bottom));
-    border-radius: 18px 18px 0 0; box-shadow: 0 -10px 40px rgba(0, 0, 0, .25);
+    display: flex; flex-direction: column; width: 100%; max-height: 100%;
+    padding: 0 18px 22px; border-radius: 26px; box-shadow: 0 30px 80px -24px rgba(0, 0, 0, .55), 0 0 0 .5px var(--line);
   }
-  .sheet-grab { display: block; position: sticky; top: 0; z-index: 3; height: 26px; margin: -8px -18px 0; touch-action: none; cursor: grab; background: linear-gradient(var(--panel) 60%, transparent); }
-  .sheet-grab::before { content: ''; position: absolute; left: 50%; top: 9px; width: 38px; height: 5px; margin-left: -19px; border-radius: 3px; background: var(--line-strong); }
-  .modal-content h2 { padding-top: 4px; }
-  .close-btn { top: 22px; right: 16px; }
+  .modal-content > * { flex-shrink: 0; }
+  .close-btn { order: -2; position: sticky; top: 12px; align-self: flex-end; margin: 12px -6px -44px 0; width: 34px; height: 34px; background: rgba(0, 0, 0, .45); color: #fff; }
+  .modal-gallery { order: -1; margin: 0 -18px 18px; border-radius: 0; }
+  .modal-gallery .cg-track img { height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .modal-content h2 { padding-right: 0; }
   .modal-amenities { grid-template-columns: 1fr; }
   .modal-foot .btn { flex: 1 1 100%; }
 }

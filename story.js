@@ -74,7 +74,12 @@
     });
   })();
   // когда буквы проявились — снимаем с них анимацию, чтобы ими управляла прокрутка
-  setTimeout(() => letters.forEach(s => { s.style.animation = 'none'; s.style.opacity = '1'; s.style.filter = 'none'; }), 3500);
+  // Важно: вместе с анимацией сразу задаём и итоговое положение букв (transform: none),
+  // иначе буквы на миг возвращались к стартовому сдвигу из CSS и «прыгали» вниз без прокрутки.
+  setTimeout(() => {
+    letters.forEach(s => { s.style.transform = 'none'; s.style.opacity = '1'; s.style.filter = 'none'; s.style.animation = 'none'; memo.delete(s); });
+    render(cur);
+  }, 3500);
   section.classList.add('is-ready');
 
   // ---------- Блик света пробегает по золотым буквам ----------
@@ -206,6 +211,7 @@
   // ---------- Геометрия: где верх фото и докуда достаёт луч ----------
   // Фото поднимается с «повёрнутой» верхней кромкой (поворот вокруг неё), поэтому
   // её высоту на экране можно посчитать без замеров в каждом кадре.
+  const SPAN = 0.655;                         // какая часть прежней сцены проигрывается за прокрутку экрана
   const rOf = p => smooth(0.05, 0.62, p);
   let pinH = 1, showTop = 0, pHit = 0.2;
   const cardTop = p => showTop + lerp(narrow ? 62 : 68, 0, rOf(p)) / 100 * pinH;
@@ -322,7 +328,9 @@
     // высота закреплённого экрана постоянна (не меняется, когда телефон прячет строку адреса),
     // поэтому сцена не «подрагивает» от движения строки адреса
     const total = section.offsetHeight - (pin.offsetHeight || window.innerHeight);
-    return total > 0 ? clamp(-rr.top / total, 0, 1) : 1;
+    // первый экран стал короче: вся сцена (звезда → луч → фото на месте) укладывается в ~95%
+    // прокрутки, без «пустого» хвоста — фото встало, и страница сразу едет дальше
+    return total > 0 ? clamp(-rr.top / total, 0, 1) * SPAN : SPAN;
   }
   function loop(now) {
     raf = 0;
