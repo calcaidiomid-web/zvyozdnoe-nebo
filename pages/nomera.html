@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="../fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../site.css?v=20261026a">
+  <link rel="stylesheet" href="../site.css?v=20261030b">
   <script src="../theme.js?v=20261022a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
 </head>
@@ -190,10 +190,11 @@
   <script>
     // ========== НОМЕРА: ПОДБОР И СРАВНЕНИЕ ==========
     (function () {
+      // off: true — все номера этого типа заняты на долгий срок, в подборе не предлагаем
       const ROOMS = {
         'Эконом маленький': { price: 1920, own: false, rank: 1, img: 'ekonom-mal-1', why: 'Самый выгодный вариант для одного гостя: уютный компактный номер в центре.' },
-        'Эконом большой':   { price: 2120, own: false, rank: 2, img: 'ekonom-bol-1', why: 'Больше места и большая кровать, при этом цена остаётся экономной.' },
-        'Стандарт комфорт': { price: 2680, own: true,  rank: 3, img: 'komfort-3',    why: 'Светлый номер с личным душем и Smart TV.' },
+        'Эконом большой':   { off: true, price: 2120, own: false, rank: 2, img: 'ekonom-bol-1', why: 'Больше места и большая кровать, при этом цена остаётся экономной.' },
+        'Стандарт комфорт': { off: true, price: 2680, own: true,  rank: 3, img: 'komfort-3',    why: 'Светлый номер с личным душем и Smart TV.' },
         'Стандарт премиум': { price: 2980, own: true,  rank: 4, img: 'premium-1',    why: 'Самый просторный: личный душ, Smart TV, шкаф и кофейный столик.' }
       };
       const rub = n => n.toLocaleString('ru-RU') + ' ₽';
@@ -237,7 +238,7 @@
       document.querySelectorAll('.quiz-opt').forEach(b => b.setAttribute('aria-pressed', 'false'));
 
       function pickRooms() {
-        let list = Object.keys(ROOMS);
+        let list = Object.keys(ROOMS).filter(r => !ROOMS[r].off);
         if (answers.guests === '2') list = list.filter(r => r !== 'Эконом маленький');
         const byPrio = (a, b) => answers.prio === 'comfort' ? ROOMS[b].rank - ROOMS[a].rank : ROOMS[a].rank - ROOMS[b].rank;
         if (answers.shower === 'own') return list.filter(r => ROOMS[r].own).sort(byPrio);
@@ -292,7 +293,7 @@
     document.querySelectorAll('.scroll-fade').forEach(el => observer.observe(el));
   </script>
 
-  <script src="../menu.js?v=20261025a"></script>
+  <script src="../menu.js?v=20261029a"></script>
   <script src="../ui.js?v=20261024b"></script>
 
 </body>

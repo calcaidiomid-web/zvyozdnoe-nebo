@@ -13,6 +13,19 @@ const BOOKINGS_URL = 'https://functions.yandexcloud.net/d4eallm32pm88l3ad6jj?a=a
 const ROOMS = window.ZN_ROOMS;
 // Сколько номеров этого типа вообще можно забронировать
 function bookable(room) { return room.total - (room.blocked || 0); }
+// «2 шт.» → «все 3 заняты», «оба заняты», «1 занят»
+function numWord(n, one, few, many) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
+function longText(room) {
+  const b = room.blocked || 0;
+  if (!b) return '';
+  if (b >= room.total) return room.total === 2 ? 'оба заняты на долгий срок' : `все ${room.total} заняты на долгий срок`;
+  return `${b} ${numWord(b, 'занят', 'заняты', 'заняты')} на долгий срок`;
+}
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 
@@ -151,6 +164,12 @@ function renderResults() {
           <a class="btn" href="${link}">Забронировать</a>
         </div>`;
     }
+    if (bookable(room) <= 0) return `
+      <div class="av-card av-card-busy">
+        <h4>${room.name}</h4>
+        <p class="av-status status-unavailable">✗ Сейчас ${longText(room)}</p>
+        <p class="av-sum">Пока их нельзя забронировать — выберите другой тип номера.</p>
+      </div>`;
     return `
       <div class="av-card av-card-busy">
         <h4>${room.name}</h4>
@@ -193,6 +212,11 @@ function renderCalendars() {
   const startOffset = (new Date(view.y, view.m - 1, 1).getDay() + 6) % 7; // неделя с понедельника
 
   calEl.innerHTML = ROOMS.map(room => {
+    if (bookable(room) <= 0) return `
+      <div class="cal-block cal-block-off">
+        <h4>${room.name} <span class="cal-count">${room.total} шт. · ${longText(room)}</span></h4>
+        <p class="cal-off">Сейчас этот тип номера нельзя забронировать.</p>
+      </div>`;
     let cells = '';
     for (let i = 0; i < startOffset; i++) cells += '<span class="cal-day cal-empty"></span>';
 
@@ -211,7 +235,7 @@ function renderCalendars() {
 
     return `
       <div class="cal-block">
-        <h4>${room.name} <span class="cal-count">${room.total} шт.${room.blocked ? ` · ${room.blocked} занят на долгий срок` : ''}</span></h4>
+        <h4>${room.name} <span class="cal-count">${room.total} шт.${room.blocked ? ` · ${longText(room)}` : ''}</span></h4>
         <div class="cal-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
         <div class="cal-grid">${cells}</div>
       </div>`;
@@ -226,6 +250,25 @@ nextBtn.addEventListener('click', () => {
   view.m++; if (view.m > 12) { view.m = 1; view.y++; }
   renderCalendars();
 });
+
+// ---------- ПЛАШКА «ЗАНЯТЫ НА ДОЛГИЙ СРОК» (по данным rooms.js) ----------
+(function () {
+  const box = document.getElementById('avLong'), txt = document.getElementById('avLongText');
+  if (!box || !txt) return;
+  const off = ROOMS.filter(r => bookable(r) <= 0);
+  const part = ROOMS.filter(r => r.blocked && bookable(r) > 0);
+  if (!off.length && !part.length) return;
+  const q = r => `«${r.name}»`;
+  const list = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' и ' + a[a.length - 1] : a[0];
+  let html = '';
+  if (off.length) html += 'Сейчас ' + list(off.map(r => (r.total === 2 ? 'оба номера ' : `все ${r.total} ${numWord(r.total, 'номер', 'номера', 'номеров')} `) + q(r))) +
+    ' заняты на долгий срок — их пока нельзя забронировать. ';
+  if (part.length) html += 'Также на долгий срок занято: ' + list(part.map(r => `${r.blocked} из ${r.total} ${q(r)}`)) + '. ';
+  const ok = ROOMS.filter(r => bookable(r) > 0);
+  if (ok.length) html += 'Для бронирования доступны ' + list(ok.map(q)) + '.';
+  txt.textContent = html.trim();
+  box.hidden = false;
+})();
 
 // ---------- ЗАПУСК ----------
 

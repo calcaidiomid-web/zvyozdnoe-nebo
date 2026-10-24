@@ -96,8 +96,9 @@
 
   // Ночь d полностью занята? (для конкретного типа номера или для всего отеля)
   function fullNight(d, room) {
+    if (room && room in ROOMS && ROOMS[room] <= 0) return true;      // все номера этого типа заняты надолго
     if (!occ) return false;
-    const list = room && ROOMS[room] ? [room] : Object.keys(ROOMS);
+    const list = room && room in ROOMS ? [room] : Object.keys(ROOMS);
     return list.every(r => occ[r].filter(b => b.from <= d && d < b.to).length >= ROOMS[r]);
   }
   // Первая занятая ночь в промежутке [from, to) или null
@@ -108,7 +109,9 @@
 
   // Сколько номеров типа room свободно на все ночи [from, to); null — данных нет
   function freeFor(room, from, to) {
-    if (!occ || !ROOMS[room]) return null;
+    if (!(room in ROOMS)) return null;
+    if (ROOMS[room] <= 0) return 0;                                   // все заняты надолго — данные не нужны
+    if (!occ) return null;
     let min = ROOMS[room];
     for (let d = from; d < to; d++) min = Math.min(min, ROOMS[room] - occ[room].filter(b => b.from <= d && d < b.to).length);
     return Math.max(0, min);

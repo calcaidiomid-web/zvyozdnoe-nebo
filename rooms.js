@@ -22,8 +22,8 @@
 // ============================================================
 window.ZN_ROOMS = [
   { name: 'Эконом маленький', total: 2, blocked: 1, price: 1920, photo: 'ekonom-mal-1' },
-  { name: 'Эконом большой',   total: 2, blocked: 1, price: 2120, photo: 'ekonom-bol-1' },
-  { name: 'Стандарт комфорт', total: 3, blocked: 1, price: 2680, photo: 'komfort-3' },
+  { name: 'Эконом большой',   total: 2, blocked: 2, price: 2120, photo: 'ekonom-bol-1' },
+  { name: 'Стандарт комфорт', total: 3, blocked: 3, price: 2680, photo: 'komfort-3' },
   { name: 'Стандарт премиум', total: 2, blocked: 1, price: 2980, photo: 'premium-1' }
 ];
 

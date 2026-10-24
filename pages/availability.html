@@ -22,9 +22,9 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="../fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../site.css?v=20261026a">
+  <link rel="stylesheet" href="../site.css?v=20261030b">
   <script src="../theme.js?v=20261022a"></script>
-  <script src="../rooms.js?v=20261025a"></script>
+  <script src="../rooms.js?v=20261030a"></script>
   <script src="../analytics.js?v=20261010a" async></script>
   <style>
     .av-dates {
@@ -269,7 +269,12 @@
       или позвоните <strong>+7 (999) 221-33-11</strong>.
     </p>
 
-    <div class="faq-item">
+    <div class="faq-item av-tip av-long" id="avLong" hidden>
+      <h4><span class="ico" aria-hidden="true">🔑</span>Заняты на долгий срок</h4>
+      <p id="avLongText"></p>
+    </div>
+
+    <div class="faq-item av-tip">
       <h4><span class="ico" aria-hidden="true">💡</span>Совет</h4>
       <p>
         Сезонные пики активности: май-сентябрь.
@@ -278,7 +283,7 @@
       </p>
     </div>
 
-    <p style="text-align: center; margin-top: 40px;">
+    <p class="end-cta">
       <a class="btn" href="../index.html#kontakty">Забронировать номер</a>
     </p>
   </section>
@@ -348,9 +353,9 @@
     });
   </script>
 
-  <script src="../availability.js?v=20261014b"></script>
-  <script src="../datepicker.js?v=20261014b"></script>
-  <script src="../menu.js?v=20261025a"></script>
+  <script src="../availability.js?v=20261027a"></script>
+  <script src="../datepicker.js?v=20261030b"></script>
+  <script src="../menu.js?v=20261029a"></script>
   <script src="../ui.js?v=20261024b"></script>
 
 </body>
