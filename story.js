@@ -67,7 +67,7 @@
         const s = document.createElement('span');
         s.className = 'ch';
         s.textContent = chr;
-        s.style.animationDelay = (0.15 + n * 0.035).toFixed(3) + 's';
+        s.style.animationDelay = (0.08 + n * 0.025).toFixed(3) + 's';
         o.appendChild(s); ws.appendChild(o);
         letters.push(o); glyphs.push(s); n++;
       });
@@ -77,7 +77,7 @@
   })();
   // буквы проявились — снимаем с них отдельные слои, они больше не двигаются сами
   const introDone = () => glyphs.forEach(s => s.classList.add('done'));
-  setTimeout(introDone, reduce ? 0 : 1800);
+  setTimeout(introDone, reduce ? 0 : 1100);
 
   // ---------- Блик света пробегает по золотым буквам ----------
   // У каждой буквы второй слой фона — светлая полоса шириной во всё слово;

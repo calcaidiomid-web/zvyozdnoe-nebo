@@ -223,9 +223,13 @@ header.theme-night { --glass: rgba(27, 28, 33, .62); }
 .logo-back { width: 8px; height: 8px; margin: 0 2px 0 1px; border: solid currentColor; border-width: 0 0 1.6px 1.6px; transform: rotate(45deg); opacity: .55; flex-shrink: 0; transition: transform .45s var(--spring), opacity .3s ease; }
 .logo-inner:hover .logo-back, .logo-inner:focus-visible .logo-back { transform: translateX(-3px) rotate(45deg); opacity: 1; }
 .logo-words { position: relative; }
-.logo-home { position: absolute; left: 0; top: 100%; margin-top: 3px; font: 500 10.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; color: var(--accent-ink); opacity: 0; transform: translateY(-3px); transition: opacity .3s ease, transform .45s var(--spring); pointer-events: none; }
-@media (hover: hover) { .logo-inner:hover .logo-home { opacity: .9; transform: none; } }
-.logo-inner:focus-visible .logo-home { opacity: .9; transform: none; }
+.logo-home { position: absolute; left: 0; top: 0; bottom: 0; display: flex; align-items: center; font: 600 15px/1 var(--sans); letter-spacing: -.01em; white-space: nowrap; color: var(--accent-ink); opacity: 0; transform: translateY(70%); transition: opacity .25s ease, transform .45s var(--spring); pointer-events: none; }
+/* при наведении «Звёздное небо» уезжает вверх, на его место въезжает «На главную» — всё внутри капсулы */
+.logo-inner .logo-words { overflow: hidden; }
+.logo-inner .logo-text { display: block; transition: transform .45s var(--spring), opacity .25s ease, color .3s ease; }
+@media (hover: hover) { .logo-inner:hover .logo-home { opacity: 1; transform: none; } .logo-inner:hover .logo-text { opacity: 0; transform: translateY(-70%); } }
+.logo-inner:focus-visible .logo-home { opacity: 1; transform: none; }
+.logo-inner:focus-visible .logo-text { opacity: 0; transform: translateY(-70%); }
 @media (prefers-reduced-motion: reduce) { .logo-star, .logo-back, .logo-home { transition: none; } }
 
 header nav { display: flex; align-items: center; gap: 26px; }
@@ -426,7 +430,7 @@ html.lite .dr-scrim { background: rgba(0, 0, 0, .55); }
   background-repeat: no-repeat;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   padding-bottom: .04em; margin-bottom: -.04em;
-  animation: chIn 1.1s var(--spring) both; will-change: transform, opacity;
+  animation: chIn .75s var(--spring) both; will-change: transform, opacity;
 }
 /* буква проявилась: анимация и отдельный слой больше не нужны */
 .ch.done { animation: none; opacity: 1; transform: none; filter: none; will-change: auto; }
@@ -437,7 +441,7 @@ html.lite .dr-scrim { background: rgba(0, 0, 0, .55); }
 @keyframes chIn { 0% { opacity: 0; } 30% { opacity: .9; } to { opacity: 1; transform: none; } }
 
 .star { position: relative; width: clamp(140px, 14vw, 220px); aspect-ratio: 1; margin-bottom: clamp(14px, 2.6vh, 30px); will-change: transform, opacity; }
-.star-in { position: absolute; inset: 0; animation: starIn 1.5s cubic-bezier(.25, 1, .5, 1) both; }
+.star-in { position: absolute; inset: 0; animation: starIn 1.05s cubic-bezier(.25, 1, .5, 1) both; }
 /* звезда раскрывается из точки и доворачивается на место (раньше это считал скрипт в каждом кадре) */
 @keyframes starIn { 0% { opacity: 0; rotate: -40deg; scale: .15; } 40% { opacity: 1; } 100% { opacity: 1; rotate: 0deg; scale: 1; } }
 .star-in > * { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
@@ -1092,11 +1096,11 @@ section.hero.page-hero {
 .page-hero h1 { margin: 0 auto; max-width: min(100%, 900px); text-wrap: balance; overflow-wrap: normal; font-family: var(--brand); font-weight: 600; font-size: clamp(52px, 8.4vw, 116px); letter-spacing: -.01em; line-height: .95;
   background: linear-gradient(180deg, #fffaf0 0%, #f6e7bd 40%, #dcb658 80%, #c39a3a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .06em; }
 .page-hero p { max-width: 600px; margin: 18px auto 0; font-size: clamp(17px, 1.8vw, 22px); line-height: 1.4; color: rgba(245, 245, 247, .62); }
-.page-hero > h1, .page-hero > p, .page-hero > .ph-star { animation: heroIn 1.2s var(--spring) both; }
-.page-hero > h1 { animation-delay: .08s; }
-.page-hero > p { animation-delay: .18s; }
+.page-hero > h1, .page-hero > p, .page-hero > .ph-star { animation: heroIn .6s var(--spring) both; }
+.page-hero > h1 { animation-delay: .03s; }
+.page-hero > p { animation-delay: .08s; }
 .page-hero.ph-shown > h1, .page-hero.ph-shown > p, .page-hero.ph-shown > .ph-star { animation: none; }
-@keyframes heroIn { from { opacity: 0; transform: translate3d(0, 24px, 0); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes heroIn { from { opacity: 0; transform: translate3d(0, 16px, 0); } to { opacity: 1; transform: none; } }
 
 /* Содержимое страниц — колонка для чтения */
 section:not(.hero):not(.story):not(#daty):not(#nomera):not(#udobstva):not(#kontakty):not(.finale) {
@@ -1372,7 +1376,7 @@ details.faq-item[open] .faq-a { animation: faqIn .5s var(--spring); }
 /* облака неподвижны (сдвигаются только вместе с прокруткой) — медленный «дрейф» был заметен лишь как нагрузка */
 
 /* Подсказка «листайте»: тонкая линия, по которой стекает искорка */
-.scroll-cue { position: absolute; left: 50%; bottom: max(28px, env(safe-area-inset-bottom)); z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 10px; transform: translateX(-50%); pointer-events: none; animation: cueIn 1.2s var(--spring) 1.6s both; }
+.scroll-cue { position: absolute; left: 50%; bottom: max(28px, env(safe-area-inset-bottom)); z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 10px; transform: translateX(-50%); pointer-events: none; animation: cueIn 1s var(--spring) 1.1s both; }
 .scroll-cue span { font: 600 10.5px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: rgba(245, 245, 247, .55); }
 .scroll-cue i { position: relative; width: 1px; height: 44px; overflow: hidden; background: linear-gradient(rgba(245, 245, 247, .25), rgba(245, 245, 247, 0)); }
 .scroll-cue i::after { content: ''; position: absolute; left: -1px; top: 0; width: 3px; height: 14px; border-radius: 2px; background: linear-gradient(transparent, #f3dc94); animation: cueDrop 2.4s cubic-bezier(.6, 0, .4, 1) infinite; }
@@ -1389,10 +1393,8 @@ details.faq-item[open] .faq-a { animation: faqIn .5s var(--spring); }
    ПЛАВНОСТЬ ВСЕГО САЙТА
    ================================================================ */
 /* Переходы между страницами: старая растворяется, новая мягко проявляется (Chrome, Safari 18+) */
-@view-transition { navigation: auto; }
+@view-transition { navigation: none; }   /* переходы между страницами без снимков — так быстрее */
 header { view-transition-name: site-header; }
-html:not(.theme-vt)::view-transition-old(root) { animation: vtOut .28s ease both; }
-html:not(.theme-vt)::view-transition-new(root) { animation: vtIn .6s var(--spring) both; }
 html:not(.theme-vt)::view-transition-group(site-header) { animation-duration: .3s; }
 @keyframes vtOut { to { opacity: 0; } }
 @keyframes vtIn { from { opacity: 0; transform: translateY(12px); } }

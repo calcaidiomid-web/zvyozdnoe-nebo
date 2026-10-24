@@ -22,8 +22,10 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="site.css?v=20261102c">
-  <link rel="preload" href="story.js?v=20261102c" as="script">
+  <link rel="stylesheet" href="site.css?v=20261103b">
+  <!-- Мгновенные переходы: браузер заранее загружает страницу при наведении и готовит её при нажатии -->
+  <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}],"prerender":[{"where":{"href_matches":"/*"},"eagerness":"conservative"}]}</script>
+  <link rel="preload" href="story.js?v=20261103a" as="script">
   <script src="theme.js?v=20261102c"></script>
   <script src="rooms.js?v=20261030a"></script>
   <script src="analytics.js?v=20261010a" async></script>
@@ -207,7 +209,7 @@
     </div>
   </section>
   <!-- заставку запускаем сразу после неё, не дожидаясь остальной страницы -->
-  <script src="story.js?v=20261102c"></script>
+  <script src="story.js?v=20261103a"></script>
   <noscript><style>.story .showcase, .story .hw-line { visibility: visible !important; }</style></noscript>
 
 
@@ -1491,9 +1493,9 @@
     })();
   </script>
   <script src="datepicker.js?v=20261101a"></script>
-  <script src="gallery.js?v=20261010a"></script>
+  <script src="gallery.js?v=20261103a"></script>
   <script src="menu.js?v=20261102c"></script>
-  <script src="ui.js?v=20261102c"></script>
+  <script src="ui.js?v=20261103b"></script>
 
 </body>
 

@@ -35,7 +35,6 @@
   const isHome = !!document.getElementById('story');
   if (logo && !isHome) {
     logo.classList.add('logo-inner');
-    logo.title = 'На главную';
     const back = document.createElement('span');
     back.className = 'logo-back'; back.setAttribute('aria-hidden', 'true');
     logo.prepend(back);
@@ -43,7 +42,7 @@
     if (words) {
       const home = document.createElement('span');
       home.className = 'logo-home'; home.setAttribute('aria-hidden', 'true');
-      home.textContent = 'на главную';
+      home.textContent = 'На главную';
       words.appendChild(home);
     }
   }
@@ -78,7 +77,7 @@
     }
     // Подстраховка: если браузер не проиграл появление (вкладка открылась в фоне и т. п.),
     // через 1,6 с заголовок и звезда всё равно на месте
-    setTimeout(() => hero.classList.add('ph-shown'), 1600);
+    setTimeout(() => hero.classList.add('ph-shown'), 900);
     // небо слегка следует за мышкой (мягко догоняет)
     if (fine && !reduce) {
       let tx = 0, ty = 0, x = 0, y = 0, raf = 0;

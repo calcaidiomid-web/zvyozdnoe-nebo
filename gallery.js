@@ -25,7 +25,11 @@
     root.insertAdjacentHTML('beforeend', '<span class="cg-caption" aria-hidden="true"></span>');
     const dots = [...root.querySelectorAll('.cg-dots button')];
     const caption = root.querySelector('.cg-caption');
-    let current = -1;
+    let current = -1, warm = false;
+    // навели мышь / коснулись карточки — тогда и подгружаем второе фото (а не все сразу при открытии сайта)
+    const wake = () => { if (warm) return; warm = true; if (imgs[1]) imgs[1].loading = 'eager'; };
+    root.addEventListener('pointerenter', wake, { passive: true });
+    root.addEventListener('touchstart', wake, { passive: true });
 
     function index() { return Math.round(track.scrollLeft / track.clientWidth) || 0; }
     function go(i) {
@@ -42,8 +46,8 @@
       caption.hidden = !caption.textContent;
       const prev = root.querySelector('.cg-prev'), next = root.querySelector('.cg-next');
       if (prev) { prev.disabled = i === 0; next.disabled = i === imgs.length - 1; }
-      // следующее фото подгружаем заранее
-      if (imgs[i + 1]) imgs[i + 1].loading = 'eager';
+      // следующее фото подгружаем заранее — но только когда человек начал листать эту карточку
+      if (warm && imgs[i + 1]) imgs[i + 1].loading = 'eager';
     }
 
     let raf = 0;
