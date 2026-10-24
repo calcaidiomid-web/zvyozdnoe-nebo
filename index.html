@@ -22,9 +22,9 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preload" href="fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="site.css?v=20261030b">
-  <link rel="preload" href="story.js?v=20261028a" as="script">
-  <script src="theme.js?v=20261022a"></script>
+  <link rel="stylesheet" href="site.css?v=20261102c">
+  <link rel="preload" href="story.js?v=20261102c" as="script">
+  <script src="theme.js?v=20261102c"></script>
   <script src="rooms.js?v=20261030a"></script>
   <script src="analytics.js?v=20261010a" async></script>
   <script type="application/ld+json">
@@ -207,7 +207,7 @@
     </div>
   </section>
   <!-- заставку запускаем сразу после неё, не дожидаясь остальной страницы -->
-  <script src="story.js?v=20261028a"></script>
+  <script src="story.js?v=20261102c"></script>
   <noscript><style>.story .showcase, .story .hw-line { visibility: visible !important; }</style></noscript>
 
 
@@ -404,7 +404,7 @@
       <div class="contacts">
         <h3>Связаться напрямую</h3>
         <p><span>Телефон</span><a href="tel:+79992213311">+7 999 221-33-11</a></p>
-        <p><span>Мессенджеры</span><a href="https://wa.me/79992213311">WhatsApp</a> · <a href="https://t.me/+79992213311">Telegram</a> · MAX</p>
+        <p><span>Мессенджеры</span><a href="https://wa.me/79992213311">WhatsApp</a> · <a href="https://t.me/+79992213311">Telegram</a> · <a class="js-max" href="https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ_oJeNv8qXlPnJGHjE" target="_blank" rel="noopener">MAX</a></p>
         <p><span>Адрес</span>ул. Восстания, 22, Санкт-Петербург</p>
       </div>
     </aside>
@@ -629,6 +629,7 @@
           <a href="tel:+79992213311">+7 (999) 221-33-11</a>
           <a href="https://wa.me/79992213311" target="_blank" rel="noopener">WhatsApp</a>
           <a href="https://t.me/+79992213311" target="_blank" rel="noopener">Telegram</a>
+          <a class="js-max" href="https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ_oJeNv8qXlPnJGHjE" target="_blank" rel="noopener">MAX</a>
           <a href="pages/map.html">Как добраться</a>
         </div>
       </div>
@@ -847,6 +848,7 @@
     roomPicks.forEach(r => r.addEventListener('change', () => {
       roomSelect.value = r.value;
       roomSelect.dispatchEvent(new Event('change'));
+      if (window.ZNTap) ZNTap(8);
       if (window.znGoal) znGoal('room_choose', { room: r.value, from: 'form' });
     }));
     // Номер проверяем раньше всего — до календаря (он тоже следит за отправкой формы)
@@ -922,6 +924,7 @@
           <li class="is-now"><b>Проверяем номер на ваши даты</b><span>Обычно это занимает до 15 минут</span></li>
           <li><b>Пишем вам в ${esc(CHANNEL_NAMES[data.channel] || 'мессенджер')}</b><span>на номер ${esc(data.phone)} — подтвердим бронь и расскажем, как заселиться</span></li>
         </ol>
+        ${data.channel === 'max' ? '<p class="ok-note"><a class="js-max" href="#" rel="noopener">Открыть наш чат в MAX</a> — так вы сразу увидите ответ.</p>' : ''}
         <p class="ok-note">Ответа долго нет? Позвоните: <a href="tel:+79992213311">+7 999 221-33-11</a></p>`);
       notice.classList.add('form-notice-ok');
       if (window.znGoal) znGoal('booking_sent', { room: data.room });
@@ -988,20 +991,24 @@
         <p class="ok-note">Обычно это занимает несколько секунд. Не закрывайте страницу.</p>`);
       notice.classList.add('form-notice-wait');
       const slow = setTimeout(() => { submitBtn.textContent = 'Ещё пара секунд…'; }, 6000);
+      if (window.ZNIsland) ZNIsland.show({ icon: 'load', text: 'Отправляем заявку…' });
 
       postBooking(data, 1)
         .then(res => {
           if (res.ok) {
+            if (window.ZNIsland) ZNIsland.show({ icon: 'ok', text: 'Заявка' + (res.id ? ' №' + res.id : '') + ' принята', ms: 3200 });
             showSuccess(data, res.id);
             afterSubmit();
             return;
           }
           console.warn('Бот не принял заявку:', res.error);
+          if (window.ZNIsland) ZNIsland.show({ icon: 'err', text: res.error === 'full' ? 'Номер на эти даты занят' : 'Заявка не отправилась', ms: 3200 });
           const why = BOT_ERRORS[res.error];
           showNotice(why ? why : fallbackText(message));
         })
         .catch(err => {
           console.warn('Заявка не отправилась:', err);
+          if (window.ZNIsland) ZNIsland.show({ icon: 'err', text: 'Нет связи с сервером', ms: 3200 });
           showNotice(err && err.message === 'timeout' ? timeoutText(message) : fallbackText(message));
         })
         .finally(() => {
@@ -1111,7 +1118,25 @@
           stepRoom.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
-        sendRequest(room, name, phone, checkin, checkout, channel);
+        // Итог перед отправкой — лист снизу (телефон) или окно (компьютер), как подтверждение покупки в iPhone
+        if (!window.ZNPanel) { sendRequest(room, name, phone, checkin, checkout, channel); return; }
+        const c = calcPrice();
+        const photo = (window.ZN_ROOMS.find(r => r.name === room) || {}).photo;
+        const dates = window.ZNDates ? ZNDates.rangeText(checkin, checkout) : formatDate(checkin) + ' – ' + formatDate(checkout);
+        ZNPanel.open({
+          title: 'Проверьте заявку',
+          html: `<div class="zp-sum">${photo ? `<img src="images-edit/${photo}-320.webp" alt="" width="72" height="72">` : '<span></span>'}<div><b>${escHtml(room)}</b><span>${escHtml(dates)}</span></div></div>
+            <ul class="zp-rows">
+              <li><span>Гость</span><b>${escHtml(name)}</b></li>
+              <li><span>Телефон</span><b>${escHtml(phone)}</b></li>
+              <li><span>Ответим в</span><b>${escHtml(CHANNEL_NAMES[channel] || channel)}</b></li>
+              ${c ? `<li class="zp-total"><span>${c.nights} ${nightsWord(c.nights)}</span><b>${rub(c.total)}</b></li>` : ''}
+            </ul>
+            <p class="zp-note">Это заявка, а не оплата. Администратор проверит номер и напишет вам.</p>`,
+          ok: 'Отправить заявку',
+          cancel: 'Изменить',
+          onOk: () => sendRequest(room, name, phone, checkin, checkout, channel)
+        });
       });
     });
 
@@ -1465,10 +1490,10 @@
       });
     })();
   </script>
-  <script src="datepicker.js?v=20261030b"></script>
+  <script src="datepicker.js?v=20261101a"></script>
   <script src="gallery.js?v=20261010a"></script>
-  <script src="menu.js?v=20261029a"></script>
-  <script src="ui.js?v=20261024b"></script>
+  <script src="menu.js?v=20261102c"></script>
+  <script src="ui.js?v=20261102c"></script>
 
 </body>
 

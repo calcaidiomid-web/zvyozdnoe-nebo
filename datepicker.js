@@ -247,6 +247,33 @@
       sumOut = root.querySelector('[data-k="out"]');
 
       root.addEventListener('click', e => { if (e.target === root) close(); });
+      // Телефон: лист можно смахнуть вниз за «ручку» или заголовок — он едет за пальцем
+      (function () {
+        let y0 = 0, dy = 0, t0 = 0, drag = false;
+        const start = e => {
+          if (!root.classList.contains('dp-mobile') || e.target.closest('button')) return;
+          drag = true; y0 = e.touches[0].clientY; dy = 0; t0 = performance.now();
+          dialog.style.transition = 'none';
+        };
+        const move = e => {
+          if (!drag) return;
+          const d = e.touches[0].clientY - y0;
+          dy = d > 0 ? d : -(Math.abs(d) * 30) / (30 + Math.abs(d));
+          dialog.style.transform = 'translateY(' + dy.toFixed(1) + 'px)';
+          if (e.cancelable) e.preventDefault();
+        };
+        const end = () => {
+          if (!drag) return; drag = false;
+          dialog.style.transition = ''; dialog.style.transform = '';
+          const v = dy / Math.max(1, performance.now() - t0);
+          if (dy > dialog.offsetHeight * 0.25 || v > 0.6) close();
+        };
+        [root.querySelector('.dp-grip'), root.querySelector('.dp-head')].forEach(h => {
+          h.addEventListener('touchstart', start, { passive: true });
+          h.addEventListener('touchmove', move, { passive: false });
+          h.addEventListener('touchend', end); h.addEventListener('touchcancel', end);
+        });
+      })();
       root.querySelector('.dp-close').addEventListener('click', () => close());
       doneBtn.addEventListener('click', () => close());
       root.querySelector('.dp-reset').addEventListener('click', () => { a = b = hover = null; inst.set(null, null); hint('Выберите дату заезда'); render(); });
@@ -282,6 +309,7 @@
     }
 
     function pick(d) {
+      if (window.ZNTap) ZNTap(6);
       if (a === null || b !== null || d <= a) {
         if (fullNight(d, room())) { hint('В эту ночь свободных номеров нет — выберите другую дату', true); return; }
         a = d; b = null; hover = null;

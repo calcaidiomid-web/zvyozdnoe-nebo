@@ -2,6 +2,36 @@
 // menu.js — меню-«бургер» для телефонов и планшетов
 // Подключено на всех страницах сайта
 // ============================================
+// ------------------------------------------------------------
+// Ссылка на профиль отеля в мессенджере MAX.
+// Где взять: приложение MAX → профиль → «Поделиться» → «Скопировать ссылку»
+// (вида https://max.ru/u/...). Вставьте её между кавычками.
+// Пока пусто, кнопки MAX копируют номер телефона и подсказывают найти нас по нему.
+// ------------------------------------------------------------
+window.ZN_MAX_URL = 'https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ_oJeNv8qXlPnJGHjE';
+
+(function () {
+  const PHONE = '+7 999 221-33-11';
+  function toast(text) {
+    let t = document.querySelector('.zn-toast');
+    if (!t) { t = document.createElement('div'); t.className = 'zn-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = text;
+    t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 4200);
+  }
+  const url = (window.ZN_MAX_URL || '').trim();
+  if (url) document.querySelectorAll('a.js-max').forEach(a => { a.href = url; a.target = '_blank'; });
+  // ссылки MAX, появившиеся позже (например, после отправки заявки), — через общий обработчик
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a.js-max');
+    if (!a) return;
+    if (url) { if (a.getAttribute('href') !== url) { e.preventDefault(); window.open(url, '_blank', 'noopener'); } return; }
+    e.preventDefault();
+    if (navigator.clipboard) navigator.clipboard.writeText(PHONE.replace(/\s/g, '')).catch(() => {});
+    toast('Номер ' + PHONE + ' скопирован — найдите нас в MAX по этому номеру');
+  });
+})();
+
 (function () {
   const burger = document.querySelector('.burger');
   const nav = document.querySelector('header nav');
@@ -27,6 +57,32 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && more.open) { more.open = false; more.querySelector('summary').focus(); } });
   }
 
+  // ---------- Золотая плашка за курсором (компьютер) ----------
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const pill = document.createElement('span');
+    pill.className = 'nav-pill'; pill.setAttribute('aria-hidden', 'true');
+    nav.prepend(pill);
+    const items = [...nav.querySelectorAll(':scope > a, :scope > .nav-more > summary')];
+    const place = el => {
+      const r = el.getBoundingClientRect(), nr = nav.getBoundingClientRect();
+      pill.style.width = (r.width + 22) + 'px';
+      pill.style.transform = 'translateX(' + (r.left - nr.left - 11).toFixed(1) + 'px)';
+    };
+    items.forEach(el => el.addEventListener('pointerenter', () => {
+      if (!pill.classList.contains('on')) { pill.classList.add('jump'); place(el); void pill.offsetWidth; pill.classList.remove('jump'); }
+      else place(el);
+      pill.classList.add('on');
+    }));
+    nav.addEventListener('pointerleave', () => pill.classList.remove('on'));
+  }
+
+  // ---------- Цена в кнопке брони ----------
+  const hcta = document.querySelector('.header-cta');
+  if (hcta && !hcta.querySelector('.hc-price')) {
+    const min = window.ZN_ROOMS ? Math.min.apply(null, window.ZN_ROOMS.map(r => r.price)).toLocaleString('ru-RU') + ' ₽' : '1 920 ₽';
+    hcta.innerHTML = 'Забронировать<span class="hc-price">от ' + min + '</span>';
+  }
+
   // ================================================================
   // Боковая панель (телефоны и планшеты): выезжает справа.
   // Ссылки берём из меню шапки — их не нужно поддерживать в двух местах.
@@ -38,6 +94,7 @@
   const ico = {
     tel: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
     tg: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.9.4-.9 1.6 0 1.9l4.7 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.9 3.6c.6.4 1.4.1 1.6-.6L22.9 4.9c.2-.9-.6-1.7-1.4-1.4z"/><path d="m7.5 14.3 10-7.3-7.6 8.6"/></svg>',
+    max: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 15.5V9l4 4 4-4v6.5"/></svg>',
     wa: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5V6.8A2.8 2.8 0 0 1 6.8 4h10.4A2.8 2.8 0 0 1 20 6.8v6.9a2.8 2.8 0 0 1-2.8 2.8H8.3L4 20z"/><path d="M8.5 9.5h7M8.5 12.5h4.5"/></svg>'
   };
 
@@ -54,11 +111,21 @@
           '<a href="' + telHref + '"><i>' + ico.tel + '</i>Позвонить</a>' +
           '<a href="https://t.me/+79992213311" target="_blank" rel="noopener"><i>' + ico.tg + '</i>Telegram</a>' +
           '<a href="https://wa.me/79992213311" target="_blank" rel="noopener"><i>' + ico.wa + '</i>WhatsApp</a>' +
+          '<a class="js-max" href="' + ((window.ZN_MAX_URL || '').trim() || '#') + '"' + ((window.ZN_MAX_URL || '').trim() ? ' target="_blank"' : '') + ' rel="noopener"><i>' + ico.max + '</i>MAX</a>' +
         '</div>' +
         '<a class="dr-phone" href="' + telHref + '">' + telText + '</a>' +
       '</div>' +
     '</aside>';
   const list = dr.querySelector('.dr-nav');
+  // «Главная» — первым пунктом (адрес берём у логотипа: index.html или ../index.html)
+  const logoLink = document.querySelector('header .logo');
+  if (logoLink) {
+    const h = document.createElement('a');
+    h.href = logoLink.getAttribute('href');
+    h.textContent = 'Главная';
+    if (document.getElementById('story')) { h.classList.add('active'); h.setAttribute('aria-current', 'page'); }
+    list.appendChild(h);
+  }
   [...nav.children].forEach(el => {
     if (el.matches('a')) { list.appendChild(el.cloneNode(true)); return; }
     if (el.matches('details')) {
@@ -79,8 +146,6 @@
     isOpen = true;
     // над тёмной заставкой — тёмная панель, ниже — по теме сайта
     dr.classList.toggle('theme-night', !!(header && header.classList.contains('theme-night')));
-    const sbw = window.innerWidth - document.documentElement.clientWidth;   // полоса прокрутки — чтобы страница не дёрнулась
-    if (sbw > 0) document.documentElement.style.paddingRight = sbw + 'px';
     document.documentElement.classList.add('dr-lock');
     panel.style.removeProperty('--drag');
     dr.classList.add('open');
@@ -101,7 +166,6 @@
     setTimeout(() => {
       if (isOpen) return;
       document.documentElement.classList.remove('dr-lock');
-      document.documentElement.style.paddingRight = '';
     }, 420);
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
@@ -199,5 +263,6 @@
     }, { rootMargin: '0px 0px -20% 0px' }).observe(form);
   }
   window.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
-  update();
+  // первая проверка — после загрузки (замер положения блоков на старте тормозил заставку)
+  if (document.readyState === 'complete') update(); else window.addEventListener('load', () => requestAnimationFrame(update), { once: true });
 })();

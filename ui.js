@@ -29,6 +29,25 @@
   let scrollRaf = 0;
   window.addEventListener('scroll', () => { if (!scrollRaf) scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; onScroll(); }); }, { passive: true });
 
+  // ---------- 1б. Логотип зовёт вернуться на главную ----------
+  // На внутренних страницах: стрелка ‹ перед звездой, при наведении — подпись «на главную».
+  const logo = header && header.querySelector('.logo');
+  const isHome = !!document.getElementById('story');
+  if (logo && !isHome) {
+    logo.classList.add('logo-inner');
+    logo.title = 'На главную';
+    const back = document.createElement('span');
+    back.className = 'logo-back'; back.setAttribute('aria-hidden', 'true');
+    logo.prepend(back);
+    const words = logo.querySelector('.logo-words');
+    if (words) {
+      const home = document.createElement('span');
+      home.className = 'logo-home'; home.setAttribute('aria-hidden', 'true');
+      home.textContent = 'на главную';
+      words.appendChild(home);
+    }
+  }
+
   // ---------- 2. Первый экран внутренних страниц ----------
   const hero = document.querySelector('section.hero');
   if (hero) {
@@ -42,6 +61,24 @@
     star.className = 'ph-star'; star.setAttribute('aria-hidden', 'true');
     star.innerHTML = '<i class="ph-halo"></i><svg viewBox="-100 -100 200 200"><path d="M0-100C2-30 3-6 7-7 6-3 30-2 100 0 30 2 6 3 7 7 3 6 2 30 0 100-2 30-3 6-7 7-6 3-30 2-100 0-30-2-6-3-7-7-3-6-2-30 0-100Z"/></svg><i class="ph-core"></i>';
     hero.insertBefore(star, hero.querySelector('h1'));
+    // Заголовок: самое длинное слово всегда помещается целиком (не обрезается «конфиденциальн…»)
+    const h1 = hero.querySelector('h1');
+    if (h1) {
+      const fit = () => {
+        h1.style.fontSize = '';
+        let i = 0;
+        while (h1.scrollWidth > h1.clientWidth + 1 && i++ < 6) {
+          const fs = parseFloat(getComputedStyle(h1).fontSize);
+          h1.style.fontSize = (fs * h1.clientWidth / h1.scrollWidth * 0.98).toFixed(1) + 'px';
+        }
+      };
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      let ft = 0; window.addEventListener('resize', () => { clearTimeout(ft); ft = setTimeout(fit, 120); });
+    }
+    // Подстраховка: если браузер не проиграл появление (вкладка открылась в фоне и т. п.),
+    // через 1,6 с заголовок и звезда всё равно на месте
+    setTimeout(() => hero.classList.add('ph-shown'), 1600);
     // небо слегка следует за мышкой (мягко догоняет)
     if (fine && !reduce) {
       let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
@@ -148,6 +185,12 @@ window.ZNSpring = function (opts) {
   if (!modal) return;
   const sheet = modal.querySelector('.modal-content');
   const grab = modal.querySelector('.sheet-grab');
+  // затемнение — отдельный слой: меняем только его прозрачность (раньше менялась переменная
+  // у всего окна, и браузер пересчитывал стили всего содержимого в каждом кадре)
+  const scrim = document.createElement('div');
+  scrim.className = 'modal-scrim'; scrim.setAttribute('aria-hidden', 'true');
+  modal.prepend(scrim); modal.classList.add('has-scrim');
+  const setScrim = v => { scrim.style.opacity = v; };
   const root = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobileQ = window.matchMedia('(max-width: 760px)');
@@ -156,25 +199,25 @@ window.ZNSpring = function (opts) {
   // ---- Телефон: шторка двигается по вертикали (y в пикселях, 0 — открыта, H — спрятана) ----
   function setY(y) {
     sheet.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0)';
-    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, 1 - y / H)).toFixed(3));
+    setScrim(Math.max(0, Math.min(1, 1 - y / H)).toFixed(3));
   }
   // ---- Компьютер: окно вырастает из карточки (p: 0 — карточка, 1 — окно) ----
   function setP(p) {
-    if (!from) { sheet.style.transform = 'scale(' + (0.94 + 0.06 * p).toFixed(4) + ')'; sheet.style.opacity = Math.min(1, p * 1.6).toFixed(3); modal.style.setProperty('--scrim', Math.max(0, Math.min(1, p)).toFixed(3)); return; }
+    if (!from) { sheet.style.transform = 'scale(' + (0.94 + 0.06 * p).toFixed(4) + ')'; sheet.style.opacity = Math.min(1, p * 1.6).toFixed(3); setScrim(Math.max(0, Math.min(1, p)).toFixed(3)); return; }
     const q = 1 - p;
     // dragOff — насколько окно стянули пальцем вниз: из этого места оно и уходит обратно в карточку
     sheet.style.transform = 'translate3d(' + (from.dx * q).toFixed(2) + 'px,' + (from.dy * q + dragOff * p).toFixed(2) + 'px,0) scale(' + ((from.s + (1 - from.s) * p) * (1 - dragShrink(dragOff) * p)).toFixed(4) + ')';
     sheet.style.opacity = Math.max(0, Math.min(1, p * 1.8)).toFixed(3);
-    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, p * (1 - Math.max(0, Math.min(1, dragOff / (H || 1))) * 0.8))).toFixed(3));
+    setScrim(Math.max(0, Math.min(1, p * (1 - Math.max(0, Math.min(1, dragOff / (H || 1))) * 0.8))).toFixed(3));
   }
   // ---- Телефон: окно тянут пальцем вниз (y — сдвиг в пикселях) ----
   const dragShrink = y => Math.max(0, Math.min(1, y / (H || 1))) * 0.08;
   function setDrag(y) {
     sheet.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + (1 - dragShrink(y)).toFixed(4) + ')';
-    modal.style.setProperty('--scrim', Math.max(0, Math.min(1, 1 - Math.max(0, y) / (H || 1) * 0.8)).toFixed(3));
+    setScrim(Math.max(0, Math.min(1, 1 - Math.max(0, y) / (H || 1) * 0.8)).toFixed(3));
   }
   function reset() {
-    sheet.style.transform = ''; sheet.style.opacity = ''; modal.style.removeProperty('--scrim');
+    sheet.style.transform = ''; sheet.style.opacity = ''; scrim.style.opacity = '';
   }
 
   function openSheet(card) {
@@ -199,7 +242,7 @@ window.ZNSpring = function (opts) {
       const startP = spring && spring.raf ? spring.value : 0;
       if (spring) spring.stop();
       modal.classList.remove('blurred');
-      spring = ZNSpring({ from: startP, to: 1, response: 0.5, damping: 1, precision: 0.002, onUpdate: setP, onDone: () => { if (open) modal.classList.add('blurred'); } }).start();
+      spring = ZNSpring({ from: startP, to: 1, response: 0.36, damping: 1, precision: 0.004, onUpdate: setP, onDone: () => { if (open) modal.classList.add('blurred'); } }).start();
     }
     setTimeout(() => { const b = modal.querySelector('.close-btn'); if (b) b.focus({ preventScroll: true }); }, 50);
   }
@@ -212,7 +255,7 @@ window.ZNSpring = function (opts) {
     if (reduce || !spring) { done(); return; }
     modal.classList.remove('blurred');                     // размытие убираем сразу — уход окна лёгкий
     if (back) { back.stop(); back = null; }
-    spring.retarget(0, { response: 0.42, damping: 1, onDone: done });   // уходит туда же, откуда пришло
+    spring.retarget(0, { response: 0.3, damping: 1, onDone: done });   // уходит туда же, откуда пришло
   }
   window.ZNSheet = { open: openSheet, close: () => closeSheet(0) };
 
@@ -308,9 +351,14 @@ window.ZNSpring = function (opts) {
     e.preventDefault();
     stop();
     const head = (document.querySelector('header') || { offsetHeight: 0 }).offsetHeight;
-    const to = Math.max(0, Math.min(document.documentElement.scrollHeight - innerHeight, el.getBoundingClientRect().top + scrollY - head + 1));
+    const calc = () => Math.max(0, Math.min(document.documentElement.scrollHeight - innerHeight, el.getBoundingClientRect().top + scrollY - head + 1));
+    let to = calc(), n = 0;
     const dist = Math.abs(to - scrollY);
-    sp = ZNSpring({ from: scrollY, to, response: Math.min(1.1, 0.5 + dist / 9000), damping: 1, onUpdate: v => window.scrollTo({ top: v, behavior: 'instant' }), onDone: () => { sp = null; } }).start();
+    // блоки ниже экрана дорисовываются по пути и могут сдвинуть цель — подправляем её на ходу
+    const done = () => { const t2 = calc(); if (sp && Math.abs(t2 - scrollY) > 2) { to = t2; sp.retarget(to, { response: 0.3, onDone: () => { sp = null; } }); } else sp = null; };
+    sp = ZNSpring({ from: scrollY, to, response: Math.min(1.1, 0.5 + dist / 9000), damping: 1,
+      onUpdate: v => { window.scrollTo({ top: v, behavior: 'instant' }); if (++n % 4 === 0 && sp) { const t2 = calc(); if (Math.abs(t2 - to) > 2) { to = t2; sp.retarget(to); } } },
+      onDone: done }).start();
     if (history.replaceState) history.replaceState(null, '', url.hash);
   });
 })();
@@ -361,4 +409,194 @@ window.ZNSpring = function (opts) {
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
   let cool = 0;
   window.addEventListener('scroll', () => { if (!raf && performance.now() > cool) { cool = performance.now() + 4000; watch(1800); } }, { passive: true });
+})();
+
+// ============================================================
+// 12. «КАК НА iPHONE»: отклик, пилюли-переключатели, островок-уведомление, листы
+// ============================================================
+
+// Лёгкая вибрация на важных действиях (Android; iPhone в браузере не вибрирует)
+window.ZNTap = function (ms) {
+  try { if (navigator.vibrate && window.matchMedia('(pointer: coarse)').matches) navigator.vibrate(ms || 8); } catch (e) { /* нет — и ладно */ }
+};
+
+// ---------- Пилюли-переключатели: плашка переезжает к выбранному варианту ----------
+// Подходит и для кнопок с aria-pressed (фильтры, вопросы подбора), и для радиокнопок (мессенджер).
+window.ZNSeg = (function () {
+  const all = [];
+  function make(box, itemSel, isOn) {
+    if (!box || box.__seg) return;
+    box.__seg = true;
+    box.classList.add('seg');
+    const thumb = document.createElement('span');
+    thumb.className = 'seg-thumb'; thumb.setAttribute('aria-hidden', 'true');
+    box.prepend(thumb);
+    let shown = false;
+    function place(instant) {
+      const on = [...box.querySelectorAll(itemSel)].find(isOn);
+      if (!on || !box.offsetParent) { thumb.style.opacity = '0'; shown = false; return; }
+      const el = on.matches('label') ? (on.querySelector('.messenger-card-content') || on) : on;
+      const x = el.offsetLeft, y = el.offsetTop;
+      let p = el.offsetParent, guard = 0;
+      let ox = x, oy = y;
+      while (p && p !== box && guard++ < 4) { ox += p.offsetLeft; oy += p.offsetTop; p = p.offsetParent; }
+      if (instant || !shown) thumb.classList.add('seg-jump');
+      thumb.style.width = el.offsetWidth + 'px';
+      thumb.style.height = el.offsetHeight + 'px';
+      thumb.style.transform = 'translate(' + ox + 'px,' + oy + 'px)';
+      thumb.style.opacity = '1';
+      if (instant || !shown) { void thumb.offsetWidth; thumb.classList.remove('seg-jump'); }
+      shown = true;
+      box.classList.add('seg-ready');
+    }
+    box.addEventListener('click', e => { if (e.target.closest(itemSel)) { requestAnimationFrame(() => place()); window.ZNTap(6); } });
+    box.addEventListener('change', () => requestAnimationFrame(() => place()));
+    // кто-то поменял выбор из кода (aria-pressed / checked) — догоняем
+    new MutationObserver(() => requestAnimationFrame(() => place())).observe(box, { subtree: true, attributes: true, attributeFilter: ['aria-pressed'] });
+    all.push(() => place(true));
+    // ставим плашку, только когда переключатель показался на экране (не тормозим открытие страницы)
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); requestAnimationFrame(() => place(true)); } }, { rootMargin: '200px' });
+      io.observe(box);
+    } else place(true);
+  }
+  let rt = 0;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => all.forEach(f => f()), 100); });
+  function auto() {
+    document.querySelectorAll('.chips[role="group"]').forEach(b => make(b, '.chip', c => c.getAttribute('aria-pressed') === 'true'));
+    document.querySelectorAll('.quiz-opts').forEach(b => make(b, '.quiz-opt', c => c.getAttribute('aria-pressed') === 'true'));
+    document.querySelectorAll('.messenger-options').forEach(b => make(b, '.messenger-card', c => { const i = c.querySelector('input'); return i && i.checked; }));
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', auto); else auto();
+  return { make, refresh: () => all.forEach(f => f()) };
+})();
+
+// ---------- Островок (как Dynamic Island): шапка-капсула сжимается в чёрную пилюлю с сообщением ----------
+window.ZNIsland = (function () {
+  const header = document.querySelector('header');
+  if (!header) return { show() {}, hide() {} };
+  const isl = document.createElement('div');
+  isl.className = 'island';
+  isl.setAttribute('role', 'status'); isl.setAttribute('aria-live', 'polite');
+  isl.innerHTML = '<span class="isl-ico" aria-hidden="true"></span><span class="isl-text"></span>';
+  header.appendChild(isl);
+  const ico = isl.querySelector('.isl-ico'), txt = isl.querySelector('.isl-text');
+  const ICONS = {
+    load: '<i class="isl-spin"></i>',
+    ok: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" class="isl-ok-bg"/><path d="M7 12.5l3.2 3.2L17 9" class="isl-ok-tick"/></svg>',
+    err: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" class="isl-err-bg"/><path d="M12 7v6M12 16.5v.5" class="isl-err-mark"/></svg>',
+    moon: '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" class="isl-moon"/></svg>',
+    sun: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" class="isl-sun"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" class="isl-rays"/></svg>'
+  };
+  let timer = 0, on = false;
+  function show(o) {
+    clearTimeout(timer);
+    ico.innerHTML = ICONS[o.icon] || '';
+    ico.className = 'isl-ico isl-' + (o.icon || 'none');
+    txt.textContent = o.text || '';
+    // ширина пилюли — по тексту (меряем без анимации)
+    isl.classList.add('isl-measure');
+    const w = Math.min(window.innerWidth - 32, Math.ceil(txt.scrollWidth + 32 + (o.icon ? 32 : 0) + 6));   // поля 16+16, значок 22 + зазор 10
+    isl.classList.remove('isl-measure');
+    isl.style.setProperty('--iw', w + 'px');
+    if (!on) { header.classList.add('island-on'); on = true; }
+    isl.classList.remove('isl-pop'); void isl.offsetWidth; isl.classList.add('isl-pop');
+    if (o.icon === 'ok' || o.icon === 'err') window.ZNTap(o.icon === 'ok' ? [8, 60, 8] : 20);
+    if (o.ms) timer = setTimeout(hide, o.ms);
+  }
+  function hide() {
+    clearTimeout(timer);
+    if (!on) return;
+    on = false;
+    header.classList.remove('island-on');
+  }
+  isl.addEventListener('click', hide);
+  return { show, hide };
+})();
+
+// ---------- Лист снизу (телефон) / окно по центру (компьютер) ----------
+// ZNPanel.open({ title, html, ok: 'Отправить', cancel: 'Изменить', onOk })
+window.ZNPanel = (function () {
+  let root, card, body, okBtn, cancelBtn, titleEl, onOk = null, last = null;
+  const mobile = () => window.matchMedia('(max-width: 640px)').matches;
+  function build() {
+    root = document.createElement('div');
+    root.className = 'zp';
+    root.innerHTML =
+      '<div class="zp-scrim"></div>' +
+      '<div class="zp-card" role="dialog" aria-modal="true">' +
+        '<div class="zp-grip" aria-hidden="true"></div>' +
+        '<h3 class="zp-title"></h3>' +
+        '<div class="zp-body"></div>' +
+        '<div class="zp-actions"><button type="button" class="btn btn-large zp-ok"></button><button type="button" class="zp-cancel"></button></div>' +
+      '</div>';
+    document.body.appendChild(root);
+    card = root.querySelector('.zp-card'); body = root.querySelector('.zp-body');
+    okBtn = root.querySelector('.zp-ok'); cancelBtn = root.querySelector('.zp-cancel'); titleEl = root.querySelector('.zp-title');
+    card.setAttribute('aria-labelledby', 'zpTitle'); titleEl.id = 'zpTitle';
+    root.querySelector('.zp-scrim').addEventListener('click', close);
+    cancelBtn.addEventListener('click', close);
+    okBtn.addEventListener('click', () => { const f = onOk; close(); window.ZNTap(12); if (f) f(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && root.classList.contains('open')) close(); });
+    // смахнуть лист вниз (телефон): лист едет за пальцем, у верхней границы — упругое сопротивление
+    let y0 = 0, dy = 0, t0 = 0, drag = false;
+    card.addEventListener('pointerdown', e => {
+      if (!mobile() || e.pointerType === 'mouse' || e.target.closest('button, a, input')) return;
+      drag = true; y0 = e.clientY; dy = 0; t0 = performance.now(); card.setPointerCapture(e.pointerId); root.classList.add('zp-drag');
+    });
+    card.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const d = e.clientY - y0;
+      dy = d > 0 ? d : -(Math.abs(d) * 40) / (40 + Math.abs(d));      // вверх — резинка
+      card.style.setProperty('--zy', dy.toFixed(1) + 'px');
+    });
+    const end = () => {
+      if (!drag) return; drag = false; root.classList.remove('zp-drag');
+      const v = dy / Math.max(1, performance.now() - t0);
+      if (dy > card.offsetHeight * 0.3 || v > 0.6) close(); else card.style.setProperty('--zy', '0px');
+    };
+    card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
+  }
+  function open(o) {
+    if (!root) build();
+    titleEl.textContent = o.title || '';
+    body.innerHTML = o.html || '';
+    okBtn.textContent = o.ok || 'Готово';
+    cancelBtn.textContent = o.cancel || 'Отмена';
+    onOk = o.onOk || null;
+    last = document.activeElement;
+    card.style.setProperty('--zy', '0px');
+    root.classList.toggle('zp-mobile', mobile());
+    root.classList.add('show');
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('open')));
+    document.documentElement.classList.add('zp-lock');
+    setTimeout(() => okBtn.focus({ preventScroll: true }), 80);
+  }
+  function close() {
+    if (!root || !root.classList.contains('open')) return;
+    root.classList.remove('open');
+    card.style.removeProperty('--zy');
+    document.documentElement.classList.remove('zp-lock');
+    setTimeout(() => { if (!root.classList.contains('open')) root.classList.remove('show'); }, 450);
+    if (last && last.focus) last.focus({ preventScroll: true });
+  }
+  return { open, close };
+})();
+
+// ---------- Пришли по ссылке с #якорем (например, «…/index.html#kontakty» с другой страницы) ----------
+// Блоки выше якоря дорисовываются после загрузки и сдвигают его — доводим прокрутку до места.
+(function () {
+  const id = decodeURIComponent((location.hash || '').slice(1));
+  const el = id && document.getElementById(id);
+  if (!el) return;
+  let touched = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(t => window.addEventListener(t, () => { touched = true; }, { passive: true, once: true }));
+  const fix = () => {
+    if (touched) return;
+    const head = (document.querySelector('header') || { offsetHeight: 0 }).offsetHeight;
+    const to = Math.round(el.getBoundingClientRect().top + scrollY - head + 1);
+    if (Math.abs(to - scrollY) > 2) window.scrollTo({ top: to, behavior: 'instant' });
+  };
+  const run = () => { fix(); requestAnimationFrame(fix); setTimeout(fix, 400); setTimeout(fix, 1200); };
+  if (document.readyState === 'complete') run(); else window.addEventListener('load', run, { once: true });
 })();

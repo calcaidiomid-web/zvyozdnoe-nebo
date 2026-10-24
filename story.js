@@ -115,7 +115,7 @@
   skies.forEach((sky, layer) => {
     const many = Math.round((small ? 35 : 90) * (layer ? 1.4 : 1));
     if (window.ZNSky) ZNSky(sky, layer
-      ? { count: many, size: 1.5, spread: 0.6, alpha: .35, seed: 38, lo: .1, hi: .5, period: 7000, phase: 2 }
+      ? { count: many, size: 1.5, spread: 0.6, alpha: .35, seed: 38, lo: .1, hi: .5, period: 7000, phase: 2, defer: true }
       : { count: many, size: 2.2, spread: 1, alpha: .6, seed: 7, lo: .15, hi: .85, period: 5000 });
   });
 
@@ -172,8 +172,9 @@
     }
     requestAnimationFrame(drawDust);
   }
+  let dustReady = false;             // пыль включаем после проявления звезды — на старте процессор занят
   function dustState(on) {
-    if (reduce || !dctx || weak || !visible || document.hidden) on = false;
+    if (reduce || !dctx || weak || !visible || document.hidden || !dustReady) on = false;
     if (on && !dustOn) { dustOn = true; dustLast = 0; requestAnimationFrame(drawDust); }
     if (!on) dustOn = false;
   }
@@ -296,9 +297,12 @@
   }
 
   // ---------- Путь 1: CSS-анимации, привязанные к прокрутке ----------
+  // Собираются не сразу, а когда браузер освободится (первые секунды сцену двигает скрипт) —
+  // так открытие страницы и проявление звезды не подтормаживают.
+  let sda = false;
   const styleEl = CSSMODE ? document.head.appendChild(document.createElement('style')) : null;
   function buildCSS() {
-    const N = 60, tracks = new Map();         // элемент → { свойство → [значения] }
+    const N = 36, tracks = new Map();         // элемент → { свойство → [значения] }
     for (let i = 0; i <= N; i++) {
       scene(i / N * SPAN, (el, prop, val) => {
         if (!el) return;
@@ -353,7 +357,7 @@
   // в режиме CSS скрипт при прокрутке только переключает огонёк и пыль (дёшево, без записи стилей)
   let sraf = 0;
   function onScroll() {
-    if (CSSMODE) { if (!sraf) sraf = requestAnimationFrame(() => { sraf = 0; states(readP()); }); return; }
+    if (sda) { if (!sraf) sraf = requestAnimationFrame(() => { sraf = 0; states(readP()); }); return; }
     if (!raf && !reduce && !frozen) { last = 0; raf = requestAnimationFrame(loop); }
   }
 
@@ -387,15 +391,28 @@
   // ---------- Запуск ----------
   function rebuild() {
     measure(); measureGeom();
-    if (CSSMODE) { buildCSS(); states(readP()); }
+    if (sda) { buildCSS(); states(readP()); }
     else { memo.clear(); render(cur); onScroll(); }
+  }
+  function goSDA() {
+    if (sda || !CSSMODE) return;
+    sda = true;
+    cancelAnimationFrame(raf); raf = 0;
+    buildCSS();
+    section.classList.add('is-sda');
+    states(readP());
   }
   measure();
   measureGeom();
   setupDust();
   if (reduce) section.classList.add('is-static');
-  if (CSSMODE) { section.classList.add('is-sda'); buildCSS(); states(readP()); }
-  else render(cur);
+  cur = target = reduce ? 1 : readP();
+  render(cur);                                   // стартовый кадр — сразу, без сборки анимаций
+  if (CSSMODE) {
+    const later = () => (window.requestIdleCallback ? requestIdleCallback(goSDA, { timeout: 1500 }) : setTimeout(goSDA, 600));
+    setTimeout(later, 1700);                     // после проявления звезды и букв
+  }
+  setTimeout(() => { dustReady = true; dustState(prog < 0.6); }, 1800);
   // сцена готова — теперь её можно показывать (до этого фото и надпись скрыты в CSS)
   section.classList.add('is-ready');
 
@@ -421,5 +438,5 @@
   // для записи видео-превью: показать кадр с заданной прокруткой (только путь 2)
   window.ZNStory = { css: CSSMODE, render: p => { cur = target = p; render(p); }, stop: () => { frozen = true; cancelAnimationFrame(raf); raf = 0; } };
   planShoot();
-  setTimeout(shoot, 1500);
+  setTimeout(shoot, 3500);
 })();

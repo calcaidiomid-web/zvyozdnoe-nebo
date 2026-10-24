@@ -36,7 +36,8 @@
       // перерисовываем, только если размер заметно изменился (не из-за строки адреса на телефоне)
       if (!w || !h || (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) / h < 0.12)) return;
       lastW = w; lastH = h;
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // на телефонах звёзды — крошечные точки: хватает плотности 1.5, холсты вдвое легче
+      var dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2);
       layers.forEach(function (el, k) {
         var cv = document.createElement('canvas');
         cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
@@ -58,7 +59,8 @@
         else el.style.backgroundImage = 'url(' + cv.toDataURL() + ')';
       });
     }
-    draw();
+    // дальний слой (o.defer) рисуем, когда браузер освободится — на старте он не нужен
+    if (o.defer) setTimeout(function () { (window.requestIdleCallback || setTimeout)(draw, { timeout: 1500 }); }, 1600); else draw();
     var later = function () { clearTimeout(rt); rt = setTimeout(draw, 150); };
     if ('ResizeObserver' in window) new ResizeObserver(later).observe(host); else window.addEventListener('resize', later);
     twinkles.push({ el: tw, host: host, lo: o.lo == null ? .15 : o.lo, hi: o.hi == null ? .85 : o.hi, period: o.period || 5000, phase: o.phase || 0, on: true });
@@ -132,7 +134,7 @@
     if (document.startViewTransition && !reduce) {
       root.classList.add('theme-vt', 'theme-switching');
       var vt = document.startViewTransition(flip);
-      var done = function () { root.classList.remove('theme-vt', 'theme-switching'); busy = false; };
+      var done = function () { root.classList.remove('theme-vt', 'theme-switching'); busy = false; island(); };
       vt.ready.then(function () {
         root.animate({ opacity: [0, 1] },
           { duration: 1200, easing: 'cubic-bezier(.4, 0, .2, 1)', pseudoElement: '::view-transition-new(root)', fill: 'both' });
@@ -143,7 +145,13 @@
     // Запасной вариант для старых браузеров: цвета плавно растворяются
     root.classList.add('theme-anim', 'theme-switching');
     flip();
-    setTimeout(function () { root.classList.remove('theme-anim', 'theme-switching'); busy = false; }, 1100);
+    setTimeout(function () { root.classList.remove('theme-anim', 'theme-switching'); busy = false; island(); }, 1100);
+  }
+  // островок в шапке: «Ночная тема» / «Дневная тема»
+  function island() {
+    if (!window.ZNIsland) return;
+    var dark = root.getAttribute('data-theme') === 'dark';
+    window.ZNIsland.show({ icon: dark ? 'moon' : 'sun', text: dark ? 'Ночная тема' : 'Дневная тема', ms: 1500 });
   }
 
   function build() {
