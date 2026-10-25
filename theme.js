@@ -53,7 +53,11 @@
     var seed = o.seed || 7;
     var rnd = function () { return (seed = (seed * 9301 + 49297) % 233280) / 233280; };
     var stars = [], layers = [], urls = [], lastW = 0, lastH = 0, rt = 0;
-    for (var i = 0; i < o.count; i++) stars.push({ x: rnd(), y: rnd(), r: o.size * (0.4 + rnd() * (o.spread || 1)) / 2, g: rnd() });
+    for (var i = 0; i < o.count; i++) stars.push({ x: rnd(), y: rnd(), r: o.size * (0.4 + rnd() * (o.spread || 1)) / 2, g: rnd(), a: o.alpha || .6, ta: 1 });
+    // o.extra — второй, дальний слой звёзд (мельче и тусклее) рисуется в те же картинки:
+    // вместо четырёх слоёв на весь экран видеокарта двигает два
+    if (o.extra) { var e = o.extra; seed = e.seed || 38;
+      for (var j = 0; j < e.count; j++) stars.push({ x: rnd(), y: rnd(), r: e.size * (0.4 + rnd() * (e.spread || 1)) / 2, g: rnd(), a: e.alpha || .35, ta: e.twinkle || .6 }); }
     var tw = document.createElement('div'); tw.className = 'sky-c sky-c1'; host.appendChild(tw);
     layers.push(host, tw);
     function draw() {
@@ -69,9 +73,9 @@
         var x = cv.getContext('2d');
         x.setTransform(dpr, 0, 0, dpr, 0, 0);
         x.fillStyle = '#f4ecd6';
-        x.globalAlpha = k ? 1 : (o.alpha || .6);
         stars.forEach(function (st) {
           if ((st.g < .62 ? 0 : 1) !== k) return;
+          x.globalAlpha = k ? st.ta : st.a;
           x.beginPath(); x.arc(st.x * w, st.y * h, Math.max(.45, st.r), 0, 6.283); x.fill();
         });
         var put = function (url) {

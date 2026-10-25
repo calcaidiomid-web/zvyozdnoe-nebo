@@ -127,14 +127,20 @@
     const io3 = new IntersectionObserver(es => es.forEach(e => {
       if (!e.isIntersecting) return;
       io3.unobserve(e.target);
-      const el = e.target, to = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now(), dur = 1400;
+      // считаем, когда гость перестал листать: смена цифр перестраивает текст, а во время
+      // прокрутки процессор нужен заставке
+      const el = e.target;
+      (window.ZNCalm || ((f, d) => setTimeout(f, d)))(() => count(el), 60);
+    }), { threshold: 0.6 });
+    function count(el) {
+      const to = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now(), dur = 1400;
       (function tick(now) {
         const k = Math.min(1, (now - t0) / dur), v = 1 - Math.pow(1 - k, 4);
         // меняем сам текст, а не узел — так браузер не пересчитывает стили всей страницы
         const tn = el.firstChild; if (tn && tn.nodeType === 3) tn.data = fmt(Math.round(to * v)) + suf; else el.textContent = fmt(Math.round(to * v)) + suf;
         if (k < 1) requestAnimationFrame(tick);
       })(t0);
-    }), { threshold: 0.6 });
+    }
     counters.forEach(el => { el.textContent = '0' + (el.dataset.suffix || ''); io3.observe(el); });
   }
 })();

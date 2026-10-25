@@ -366,16 +366,33 @@ html.dr-lock { overflow: hidden; }
 html.dr-lock .m-cta { transform: translateY(calc(100% + 24px)); }
 html.lite .dr-blur { display: none; }
 html.lite .dr-scrim { background: rgba(0, 0, 0, .55); }
-@media (min-width: 1081px) { .drawer { display: none; } }
+@media (min-width: 961px) { .drawer { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .dr-panel, .dr-panel > *, .dr-nav > * { transition-duration: .01s !important; transition-delay: 0s !important; }
 }
 
 /* Ноутбуки: всё в одну строку */
-@media (max-width: 1280px) and (min-width: 1081px) {
-  header { gap: 20px; }
+@media (max-width: 1280px) and (min-width: 961px) {
+  header { gap: 18px; }
   header nav { gap: 18px; }
   header nav a, .nav-more summary { font-size: 13px; }
+}
+/* Средние экраны: «Отзывы» и «Как добраться» — в «Ещё» (копии добавляет menu.js),
+   кнопка «Забронировать» видна всегда */
+.nav-more-list a.nm-mid { display: none; }
+@media (max-width: 1280px) {
+  header nav > a.nav-mid { display: none; }
+  .nav-more-list a.nm-mid { display: block; }
+  .nav-more.has-active-mid > summary { color: var(--ink); }
+  .nav-more.has-active-mid > summary::before { content: ''; position: absolute; left: 50%; bottom: -10px; width: 7px; height: 7px; margin-left: -7px; background: var(--accent);
+    clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+}
+/* узкий ноутбук: у телефона в шапке остаётся только значок (номер читается программами для незрячих) */
+@media (max-width: 1140px) and (min-width: 961px) {
+  header { gap: 16px; }
+  header nav { gap: 16px; }
+  header .phone { font-size: 0; gap: 0; width: 32px; height: 32px; justify-content: center; }
+  header .phone::after { left: 14px; }
 }
 
 /* Телефон в шапке — значком (на узких экранах) */
@@ -394,7 +411,7 @@ html.lite .dr-scrim { background: rgba(0, 0, 0, .55); }
   position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: hidden;
   background: radial-gradient(90% 55% at 50% 105%, #12162a 0%, transparent 70%), linear-gradient(180deg, #000 0%, #04050a 60%, #0a0d1a 100%);
 }
-.story-sky { position: absolute; inset: -10% 0 -20%; z-index: 0; pointer-events: none; will-change: transform; }
+.story-sky { position: absolute; inset: -4% -2% -12%; z-index: 0; pointer-events: none; will-change: transform; }
 .sky-c { position: absolute; inset: 0; background: no-repeat 0 0 / 100% 100%; }
 .sky-c1 { opacity: .5; will-change: opacity; }   /* мерцание задаёт theme.js (ZNSky), 5 раз в секунду; свой слой — иначе каждое мерцание перерисовывало всё небо */
 
@@ -476,9 +493,15 @@ html.lite .dr-scrim { background: rgba(0, 0, 0, .55); }
   position: absolute; z-index: 5; left: 50%; top: 52%;
   width: min(1100px, 90vw); height: min(68vh, 620px);
   margin-left: calc(min(1100px, 90vw) / -2); margin-top: calc(min(68vh, 620px) / -2 + 20px);
-  transform-origin: 50% 0; will-change: transform;
+  transform-origin: 50% 0; will-change: transform, opacity;
 }
-.sc-frame { position: relative; width: 100%; height: 100%; border-radius: var(--r-tile); overflow: hidden; isolation: isolate; background: #3a311c; transition: background-color .8s ease; box-shadow: 0 -20px 100px -30px rgba(212, 175, 55, .35), 0 50px 120px -40px rgba(0, 0, 0, .9); }
+.sc-frame { position: relative; width: 100%; height: 100%; border-radius: var(--r-tile); overflow: hidden; isolation: isolate; background: #3a311c; transition: background-color .8s ease; }
+/* Свечение вокруг фото — мягкие градиенты вместо огромной размытой тени.
+   Тень с размытием 100–120px браузер перерисовывал в каждом кадре прокрутки (главная причина лагов),
+   градиент рисуется в десятки раз быстрее, а выглядит так же. */
+.showcase::before, .showcase::after { content: ''; position: absolute; z-index: -1; left: -9%; right: -9%; pointer-events: none; }
+.showcase::before { top: -120px; height: 300px; background: radial-gradient(50% 50% at 50% 50%, rgba(212, 175, 55, .2) 0%, rgba(212, 175, 55, .08) 45%, transparent 75%); }
+.showcase::after { bottom: -130px; height: 300px; background: radial-gradient(50% 50% at 50% 45%, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .3) 50%, transparent 78%); }
 /* Рамка фото — тонкая золотая линия (просвет 1.5px между краем и снимком).
    По ней бегут огоньки: квадрат с конусным градиентом поворачивается за снимком,
    и виден только в просвете — это дёшево, двигается только поворот. */
@@ -996,7 +1019,7 @@ html.lb-lock, html.lb-lock body { overflow: hidden; }
 /* ================================================================
    ПЛАНШЕТ И ТЕЛЕФОН: меню на весь экран, плавающая панель
    ================================================================ */
-@media (max-width: 1080px) {
+@media (max-width: 960px) {
   header { gap: 10px; }
   .phone { order: 1; }
   .theme-toggle { order: 2; }
@@ -1014,6 +1037,8 @@ html.lb-lock, html.lb-lock body { overflow: hidden; }
 
   /* меню в шапке на узких экранах прячется — вместо него боковая панель (.drawer, menu.js) */
   header nav { display: none; }
+}
+@media (max-width: 1080px) {
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .footer-inner > div:first-child { grid-column: 1 / -1; }
 }
@@ -1388,7 +1413,10 @@ details.faq-item[open] .faq-a { animation: faqIn .5s var(--spring); }
 .sc-glare { position: absolute; top: -10%; bottom: -10%; left: 0; z-index: 2; width: 45%; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, rgba(255, 250, 232, .38) 50%, transparent); will-change: transform, opacity; }
 
 /* Звезда: чуть мягче свечение ядра */
-.st-core { box-shadow: 0 0 34px 12px rgba(255, 243, 196, .45), 0 0 90px 30px rgba(212, 175, 55, .18); }
+.st-core { box-shadow: none; overflow: visible; }
+/* свечение ядра звезды — градиентом (размытая тень перерисовывалась, пока звезда растёт при прокрутке) */
+.st-core::after { content: ''; position: absolute; inset: -260%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 243, 196, .5) 0%, rgba(255, 243, 196, .3) 12%, rgba(212, 175, 55, .14) 26%, rgba(212, 175, 55, .05) 40%, transparent 56%); }
 
 /* ================================================================
    ПЛАВНОСТЬ ВСЕГО САЙТА
@@ -1440,12 +1468,13 @@ html[data-theme="dark"] .form-group input[aria-invalid="true"] { box-shadow: ins
    ================================================================ */
 html.lite *, html.lite *::before, html.lite *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 html.lite header { background: color-mix(in srgb, var(--paper) 95%, transparent); }
-html.lite header.theme-night { background: rgba(27, 28, 33, .96); }
+html.lite header.theme-night { background: none; }
 html.lite .m-cta, html.lite .nav-more-list { background: var(--panel); }
 html.lite .nav-glass { background: var(--paper); }
 html.lite .modal::before { background: rgba(0, 0, 0, .58); }
 html.lite .modal::after { display: none; }
 html.lite .ch { filter: none; animation-name: chInLite; }
+html.lite .chw { will-change: auto; }   /* надпись уходит целиком — отдельные слои букв не нужны */
 @keyframes chInLite { 0% { opacity: 0; } 30% { opacity: .9; } to { opacity: 1; transform: none; } }
 html.lite .st-streak, html.lite .st-rays-long { animation: none; }
 html.lite .st-ring, html.lite .st-rays-short, html.lite .story-sky-2, html.lite .shooting, html.lite .star-dust { display: none; }
@@ -1454,10 +1483,12 @@ html.lite .rv, html.lite .rv-photo { transition-duration: .5s, .6s; }
 
 /* Лёгкий режим: огоньки пробегают по прокрутке, а после слияния рамка просто мягко горит */
 html.lite .sc-run.orbit { animation: none; opacity: 0 !important; }
-html.lite .sc-frame.lit { background: #8a7130; }
+/* рамка «загорается» накладкой с прозрачностью — без перерисовки всего фото в каждом кадре */
+.sc-frame::after { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #8a7130; opacity: 0; transition: opacity .8s ease; }
+html.lite .sc-frame.lit::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .sc-run.orbit { animation: none; opacity: 0 !important; }
-  .sc-frame.lit { background: #8a7130; }
+  .sc-frame.lit::after { opacity: 1; }
 }
 
 /* Короткое уведомление внизу экрана (например, «номер скопирован») */
@@ -1484,6 +1515,16 @@ header::before {
 }
 /* над ночным первым экраном, пока не листали, — без подложки: буквы прямо на небе */
 header.theme-night:not(.is-scrolled)::before { opacity: 0; }
+/* Над заставкой — тёмная пилюля без размытия: размытие движущейся сцены под шапкой
+   стоило видеокарте больше, чем вся заставка. Пилюля появляется только прозрачностью
+   и масштабом (это делает видеокарта), размеры и отступы шапки не меняются. */
+header.theme-night { transition: none; padding-left: max(calc(var(--gutter) + 14px), calc((100% - 1260px) / 2 + 24px)); padding-right: max(calc(var(--gutter) + 8px), calc((100% - 1260px) / 2 + 10px)); }
+header.theme-night::before {
+  -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(22, 23, 29, .9);
+  inset: 8px max(10px, calc((100% - 1260px) / 2)); border-radius: 999px;
+  transition: opacity .35s ease, transform .55s var(--spring);
+}
+header.theme-night:not(.is-scrolled)::before { transform: scale(1.03, 1.25); }
 header.is-scrolled { box-shadow: none !important; padding-left: max(calc(var(--gutter) + 14px), calc((100% - 1260px) / 2 + 24px)); padding-right: max(calc(var(--gutter) + 8px), calc((100% - 1260px) / 2 + 10px)); }
 header.is-scrolled::before {
   inset: 8px max(10px, calc((100% - 1260px) / 2));
@@ -1532,7 +1573,7 @@ header nav > a.active::after, .nav-more.has-active > summary::before {
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent); transform: translateX(-130%) skewX(-18deg);
   animation: ctaShine 7s ease-in-out 2.5s infinite; }
 @keyframes ctaShine { 0%, 82% { transform: translateX(-130%) skewX(-18deg); } 100% { transform: translateX(330%) skewX(-18deg); } }
-@media (max-width: 1280px) { .header-cta .hc-price { display: none; } }
+@media (max-width: 1359px) { .header-cta .hc-price { display: none; } }
 
 /* слабые устройства и «меньше прозрачности»: подложка без размытия */
 html.lite header { background: none !important; }
@@ -1547,6 +1588,8 @@ html.lite header.theme-night::before { background: rgba(27, 28, 33, .97); }
 @media (max-width: 760px) {
   header.is-scrolled { padding-left: calc(var(--gutter) + 6px); padding-right: calc(var(--gutter) - 4px); }
   header.is-scrolled::before { inset: 8px 8px; }
+  header.theme-night { padding-left: calc(var(--gutter) + 6px); padding-right: calc(var(--gutter) - 4px); }
+  header.theme-night::before { inset: 8px 8px; }
   header { gap: 6px; }
 }
 

@@ -50,6 +50,20 @@ window.ZN_MAX_URL = 'https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ
     }
   });
 
+  // ---------- Средние экраны: «Отзывы» и «Как добраться» переезжают в «Ещё» ----------
+  // (на узком ноутбуке все пункты в одну строку не помещаются). На широком экране копии скрыты.
+  const moreList = nav.querySelector('.nav-more-list');
+  if (moreList) {
+    const mid = [...nav.querySelectorAll(':scope > a')].filter(a => /reviews|location/.test(a.getAttribute('href')));
+    mid.slice().reverse().forEach(a => {
+      a.classList.add('nav-mid');
+      const c = a.cloneNode(true);
+      c.classList.remove('nav-mid'); c.classList.add('nm-mid');
+      moreList.prepend(c);
+      if (a.classList.contains('active')) nav.querySelector('.nav-more').classList.add('has-active-mid');
+    });
+  }
+
   // ---------- Пункт «Ещё» в шапке (компьютер) ----------
   const more = nav.querySelector('.nav-more');
   if (more) {
@@ -132,7 +146,7 @@ window.ZN_MAX_URL = 'https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ
       const d = document.createElement('details');
       d.className = 'dr-more';
       d.innerHTML = '<summary>' + el.querySelector('summary').textContent + '</summary><div class="dr-more-list"></div>';
-      el.querySelectorAll('.nav-more-list a').forEach(a => d.lastChild.appendChild(a.cloneNode(true)));
+      el.querySelectorAll('.nav-more-list a:not(.nm-mid)').forEach(a => d.lastChild.appendChild(a.cloneNode(true)));
       list.appendChild(d);
     }
   });
@@ -211,7 +225,7 @@ window.ZN_MAX_URL = 'https://max.ru/u/f9LHodD0cOK-fC90-HI91MrE-S6VmBSuV-BXJwXbgZ
   });
 
   // Расширили окно до компьютерного меню — убираем панель
-  window.addEventListener('resize', () => { if (window.innerWidth > 1080) closeMenu(); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 960) closeMenu(); });
 })();
 
 // ============================================

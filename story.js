@@ -82,7 +82,7 @@
   // ---------- Блик света пробегает по золотым буквам ----------
   // У каждой буквы второй слой фона — светлая полоса шириной во всё слово;
   // сдвигаем её одной переменной --sx, поэтому полоса идёт по словам непрерывно.
-  let prog = 0, visible = true, weak = false;
+  let prog = 0, visible = true, weak = false, scrolling = false;
   function measureShine() {
     const lr = line.getBoundingClientRect();
     line.style.setProperty('--lw', lr.width.toFixed(1) + 'px');
@@ -91,7 +91,7 @@
   let shineRaf = 0, shineTimer = 0;
   function sweep() {
     clearTimeout(shineTimer);
-    if (reduce || weak || document.hidden || !visible || prog > 0.02) { shineTimer = setTimeout(sweep, 4000); return; }
+    if (reduce || weak || scrolling || document.hidden || !visible || prog > 0.02) { shineTimer = setTimeout(sweep, 4000); return; }
     const w = line.getBoundingClientRect().width, t0 = performance.now(), dur = 2200;
     cancelAnimationFrame(shineRaf);
     (function f(now) {
@@ -113,19 +113,24 @@
   let seed = 7;
   const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   // рисуются один раз на холсте (см. ZNSky в theme.js) — это в десятки раз легче
+  // Оба слоя звёзд (ближний ярче, дальний мельче) рисуются в одно небо: раньше это были
+  // четыре прозрачных слоя на весь экран, и видеокарта смешивала их в каждом кадре прокрутки.
   const small = window.innerWidth < 760;
-  skies.forEach((sky, layer) => {
-    const many = Math.round((small ? 35 : 90) * (layer ? 1.4 : 1));
-    if (window.ZNSky) ZNSky(sky, layer
-      ? { count: many, size: 1.5, spread: 0.6, alpha: .35, seed: 38, lo: .1, hi: .5, period: 7000, phase: 2, defer: true }
-      : { count: many, size: 2.2, spread: 1, alpha: .6, seed: 7, lo: .15, hi: .85, period: 5000 });
-  });
+  if (skies[1]) { skies[1].remove(); skies.length = 1; }
+  const many = small ? 35 : 90;
+  const lowSky = !!(window.ZNPerf && ZNPerf.isLite());
+  if (window.ZNSky && skies[0]) ZNSky(skies[0], { count: many, size: 2.2, spread: 1, alpha: .6, seed: 7, lo: .15, hi: .85, period: 5000,
+    extra: lowSky ? null : { count: Math.round(many * 1.4), size: 1.5, spread: 0.6, alpha: .35, twinkle: .55, seed: 38 } });
 
   let narrow = false, lite = false, coarse = false;
   function measure() {
     narrow = window.innerWidth < 760;
     coarse = window.matchMedia('(pointer: coarse)').matches;
+    const wasWeak = weak;
     weak = !!(window.ZNPerf && ZNPerf.isLite());
+    // слабое устройство: буквы уходят всей надписью, а не по одной — снимаем с них отдельные слои
+    if (weak && !wasWeak) letters.forEach(s => { s.style.transform = ''; memo.delete(s); });
+    section.classList.toggle('is-low', weak);
     lite = weak || narrow || coarse || (navigator.hardwareConcurrency || 8) <= 4;
     section.classList.toggle('is-lite', lite);
   }
@@ -176,7 +181,7 @@
   }
   let dustReady = false;             // пыль включаем после проявления звезды — на старте процессор занят
   function dustState(on) {
-    if (reduce || !dctx || weak || !visible || document.hidden || !dustReady) on = false;
+    if (reduce || !dctx || weak || !visible || document.hidden || !dustReady || scrolling) on = false;
     if (on && !dustOn) { dustOn = true; dustLast = 0; requestAnimationFrame(drawDust); }
     if (!on) dustOn = false;
   }
@@ -184,7 +189,7 @@
   // ---------- Падающие звёзды ----------
   let shootTimer = 0;
   function shoot() {
-    if (!shooting || document.hidden || !visible || prog > 0.3) return planShoot();
+    if (!shooting || weak || scrolling || document.hidden || !visible || prog > 0.3) return planShoot();
     const s = document.createElement('i');
     s.style.left = (10 + rnd() * 60) + '%';
     s.style.top = (5 + rnd() * 30) + '%';
@@ -203,8 +208,12 @@
   let pinH = 1, showTop = 0, pHit = 0.2;
   const cardTop = p => showTop + lerp(narrow ? 62 : 68, 0, rOf(p)) / 100 * pinH;
   const reach = p => pinH * lerp(0.37, 1.05, smooth(0.0, 0.5, p));   // луч догоняет фото, когда оно уже почти поднялось
+  let secTop = 0, travel = 1;
   function measureGeom() {
     pinH = pin.offsetHeight || window.innerHeight;
+    // где начинается заставка и сколько её листать — запоминаем, чтобы при прокрутке ничего не замерять
+    secTop = section.getBoundingClientRect().top + window.scrollY;
+    travel = section.offsetHeight - pinH;
     showTop = show ? show.offsetTop : pinH;
     pHit = 0.6;
     for (let q = 0; q <= 0.6; q += 0.002) if (reach(q) >= cardTop(q)) { pHit = q; break; }
@@ -225,7 +234,8 @@
 
     // буквы разлетаются от центра в стороны и чуть вверх
     const mid = (letters.length - 1) / 2;
-    letters.forEach((s, i) => {
+    if (weak) set(line, 'transform', 'translate3d(0,' + (-a * 34).toFixed(1) + 'px,0)');   // слабое устройство: надпись уходит целиком
+    else letters.forEach((s, i) => {
       const d = i - mid;
       set(s, 'transform', 'translate3d(' + (d * a * (narrow ? 6 : 14)).toFixed(1) + 'px,' + (-Math.abs(d) * a * 3 - a * 30).toFixed(1) + 'px,0)');
     });
@@ -242,14 +252,13 @@
     set(core, 'transform', 'translateX(-50%) scaleY(' + (Math.min(reach(p), cardTop(p)) / (0.74 * pinH)).toFixed(4) + ')');
     const so = smooth(0.02, 0.1, p);
     set(show, 'opacity', so.toFixed(3));
-    set(show, 'visibility', so < 0.01 ? 'hidden' : 'visible');
     // карточка из-под горизонта: наклонена → выпрямляется
     const y = lerp(narrow ? 62 : 68, 0, r);
     const sc = lerp(narrow ? 0.9 : 0.74, 1, r);
     const tilt = lerp(18, 0, r);
-    set(show, 'transform', 'translate3d(0,' + y.toFixed(2) + 'vh,0) perspective(1600px) rotateX(' + tilt.toFixed(2) + 'deg) scale(' + sc.toFixed(4) + ')');
+    set(show, 'transform', 'translate3d(0,' + y.toFixed(2) + 'vh,0)' + (weak ? '' : ' perspective(1600px) rotateX(' + tilt.toFixed(2) + 'deg)') + ' scale(' + sc.toFixed(4) + ')');
     // небо: два слоя с разной глубиной
-    skies.forEach((sky, i) => set(sky, 'transform', 'translate3d(0,' + (-p * 70 * (i ? 0.5 : 1)).toFixed(1) + 'px,0)'));
+    skies.forEach(sky => set(sky, 'transform', 'translate3d(0,' + (-p * 60).toFixed(1) + 'px,0)'));
     // подсказка «листайте» исчезает при первом движении
     cue.forEach(el => set(el, 'opacity', (1 - smooth(0.0, 0.05, p)).toFixed(3)));
     // блик скользит по фото сразу после удара луча
@@ -281,6 +290,14 @@
   let merged = false;
   function states(p) {
     prog = p;
+    // фото прячем целиком, пока оно не начало проявляться (переключатель, а не анимация — дёшево)
+    put(show, 'visibility', p < 0.023 ? 'hidden' : 'visible');
+    // огоньки, блик и вспышка невидимы большую часть пути — пока они не нужны, видеокарта их вовсе не рисует
+    const vis = (el, on) => el && put(el, 'visibility', on ? 'visible' : 'hidden');
+    vis(runR, p > pHit - 0.002 || merged);
+    vis(runL, p > pHit - 0.002 && p < pHit + 0.26);
+    vis(glare, p > pHit && p < pHit + 0.335);
+    vis(hit, p > pHit - 0.014 && p < pHit + 0.075);
     if (runR && runL) {
       const q = clamp((p - pHit) / 0.25, 0, 1);
       if (!merged && q >= 1) { merged = true; runR.classList.add('orbit'); frame.classList.add('lit'); }
@@ -292,10 +309,8 @@
   // Прокрутка → p (0…SPAN)
   function readP() {
     if (reduce) return 1;
-    const rr = section.getBoundingClientRect();
-    // высота закреплённого экрана постоянна (не меняется, когда телефон прячет строку адреса)
-    const total = section.offsetHeight - (pin.offsetHeight || window.innerHeight);
-    return total > 0 ? clamp(-rr.top / total, 0, 1) * SPAN : SPAN;
+    // только арифметика по запомненным числам — браузеру не приходится пересчитывать страницу
+    return travel > 0 ? clamp((window.scrollY - secTop) / travel, 0, 1) * SPAN : SPAN;
   }
 
   // ---------- Путь 1: CSS-анимации, привязанные к прокрутке ----------
@@ -343,22 +358,43 @@
     m[prop] = val;
     el.style[prop] = val;
   }
+  // Мягкий догон: сцена догоняет прокрутку с лёгкой инерцией (≈0,15 с),
+  // поэтому резкие рывки колёсика и «броски» пальцем выглядят плавно.
+  const TAU = 0.05;                              // чем меньше, тем ближе к пальцу
   let raf = 0, cur = reduce ? 1 : 0, target = cur, last = 0, frozen = false;
   function render(p) { scene(p, put); states(p); }
+  // Сторож: если во время прокрутки кадры часто опаздывают, устройство не успевает —
+  // переходим на «строго за пальцем» (сцену двигает видеокарта) и облегчаем украшения.
+  const boot = performance.now();
+  let sess = [], strikes = 0;
+  function judge() {
+    const n = sess.length;
+    if (n >= 20 && performance.now() - boot > 2500 && !weak) {
+      const slow = sess.filter(d => d > 24).length / n;
+      if (slow > 0.35) strikes += 2; else if (slow > 0.18) strikes++;
+      if (strikes >= 2) goStrict();
+    }
+    sess = [];
+  }
   function loop(now) {
     raf = 0;
+    if (last) { const d = now - last; if (d < 250) sess.push(d); }
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
     last = now;
     target = readP();
-    const k = 1 - Math.exp(-dt * (coarse ? 14 : 9));
-    cur += (target - cur) * k;
+    cur += (target - cur) * (1 - Math.exp(-dt / TAU));
     if (Math.abs(target - cur) < 0.0002) cur = target;
     render(cur);
-    if (visible && !document.hidden && cur !== target && !frozen) raf = requestAnimationFrame(loop);
+    if (visible && !document.hidden && cur !== target && !frozen && !sda) raf = requestAnimationFrame(loop);
+    else judge();
   }
-  // в режиме CSS скрипт при прокрутке только переключает огонёк и пыль (дёшево, без записи стилей)
-  let sraf = 0;
+  // пока листают, пыль, блик на буквах и падающие звёзды ждут — весь процессор отдан сцене
+  let sraf = 0, stillT = 0;
   function onScroll() {
+    if (!scrolling) { scrolling = true; dustState(false); }
+    clearTimeout(stillT);
+    stillT = setTimeout(() => { scrolling = false; dustState(prog < 0.6); }, 220);
+    // в режиме «строго за пальцем» скрипт только переключает огонёк (дёшево, без записи стилей)
     if (sda) { if (!sraf) sraf = requestAnimationFrame(() => { sraf = 0; states(readP()); }); return; }
     if (!raf && !reduce && !frozen) { last = 0; raf = requestAnimationFrame(loop); }
   }
@@ -404,13 +440,23 @@
     section.classList.add('is-sda');
     states(readP());
   }
+  function goStrict() {
+    try { sessionStorage.setItem('zn-strict', '1'); } catch (e) {}
+    if (window.ZNPerf) ZNPerf.setLite();          // лёгкий режим: subscribers ниже пересоберут сцену
+    else { measure(); rebuild(); }
+    goSDA();
+  }
   measure();
   measureGeom();
   setupDust();
   if (reduce) section.classList.add('is-static');
   cur = target = reduce ? 1 : readP();
   render(cur);                                   // стартовый кадр — сразу, без сборки анимаций
-  if (CSSMODE) {
+  // «Строго за пальцем» сразу — только на слабых устройствах (или если сторож уже переключал).
+  // Остальные получают мягкий догон.
+  let strictWanted = weak;
+  try { if (sessionStorage.getItem('zn-strict') === '1') strictWanted = true; } catch (e) {}
+  if (CSSMODE && strictWanted) {
     // собираем сразу после первого кадра, в спокойный момент (не во время прокрутки)
     if (window.ZNCalm) ZNCalm(goSDA, 350); else setTimeout(goSDA, 600);
   }
@@ -428,7 +474,7 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   // устройство оказалось слабым — переходим на лёгкий режим на ходу
-  if (window.ZNPerf) ZNPerf.onLite(() => { measure(); setupDust(); dustState(prog < 0.6); });
+  if (window.ZNPerf) ZNPerf.onLite(() => { measure(); setupDust(); dustState(prog < 0.6); if (sda) buildCSS(); else { render(cur); if (CSSMODE) goSDA(); } });
   let rt = 0, lastW = window.innerWidth, lastH = window.innerHeight;
   window.addEventListener('resize', () => {
     // строка адреса на телефоне меняет высоту окна при прокрутке — на это сцену не пересобираем
