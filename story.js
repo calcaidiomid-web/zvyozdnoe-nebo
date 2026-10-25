@@ -105,7 +105,9 @@
     measureShine();
     shineTimer = setTimeout(sweep, 1900);
   });
-  window.addEventListener('resize', () => setTimeout(measureShine, 100));
+  // строка адреса на телефоне меняет только высоту окна — буквы при этом не двигаются, замер не нужен
+  let shineW = window.innerWidth;
+  window.addEventListener('resize', () => { if (window.innerWidth === shineW) return; shineW = window.innerWidth; setTimeout(measureShine, 100); });
 
   // ---------- Звёзды на небе: два слоя (ближний ярче, дальний мельче) ----------
   let seed = 7;
@@ -409,10 +411,11 @@
   cur = target = reduce ? 1 : readP();
   render(cur);                                   // стартовый кадр — сразу, без сборки анимаций
   if (CSSMODE) {
-    const later = () => (window.requestIdleCallback ? requestIdleCallback(goSDA, { timeout: 1500 }) : setTimeout(goSDA, 600));
-    setTimeout(later, 1700);                     // после проявления звезды и букв
+    // собираем сразу после первого кадра, в спокойный момент (не во время прокрутки)
+    if (window.ZNCalm) ZNCalm(goSDA, 350); else setTimeout(goSDA, 600);
   }
-  setTimeout(() => { dustReady = true; dustState(prog < 0.6); }, 1800);
+  const wakeDust = () => { dustReady = true; dustState(prog < 0.6); };
+  if (window.ZNCalm) ZNCalm(wakeDust, 1500); else setTimeout(wakeDust, 1800);
   // сцена готова — теперь её можно показывать (до этого фото и надпись скрыты в CSS)
   section.classList.add('is-ready');
 

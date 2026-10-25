@@ -1,3 +1,28 @@
+// ---------- ZNCalm: отложенная работа — только когда человек не листает ----------
+// Тяжёлые, но не срочные дела (сборка анимаций, дорисовка блоков ниже экрана, дальние звёзды)
+// выполняются в паузах: не раньше delay мс, и не во время прокрутки или касания.
+(function () {
+  var last = 0, queue = [], timer = 0;
+  var bump = function () { last = performance.now(); };
+  ['scroll', 'touchstart', 'touchmove', 'wheel'].forEach(function (t) { window.addEventListener(t, bump, { passive: true }); });
+  function pump() {
+    timer = 0;
+    var now = performance.now();
+    if (now - last < 300) { timer = setTimeout(pump, 300 - (now - last) + 20); return; }
+    var job = queue.shift();
+    if (!job) return;
+    var run = function () {
+      if (performance.now() - last < 300) { queue.unshift(job); timer = setTimeout(pump, 320); return; }
+      try { job(); } catch (e) { /* не мешаем остальным */ }
+      if (queue.length) timer = setTimeout(pump, 60);
+    };
+    if (window.requestIdleCallback) requestIdleCallback(run, { timeout: 800 }); else run();
+  }
+  window.ZNCalm = function (fn, delay) {
+    setTimeout(function () { queue.push(fn); if (!timer) pump(); }, delay || 0);
+  };
+})();
+
 // ---------- Лёгкий режим для слабых телефонов и компьютеров ----------
 // Если устройство слабое (мало памяти/ядер, режим экономии трафика) или сайт
 // начинает «подлагивать» (это замечает ui.js), на <html> ставится класс lite:
@@ -60,7 +85,7 @@
       });
     }
     // дальний слой (o.defer) рисуем, когда браузер освободится — на старте он не нужен
-    if (o.defer) setTimeout(function () { (window.requestIdleCallback || setTimeout)(draw, { timeout: 1500 }); }, 1600); else draw();
+    if (o.defer && window.ZNCalm) ZNCalm(draw, 1200); else draw();
     var later = function () { clearTimeout(rt); rt = setTimeout(draw, 150); };
     if ('ResizeObserver' in window) new ResizeObserver(later).observe(host); else window.addEventListener('resize', later);
     twinkles.push({ el: tw, host: host, lo: o.lo == null ? .15 : o.lo, hi: o.hi == null ? .85 : o.hi, period: o.period || 5000, phase: o.phase || 0, on: true });
@@ -133,8 +158,8 @@
     // Сама кнопка в снимок не попадает — она живая и спокойно доигрывает свою анимацию.
     if (document.startViewTransition && !reduce) {
       root.classList.add('theme-vt', 'theme-switching');
-      var vt = document.startViewTransition(flip);
-      var done = function () { root.classList.remove('theme-vt', 'theme-switching'); busy = false; island(); };
+      var vt = document.startViewTransition(function () { flip(); island(); });   // островок — сразу, вместе со сменой темы
+      var done = function () { root.classList.remove('theme-vt', 'theme-switching'); busy = false; };
       vt.ready.then(function () {
         root.animate({ opacity: [0, 1] },
           { duration: 1200, easing: 'cubic-bezier(.4, 0, .2, 1)', pseudoElement: '::view-transition-new(root)', fill: 'both' });
@@ -144,8 +169,8 @@
     }
     // Запасной вариант для старых браузеров: цвета плавно растворяются
     root.classList.add('theme-anim', 'theme-switching');
-    flip();
-    setTimeout(function () { root.classList.remove('theme-anim', 'theme-switching'); busy = false; island(); }, 1100);
+    flip(); island();
+    setTimeout(function () { root.classList.remove('theme-anim', 'theme-switching'); busy = false; }, 1100);
   }
   // островок в шапке: «Ночная тема» / «Дневная тема»
   function island() {

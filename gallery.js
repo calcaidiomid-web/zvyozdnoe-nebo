@@ -7,7 +7,8 @@
   'use strict';
 
   const onResize = new Map();
-  window.addEventListener('resize', () => onResize.forEach((fn, root) => root.isConnected ? fn() : onResize.delete(root)), { passive: true });
+  let lastW = window.innerWidth;     // строка адреса меняет только высоту — листалкам это не важно
+  window.addEventListener('resize', () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; onResize.forEach((fn, root) => root.isConnected ? fn() : onResize.delete(root)); }, { passive: true });
 
   function setup(root) {
     if (root.dataset.ready) return;

@@ -73,7 +73,7 @@
       };
       fit();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-      let ft = 0; window.addEventListener('resize', () => { clearTimeout(ft); ft = setTimeout(fit, 120); });
+      let ft = 0, fw = window.innerWidth; window.addEventListener('resize', () => { if (window.innerWidth === fw) return; fw = window.innerWidth; clearTimeout(ft); ft = setTimeout(fit, 120); });
     }
     // Подстраховка: если браузер не проиграл появление (вкладка открылась в фоне и т. п.),
     // через 1,6 с заголовок и звезда всё равно на месте
@@ -460,7 +460,8 @@ window.ZNSeg = (function () {
     } else place(true);
   }
   let rt = 0;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => all.forEach(f => f()), 100); });
+  let segW = window.innerWidth;
+  window.addEventListener('resize', () => { if (window.innerWidth === segW) return; segW = window.innerWidth; clearTimeout(rt); rt = setTimeout(() => all.forEach(f => f()), 100); });
   function auto() {
     document.querySelectorAll('.chips[role="group"]').forEach(b => make(b, '.chip', c => c.getAttribute('aria-pressed') === 'true'));
     document.querySelectorAll('.quiz-opts').forEach(b => make(b, '.quiz-opt', c => c.getAttribute('aria-pressed') === 'true'));
@@ -598,4 +599,13 @@ window.ZNPanel = (function () {
   };
   const run = () => { fix(); requestAnimationFrame(fix); setTimeout(fix, 400); setTimeout(fix, 1200); };
   if (document.readyState === 'complete') run(); else window.addEventListener('load', run, { once: true });
+})();
+
+// ---------- Блоки ниже экрана дорисовываются заранее, в паузах ----------
+// Иначе браузер дорисовывал бы их в момент, когда до них долистали, — и прокрутка на миг «спотыкалась».
+(function () {
+  const list = [...document.querySelectorAll('body > section:not(.story):not(.hero), body > .site-footer')];
+  if (!list.length || !window.ZNCalm) return;
+  const start = () => list.forEach((el, i) => ZNCalm(() => el.classList.add('cv-ready'), 600 + i * 120));
+  if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
 })();
