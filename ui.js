@@ -615,3 +615,29 @@ window.ZNPanel = (function () {
   const start = () => list.forEach((el, i) => ZNCalm(() => el.classList.add('cv-ready'), 600 + i * 120));
   if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
 })();
+
+// ---------- Приветствие по времени суток ----------
+// Большой заголовок в конце главной и строка в подвале меняются по часам на устройстве гостя.
+// «Звёздное небо» — только вечером и ночью, утром и днём — свои фразы.
+(function () {
+  const h2 = document.querySelector('.finale-text h2');
+  const foot = [...document.querySelectorAll('.footer-bottom span')].find(s => /звёздным небом/.test(s.textContent));
+  if (!h2 && !foot) return;
+  function pick() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 11) return { k: 'm', title: 'Доброе утро,<br><em>Петербург</em>.', line: 'Доброе утро, Петербург ✦' };
+    if (h >= 11 && h < 17) return { k: 'd', title: 'Добрый день<br>в самом <em>центре города</em>.', line: 'Добрый день в самом центре города ✦' };
+    if (h >= 17 && h < 22) return { k: 'e', title: 'Добрый вечер<br>под <em>звёздным небом</em>.', line: 'Добрый вечер под звёздным небом ✦' };
+    return { k: 'n', title: 'Спокойной ночи<br>под <em>звёздным небом</em>.', line: 'Спокойной ночи под звёздным небом ✦' };
+  }
+  let shown = '';
+  function update() {
+    const g = pick();
+    if (g.k === shown) return;
+    shown = g.k;
+    if (h2) h2.innerHTML = g.title;
+    if (foot) foot.textContent = g.line;
+  }
+  update();
+  setInterval(update, 60000);   // гость засиделся на сайте — приветствие сменится само
+})();
